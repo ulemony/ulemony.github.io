@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>Linux常用命令</title>
-    <url>/2023/02/09/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <url>/posts/undefined.html</url>
     <content><![CDATA[<h1 id="Linux常用命令"><a href="#Linux常用命令" class="headerlink" title="Linux常用命令"></a>Linux常用命令</h1><h2 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h2><p>使用scp将一个Linux系统中的文件或文件夹复制到另一台Linux服务器上</p>
 <h3 id="复制文件"><a href="#复制文件" class="headerlink" title="复制文件"></a>复制文件</h3><p>1.将本地文件拷贝到远程主机</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//scp 文件名 用户名@计算机IP或者计算机名称:远程路径</span></span><br><span class="line"><span class="comment">//192.168.1.12为远程服务器</span></span><br><span class="line">scp /root/install.* root@<span class="number">192.168</span><span class="number">.1</span><span class="number">.12</span>:/usr/local/src</span><br></pre></td></tr></table></figure>
