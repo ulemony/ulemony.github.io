@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>test</title>
-    <url>/p/d87f7e0c.html</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>Linux常用命令</title>
-    <url>/p/d0edc1ed.html</url>
+    <url>/posts/d0edc1ed.html</url>
     <content><![CDATA[<h1 id="Linux常用命令"><a href="#Linux常用命令" class="headerlink" title="Linux常用命令"></a>Linux常用命令</h1><h2 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h2><p>使用scp将一个Linux系统中的文件或文件夹复制到另一台Linux服务器上</p>
 <h3 id="复制文件"><a href="#复制文件" class="headerlink" title="复制文件"></a>复制文件</h3><p>1.将本地文件拷贝到远程主机</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//scp 文件名 用户名@计算机IP或者计算机名称:远程路径</span></span><br><span class="line"><span class="comment">//192.168.1.12为远程服务器</span></span><br><span class="line">scp /root/install.* root@<span class="number">192.168</span><span class="number">.1</span><span class="number">.12</span>:/usr/local/src</span><br></pre></td></tr></table></figure>
@@ -21,6 +16,9 @@
 <p>2.从远程拷贝目录回本地</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//scp -r 用户名@计算机IP或者计算机名称:目录名 本地路径</span></span><br><span class="line"><span class="comment">//zhidao@192.168.0.1为远程服务器的用户名和ip地址，test1为源目录，test2为目标目录</span></span><br><span class="line">scp  -r zhidao@<span class="number">192.168</span><span class="number">.0</span><span class="number">.1</span>:/home/test2 /home/test1</span><br></pre></td></tr></table></figure>
 
+
+
+<p>本文链接 <a href="http://ulemony.github.io/posts/d0edc1ed.html">http://ulemony.github.io/posts/d0edc1ed.html</a> </p>
 ]]></content>
       <categories>
         <category>Linux</category>
@@ -29,5 +27,11 @@
         <tag>Linux</tag>
         <tag>文件操作</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>test</title>
+    <url>/posts/d87f7e0c.html</url>
+    <content><![CDATA[<p>本文链接 <a href="http://ulemony.github.io/posts/d87f7e0c.html">http://ulemony.github.io/posts/d87f7e0c.html</a> </p>
+]]></content>
   </entry>
 </search>
