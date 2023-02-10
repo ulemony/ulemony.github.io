@@ -34,4 +34,51 @@
     <content><![CDATA[<p>链接 <a href="http://ulemony.github.io/posts/d87f7e0c.html">http://ulemony.github.io/posts/d87f7e0c.html</a> </p>
 ]]></content>
   </entry>
+  <entry>
+    <title>Kafka常用命令</title>
+    <url>/posts/d25e2bb0.html</url>
+    <content><![CDATA[<p>进入容器</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">docker exec -it 容器id bash</span><br></pre></td></tr></table></figure>
+
+<p>进入到kafka的安装目录，查看到kafka相关的命令</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">cd /opt/kafka/bin/</span><br></pre></td></tr></table></figure>
+
+<h2 id="topic操作"><a href="#topic操作" class="headerlink" title="topic操作"></a>topic操作</h2><h3 id="创建一个topic"><a href="#创建一个topic" class="headerlink" title="创建一个topic"></a>创建一个topic</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#添加名为test的topic 一个分区，3个副本,其中xxxx:2181为zookeeper的端口</span><br><span class="line">kafka-topics.sh --zookeeper xxxx:2181  --create --topic test --replication-factor 1 --partitions 3</span><br></pre></td></tr></table></figure>
+
+<p>执行后效果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Created topic test.</span><br></pre></td></tr></table></figure>
+
+<h3 id="查询topic列表"><a href="#查询topic列表" class="headerlink" title="查询topic列表"></a>查询topic列表</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#其中xxxx:2181为zookeeper的端口</span><br><span class="line">kafka-topics.sh --zookeeper xxxx:2181  --list</span><br></pre></td></tr></table></figure>
+
+<p> 执行后效果如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">test</span><br></pre></td></tr></table></figure>
+
+<h3 id="查询topic详情"><a href="#查询topic详情" class="headerlink" title="查询topic详情"></a>查询topic详情</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#查询名为test2的topic详情</span><br><span class="line">kafka-topics.sh --zookeeper xxxx:2181  --describe --topic test2</span><br></pre></td></tr></table></figure>
+
+<p>执行后效果如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Topic: test2	TopicId: uly4F1d3SEyregeocjltZA	PartitionCount: 3	ReplicationFactor: 1	Configs: </span><br><span class="line">	Topic: test2	Partition: 0	Leader: 0	Replicas: 0	Isr: 0</span><br><span class="line">	Topic: test2	Partition: 1	Leader: 0	Replicas: 0	Isr: 0</span><br><span class="line">	Topic: test2	Partition: 2	Leader: 0	Replicas: 0	Isr: 0</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除topic"><a href="#删除topic" class="headerlink" title="删除topic"></a>删除topic</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#删除名为test2的topic</span><br><span class="line">kafka-topics.sh --zookeeper xxxx:2181  --delete --topic test2</span><br></pre></td></tr></table></figure>
+
+<p>执行后效果如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Topic test2 is marked for deletion.</span><br><span class="line">Note: This will have no impact if delete.topic.enable is not set to true.</span><br></pre></td></tr></table></figure>
+
+<h2 id="发送消费消息"><a href="#发送消费消息" class="headerlink" title="发送消费消息"></a>发送消费消息</h2><h3 id="生产者发送消息"><a href="#生产者发送消息" class="headerlink" title="生产者发送消息"></a>生产者发送消息</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kafka-console-producer.sh --broker-list localhost:9092 --topic example</span><br></pre></td></tr></table></figure>
+
+<p>执行后效果如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt;^Croot@f48c27085ce3:/opt/kafka/bin# kafka-console-producer.sh --broker-list  localhost:9092 --topic example</span><br><span class="line">&gt;hello world！</span><br></pre></td></tr></table></figure>
+
+<h3 id="消费者消费消息"><a href="#消费者消费消息" class="headerlink" title="消费者消费消息"></a>消费者消费消息</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kafka-console-consumer.sh --bootstrap-server  localhost:9092 --topic example</span><br></pre></td></tr></table></figure>
+
+
+
+<p>链接 <a href="http://ulemony.github.io/posts/undefined.html">http://ulemony.github.io/posts/undefined.html</a> </p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>-- Kafka</tag>
+      </tags>
+  </entry>
 </search>
