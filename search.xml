@@ -68,11 +68,14 @@
 <p>执行后效果如下</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt;^Croot@f48c27085ce3:/opt/kafka/bin# kafka-console-producer.sh --broker-list  localhost:9092 --topic example</span><br><span class="line">&gt;hello world！</span><br></pre></td></tr></table></figure>
 
-<h3 id="消费者消费消息"><a href="#消费者消费消息" class="headerlink" title="消费者消费消息"></a>消费者消费消息</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kafka-console-consumer.sh --bootstrap-server  localhost:9092 --topic example</span><br></pre></td></tr></table></figure>
+<h3 id="消费者消费消息"><a href="#消费者消费消息" class="headerlink" title="消费者消费消息"></a>消费者消费消息</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic example --from-beginning</span><br></pre></td></tr></table></figure>
+
+<p>执行后效果如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hello world！</span><br></pre></td></tr></table></figure>
 
 
 
-<p>链接 <a href="http://ulemony.github.io/posts/undefined.html">http://ulemony.github.io/posts/undefined.html</a> </p>
+<p>链接 <a href="http://ulemony.github.io/posts/d25e2bb0.html">http://ulemony.github.io/posts/d25e2bb0.html</a> </p>
 ]]></content>
       <categories>
         <category>Java</category>
