@@ -4,7 +4,7 @@
     <title>GPT-4体验</title>
     <url>/posts/e0a37648.html</url>
     <content><![CDATA[<h1 id="GPT-4"><a href="#GPT-4" class="headerlink" title="GPT-4"></a>GPT-4</h1><p>今天openai发布了目前为止AI领域最先进的人工智能系统——GPT-4</p>
-<p><img src="/posts/e0a37648/lee/Documents/Blog/source/_posts/GPT-4%E4%BD%93%E9%AA%8C/GPT-4.jpg" alt="head"></p>
+<p><img src="/posts/e0a37648/GPT-4.jpg" alt="head"></p>
 <p>于是申请注册体验，由于人太多，估计要等几个工作日，期待能通过申请</p>
 <h2 id="GPT-4可以做什么"><a href="#GPT-4可以做什么" class="headerlink" title="GPT-4可以做什么"></a>GPT-4可以做什么</h2><h3 id="1-Creativity-创造力"><a href="#1-Creativity-创造力" class="headerlink" title="1.Creativity 创造力"></a>1.Creativity 创造力</h3><p>它可以生成、编辑和迭代用户进行创意和技术写作任务，例如创作歌曲、编写剧本或学习用户的写作风格。</p>
 <p>例如我们输入要求让它解释灰姑娘的故事情节，它会根据要求生成相应的结果：</p>
@@ -17,7 +17,7 @@
 <p>它会识别图片内容并给出建议：煎饼或华夫饼&#x2F;薄饼&#x2F;法式吐司&#x2F;煎蛋或煎蛋饼    （没有广东肠粉差评～-～）</p>
 <p>如果你对有选择困难症，可以拍下自家的冰箱，让chatgt告诉你今天吃什么</p>
 <p>PS：很好奇发一张九转大肠的图片给chatgt，它给的食谱会不会保留大肠原来的味道～-～</p>
-<p><img src="/posts/e0a37648/lee/Documents/Blog/source/_posts/GPT-4%E4%BD%93%E9%AA%8C/food.jpg" alt="food"></p>
+<p><img src="/posts/e0a37648/food.jpg" alt="food"></p>
 <h3 id="3-Longer-context-更长的文字处理"><a href="#3-Longer-context-更长的文字处理" class="headerlink" title="3.Longer context 更长的文字处理"></a>3.Longer context 更长的文字处理</h3><p>GPT-4 能够处理超过 25，000 字的文本，允许使用长篇内容创建、扩展对话以及文档搜索和分析等用例。</p>
 <p>打个比方，附上蕾哈娜的维基百科信息网址，让它分析蕾哈娜在超级碗中的表现以及过人之处：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Input</span><br><span class="line">[Text from: https://en.wikipedia.org/wiki/Rihanna]</span><br><span class="line"></span><br><span class="line">Describe her Super Bowl performance and what made it special.</span><br></pre></td></tr></table></figure>
@@ -42,7 +42,7 @@
 <p>Andrew: 11 am - 3 pm Joanne: 12 pm - 2 pm, 3:30 pm - 5 pm Hannah: 12 pm - 12:30 pm, 4 pm - 6 pm Common availability for a 30-minute meeting: 12 pm - 12:30 pm<br>安德鲁：上午 11 点至下午 3 点<br>乔安妮：中午 12 点至下午 2 点，下午 3：30 至下午 5 点<br>汉娜：中午12时至下午12时30分，下午4时至下午6时</p>
 <p>30 分钟会议的通用可用性：中午 12 点至下午 12：30</p>
 <h2 id="人类未来的诗歌"><a href="#人类未来的诗歌" class="headerlink" title="人类未来的诗歌"></a>人类未来的诗歌</h2><p>最后附上一首CHATGPT写的诗歌，人工智能在将会彻底颠覆人类社会的各个方面，希望这是写给人类的颂歌</p>
-<p><img src="/posts/e0a37648/lee/Documents/Blog/source/_posts/GPT-4%E4%BD%93%E9%AA%8C/poem.jpg" alt="poem"></p>
+<p><img src="/posts/e0a37648/poem.jpg" alt="poem"></p>
 <p>链接 <a href="http://ulemony.github.io/posts/e0a37648.html">http://ulemony.github.io/posts/e0a37648.html</a> </p>
 ]]></content>
       <categories>
