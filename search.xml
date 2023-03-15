@@ -1,31 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Linux常用命令</title>
-    <url>/posts/d0edc1ed.html</url>
-    <content><![CDATA[<h1 id="Linux常用命令"><a href="#Linux常用命令" class="headerlink" title="Linux常用命令"></a>Linux常用命令</h1><h2 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h2><p>使用scp将一个Linux系统中的文件或文件夹复制到另一台Linux服务器上</p>
-<h3 id="复制文件"><a href="#复制文件" class="headerlink" title="复制文件"></a>复制文件</h3><p>1.将本地文件拷贝到远程主机</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//scp 文件名 用户名@计算机IP或者计算机名称:远程路径</span></span><br><span class="line"><span class="comment">//192.168.1.12为远程服务器</span></span><br><span class="line">scp /root/install.* root@<span class="number">192.168</span><span class="number">.1</span><span class="number">.12</span>:/usr/local/src</span><br></pre></td></tr></table></figure>
+    <title>GPT-4体验</title>
+    <url>/posts/e0a37648.html</url>
+    <content><![CDATA[<h1 id="GPT-4"><a href="#GPT-4" class="headerlink" title="GPT-4"></a>GPT-4</h1><p>今天openai发布了目前为止AI领域最先进的人工智能系统——GPT-4</p>
+<p><img src="/posts/e0a37648/lee/Documents/Blog/source/_posts/GPT-4%E4%BD%93%E9%AA%8C/GPT-4.jpg" alt="head"></p>
+<p>于是申请注册体验，由于人太多，估计要等几个工作日，期待能通过申请</p>
+<h2 id="GPT-4可以做什么"><a href="#GPT-4可以做什么" class="headerlink" title="GPT-4可以做什么"></a>GPT-4可以做什么</h2><h3 id="1-Creativity-创造力"><a href="#1-Creativity-创造力" class="headerlink" title="1.Creativity 创造力"></a>1.Creativity 创造力</h3><p>它可以生成、编辑和迭代用户进行创意和技术写作任务，例如创作歌曲、编写剧本或学习用户的写作风格。</p>
+<p>例如我们输入要求让它解释灰姑娘的故事情节，它会根据要求生成相应的结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Input</span><br><span class="line"></span><br><span class="line">Explain the plot of Cinderella in a sentence where each word has to begin with the next letter in the alphabet from A to Z, without repeating any letters.</span><br><span class="line">用一个句子解释灰姑娘的情节，其中每个单词必须以字母表中从 A 到 Z 的下一个字母开头，不要重复任何字母</span><br></pre></td></tr></table></figure>
 
-<p>2.从远程将文件拷回本地</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//scp 用户名@计算机IP或者计算机名称:文件名 本地路径</span></span><br><span class="line"><span class="comment">//本地192.168.1.8客户端取远程服务器12、11上的文件</span></span><br><span class="line">scp root@<span class="number">192.168</span><span class="number">.1</span><span class="number">.12</span>:/usr/local/src<span class="comment">/*.log /root/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Output</span><br><span class="line"></span><br><span class="line">A beautiful Cinderella, dwelling eagerly, finally gains happiness; inspiring jealous kin, love magically nurtures opulent prince; quietly rescues, slipper triumphs, uniting very wondrously, xenial youth zealously.</span><br><span class="line">美丽的灰姑娘，急切地栖息着，终于获得了幸福;激发嫉妒的亲人，爱情神奇地培育出华丽的王子;悄悄地营救，拖鞋胜利，团结得非常奇妙，青春热心。</span><br></pre></td></tr></table></figure>
 
-<h3 id="复制目录"><a href="#复制目录" class="headerlink" title="复制目录"></a>复制目录</h3><p>1.将本地文件夹拷贝到远程</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//scp -r 目录名 用户名@计算机IP或者计算机名称:远程路径</span></span><br><span class="line"><span class="comment">//test1为源目录，test2为目标目录，zhidao@192.168.0.1为远程服务器的用户名和ip地址。</span></span><br><span class="line">scp -r /home/test1 zhidao@<span class="number">192.168</span><span class="number">.0</span><span class="number">.1</span>:/home/test2 </span><br></pre></td></tr></table></figure>
+<p>这个功能对于写作辅助可谓一大利器，对于写论文、高考作文训练真是大大滴好呀！</p>
+<h3 id="2-Visual-input-图像输入"><a href="#2-Visual-input-图像输入" class="headerlink" title="2.Visual input  图像输入"></a>2.Visual input  图像输入</h3><p>GPT-4 根据输入的图像并生成标题、分类和分析，例如我们输入一张图片，询问它可以利用图片中的原材料做成什么食物</p>
+<p>它会识别图片内容并给出建议：煎饼或华夫饼&#x2F;薄饼&#x2F;法式吐司&#x2F;煎蛋或煎蛋饼    （没有广东肠粉差评～-～）</p>
+<p>如果你对有选择困难症，可以拍下自家的冰箱，让chatgt告诉你今天吃什么</p>
+<p>PS：很好奇发一张九转大肠的图片给chatgt，它给的食谱会不会保留大肠原来的味道～-～</p>
+<p><img src="/posts/e0a37648/lee/Documents/Blog/source/_posts/GPT-4%E4%BD%93%E9%AA%8C/food.jpg" alt="food"></p>
+<h3 id="3-Longer-context-更长的文字处理"><a href="#3-Longer-context-更长的文字处理" class="headerlink" title="3.Longer context 更长的文字处理"></a>3.Longer context 更长的文字处理</h3><p>GPT-4 能够处理超过 25，000 字的文本，允许使用长篇内容创建、扩展对话以及文档搜索和分析等用例。</p>
+<p>打个比方，附上蕾哈娜的维基百科信息网址，让它分析蕾哈娜在超级碗中的表现以及过人之处：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Input</span><br><span class="line">[Text from: https://en.wikipedia.org/wiki/Rihanna]</span><br><span class="line"></span><br><span class="line">Describe her Super Bowl performance and what made it special.</span><br></pre></td></tr></table></figure>
 
-<p>2.从远程拷贝目录回本地</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//scp -r 用户名@计算机IP或者计算机名称:目录名 本地路径</span></span><br><span class="line"><span class="comment">//zhidao@192.168.0.1为远程服务器的用户名和ip地址，test1为源目录，test2为目标目录</span></span><br><span class="line">scp  -r zhidao@<span class="number">192.168</span><span class="number">.0</span><span class="number">.1</span>:/home/test2 /home/test1</span><br></pre></td></tr></table></figure>
+<p>GPT-4会从长达几万字的维基百科介绍中提炼出如下结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Output</span><br><span class="line">Rihanna&#x27;s Super Bowl LVII halftime show performance was special for a number of reasons. For one, it marked her first live performance in over five years, and it was her first time headlining the Super Bowl halftime show. Additionally, she made history by becoming the first person to perform at the Super Bowl while pregnant. The show itself was critically acclaimed, with many praising her high-energy performance and impressive vocals. It also garnered a massive viewership, becoming the second most-watched halftime show in history.</span><br><span class="line">蕾哈娜的超级碗LVII中场秀表演很特别，原因有很多。首先，这是她五年多来的第一次现场表演，这是她第一次在超级碗中场秀中担任头条新闻。此外，她创造了历史，成为第一个在怀孕期间在超级碗上表演的人。该节目本身广受好评，许多人称赞她的高能量表演和令人印象深刻的人声。它还获得了大量的收视率，成为历史上收视率第二高的中场秀。</span><br></pre></td></tr></table></figure>
 
 
 
-<p>链接 <a href="http://ulemony.github.io/posts/d0edc1ed.html">http://ulemony.github.io/posts/d0edc1ed.html</a> </p>
+<h2 id="GPT-4的亮点"><a href="#GPT-4的亮点" class="headerlink" title="GPT-4的亮点"></a>GPT-4的亮点</h2><p>GPT-4在其先进的推理能力方面超过了上一个版本ChatGPT。</p>
+<p>例如同一个问题，GPT-4比ChatGPT给出了更加精准的答案</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Input</span><br><span class="line"></span><br><span class="line">Andrew is free from 11 am to 3 pm, Joanne is free from noon to 2 pm and then 3:30 pm to 5 pm. Hannah is available at noon for half an hour, and then 4 pm to 6 pm. What are some options for start times for a 30 minute meeting for Andrew, Hannah, and Joanne?安德鲁从上午 11 点到下午 3 点有空，乔安妮从中午到下午 2 点，然后下午 3：30 到下午 5 点自由。汉娜在中午半小时可用，然后下午4点到6点。对于安德鲁、汉娜和乔安妮来说，30 分钟会议的开始时间有哪些选择？</span><br></pre></td></tr></table></figure>
+
+
+
+<p>ChatGPT给出的答案</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Output</span><br><span class="line">Here is a list of their availability:</span><br><span class="line">- Andrew: 11 am to 3 pm</span><br><span class="line">- Joanne: noon to 2 pm, and 3:30 pm to 5 pm</span><br><span class="line">- Hannah: noon to 12:30 pm, and 4 pm to 6 pm</span><br><span class="line"></span><br><span class="line">Based on their availability, there is a 30-minute window where all three of them are available, which is from 4 pm to 4:30 pm. So, the meeting can be scheduled at 4 pm.</span><br><span class="line">以下是它们的可用性列表：</span><br><span class="line">- 安德鲁：上午 11 点至下午 3 点</span><br><span class="line">- 乔安妮：中午至下午 2 点，下午 3：30 至下午 5 点</span><br><span class="line">- 汉娜：中午至下午 12：30，下午 4 点至下午 6 点</span><br><span class="line"></span><br><span class="line">根据他们的可用性，有一个 30 分钟的窗口，所有三个都可用，即下午 4 点到 4：30。因此，会议可以安排在下午 4 点。</span><br></pre></td></tr></table></figure>
+
+
+
+<p>GPT-4给出的答案</p>
+<p>Andrew: 11 am - 3 pm Joanne: 12 pm - 2 pm, 3:30 pm - 5 pm Hannah: 12 pm - 12:30 pm, 4 pm - 6 pm Common availability for a 30-minute meeting: 12 pm - 12:30 pm<br>安德鲁：上午 11 点至下午 3 点<br>乔安妮：中午 12 点至下午 2 点，下午 3：30 至下午 5 点<br>汉娜：中午12时至下午12时30分，下午4时至下午6时</p>
+<p>30 分钟会议的通用可用性：中午 12 点至下午 12：30</p>
+<h2 id="人类未来的诗歌"><a href="#人类未来的诗歌" class="headerlink" title="人类未来的诗歌"></a>人类未来的诗歌</h2><p>最后附上一首CHATGPT写的诗歌，人工智能在将会彻底颠覆人类社会的各个方面，希望这是写给人类的颂歌</p>
+<p><img src="/posts/e0a37648/lee/Documents/Blog/source/_posts/GPT-4%E4%BD%93%E9%AA%8C/poem.jpg" alt="poem"></p>
+<p>链接 <a href="http://ulemony.github.io/posts/e0a37648.html">http://ulemony.github.io/posts/e0a37648.html</a> </p>
 ]]></content>
       <categories>
-        <category>Linux</category>
+        <category>AI</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
-        <tag>文件操作</tag>
+        <tag>ChatGPT</tag>
       </tags>
   </entry>
   <entry>
@@ -79,55 +103,31 @@
       </tags>
   </entry>
   <entry>
-    <title>GPT-4体验</title>
-    <url>/posts/e0a37648.html</url>
-    <content><![CDATA[<h1 id="GPT-4"><a href="#GPT-4" class="headerlink" title="GPT-4"></a>GPT-4</h1><p>今天openai发布了目前为止AI领域最先进的人工智能系统——GPT-4</p>
-<p><img src="/posts/e0a37648/lee/Documents/Blog/source/_posts/GPT-4%E4%BD%93%E9%AA%8C/GPT-4.jpg" alt="head"></p>
-<p>于是申请注册体验，由于人太多，估计要等几个工作日，期待能通过申请</p>
-<h2 id="GPT-4可以做什么"><a href="#GPT-4可以做什么" class="headerlink" title="GPT-4可以做什么"></a>GPT-4可以做什么</h2><h3 id="1-Creativity-创造力"><a href="#1-Creativity-创造力" class="headerlink" title="1.Creativity 创造力"></a>1.Creativity 创造力</h3><p>它可以生成、编辑和迭代用户进行创意和技术写作任务，例如创作歌曲、编写剧本或学习用户的写作风格。</p>
-<p>例如我们输入要求让它解释灰姑娘的故事情节，它会根据要求生成相应的结果：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Input</span><br><span class="line"></span><br><span class="line">Explain the plot of Cinderella in a sentence where each word has to begin with the next letter in the alphabet from A to Z, without repeating any letters.</span><br><span class="line">用一个句子解释灰姑娘的情节，其中每个单词必须以字母表中从 A 到 Z 的下一个字母开头，不要重复任何字母</span><br></pre></td></tr></table></figure>
+    <title>Linux常用命令</title>
+    <url>/posts/d0edc1ed.html</url>
+    <content><![CDATA[<h1 id="Linux常用命令"><a href="#Linux常用命令" class="headerlink" title="Linux常用命令"></a>Linux常用命令</h1><h2 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h2><p>使用scp将一个Linux系统中的文件或文件夹复制到另一台Linux服务器上</p>
+<h3 id="复制文件"><a href="#复制文件" class="headerlink" title="复制文件"></a>复制文件</h3><p>1.将本地文件拷贝到远程主机</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//scp 文件名 用户名@计算机IP或者计算机名称:远程路径</span></span><br><span class="line"><span class="comment">//192.168.1.12为远程服务器</span></span><br><span class="line">scp /root/install.* root@<span class="number">192.168</span><span class="number">.1</span><span class="number">.12</span>:/usr/local/src</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Output</span><br><span class="line"></span><br><span class="line">A beautiful Cinderella, dwelling eagerly, finally gains happiness; inspiring jealous kin, love magically nurtures opulent prince; quietly rescues, slipper triumphs, uniting very wondrously, xenial youth zealously.</span><br><span class="line">美丽的灰姑娘，急切地栖息着，终于获得了幸福;激发嫉妒的亲人，爱情神奇地培育出华丽的王子;悄悄地营救，拖鞋胜利，团结得非常奇妙，青春热心。</span><br></pre></td></tr></table></figure>
+<p>2.从远程将文件拷回本地</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//scp 用户名@计算机IP或者计算机名称:文件名 本地路径</span></span><br><span class="line"><span class="comment">//本地192.168.1.8客户端取远程服务器12、11上的文件</span></span><br><span class="line">scp root@<span class="number">192.168</span><span class="number">.1</span><span class="number">.12</span>:/usr/local/src<span class="comment">/*.log /root/</span></span><br></pre></td></tr></table></figure>
 
-<p>这个功能对于写作辅助可谓一大利器，对于写论文、高考作文训练真是大大滴好呀！</p>
-<h3 id="2-Visual-input-图像输入"><a href="#2-Visual-input-图像输入" class="headerlink" title="2.Visual input  图像输入"></a>2.Visual input  图像输入</h3><p>GPT-4 根据输入的图像并生成标题、分类和分析，例如我们输入一张图片，询问它可以利用图片中的原材料做成什么食物</p>
-<p>它会识别图片内容并给出建议：煎饼或华夫饼&#x2F;薄饼&#x2F;法式吐司&#x2F;煎蛋或煎蛋饼    （没有广东肠粉差评～-～）</p>
-<p>如果你对有选择困难症，可以拍下自家的冰箱，让chatgt告诉你今天吃什么</p>
-<p>PS：很好奇发一张九转大肠的图片给chatgt，它给的食谱会不会保留大肠原来的味道～-～</p>
-<p><img src="/posts/e0a37648/lee/Documents/Blog/source/_posts/GPT-4%E4%BD%93%E9%AA%8C/food.jpg" alt="food"></p>
-<h3 id="3-Longer-context-更长的文字处理"><a href="#3-Longer-context-更长的文字处理" class="headerlink" title="3.Longer context 更长的文字处理"></a>3.Longer context 更长的文字处理</h3><p>GPT-4 能够处理超过 25，000 字的文本，允许使用长篇内容创建、扩展对话以及文档搜索和分析等用例。</p>
-<p>打个比方，附上蕾哈娜的维基百科信息网址，让它分析蕾哈娜在超级碗中的表现以及过人之处：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Input</span><br><span class="line">[Text from: https://en.wikipedia.org/wiki/Rihanna]</span><br><span class="line"></span><br><span class="line">Describe her Super Bowl performance and what made it special.</span><br></pre></td></tr></table></figure>
+<h3 id="复制目录"><a href="#复制目录" class="headerlink" title="复制目录"></a>复制目录</h3><p>1.将本地文件夹拷贝到远程</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//scp -r 目录名 用户名@计算机IP或者计算机名称:远程路径</span></span><br><span class="line"><span class="comment">//test1为源目录，test2为目标目录，zhidao@192.168.0.1为远程服务器的用户名和ip地址。</span></span><br><span class="line">scp -r /home/test1 zhidao@<span class="number">192.168</span><span class="number">.0</span><span class="number">.1</span>:/home/test2 </span><br></pre></td></tr></table></figure>
 
-<p>GPT-4会从长达几万字的维基百科介绍中提炼出如下结果：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Output</span><br><span class="line">Rihanna&#x27;s Super Bowl LVII halftime show performance was special for a number of reasons. For one, it marked her first live performance in over five years, and it was her first time headlining the Super Bowl halftime show. Additionally, she made history by becoming the first person to perform at the Super Bowl while pregnant. The show itself was critically acclaimed, with many praising her high-energy performance and impressive vocals. It also garnered a massive viewership, becoming the second most-watched halftime show in history.</span><br><span class="line">蕾哈娜的超级碗LVII中场秀表演很特别，原因有很多。首先，这是她五年多来的第一次现场表演，这是她第一次在超级碗中场秀中担任头条新闻。此外，她创造了历史，成为第一个在怀孕期间在超级碗上表演的人。该节目本身广受好评，许多人称赞她的高能量表演和令人印象深刻的人声。它还获得了大量的收视率，成为历史上收视率第二高的中场秀。</span><br></pre></td></tr></table></figure>
+<p>2.从远程拷贝目录回本地</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//scp -r 用户名@计算机IP或者计算机名称:目录名 本地路径</span></span><br><span class="line"><span class="comment">//zhidao@192.168.0.1为远程服务器的用户名和ip地址，test1为源目录，test2为目标目录</span></span><br><span class="line">scp  -r zhidao@<span class="number">192.168</span><span class="number">.0</span><span class="number">.1</span>:/home/test2 /home/test1</span><br></pre></td></tr></table></figure>
 
 
 
-<h2 id="GPT-4的亮点"><a href="#GPT-4的亮点" class="headerlink" title="GPT-4的亮点"></a>GPT-4的亮点</h2><p>GPT-4在其先进的推理能力方面超过了上一个版本ChatGPT。</p>
-<p>例如同一个问题，GPT-4比ChatGPT给出了更加精准的答案</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Input</span><br><span class="line"></span><br><span class="line">Andrew is free from 11 am to 3 pm, Joanne is free from noon to 2 pm and then 3:30 pm to 5 pm. Hannah is available at noon for half an hour, and then 4 pm to 6 pm. What are some options for start times for a 30 minute meeting for Andrew, Hannah, and Joanne?安德鲁从上午 11 点到下午 3 点有空，乔安妮从中午到下午 2 点，然后下午 3：30 到下午 5 点自由。汉娜在中午半小时可用，然后下午4点到6点。对于安德鲁、汉娜和乔安妮来说，30 分钟会议的开始时间有哪些选择？</span><br></pre></td></tr></table></figure>
-
-
-
-<p>ChatGPT给出的答案</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Output</span><br><span class="line">Here is a list of their availability:</span><br><span class="line">- Andrew: 11 am to 3 pm</span><br><span class="line">- Joanne: noon to 2 pm, and 3:30 pm to 5 pm</span><br><span class="line">- Hannah: noon to 12:30 pm, and 4 pm to 6 pm</span><br><span class="line"></span><br><span class="line">Based on their availability, there is a 30-minute window where all three of them are available, which is from 4 pm to 4:30 pm. So, the meeting can be scheduled at 4 pm.</span><br><span class="line">以下是它们的可用性列表：</span><br><span class="line">- 安德鲁：上午 11 点至下午 3 点</span><br><span class="line">- 乔安妮：中午至下午 2 点，下午 3：30 至下午 5 点</span><br><span class="line">- 汉娜：中午至下午 12：30，下午 4 点至下午 6 点</span><br><span class="line"></span><br><span class="line">根据他们的可用性，有一个 30 分钟的窗口，所有三个都可用，即下午 4 点到 4：30。因此，会议可以安排在下午 4 点。</span><br></pre></td></tr></table></figure>
-
-
-
-<p>GPT-4给出的答案</p>
-<p>Andrew: 11 am - 3 pm Joanne: 12 pm - 2 pm, 3:30 pm - 5 pm Hannah: 12 pm - 12:30 pm, 4 pm - 6 pm Common availability for a 30-minute meeting: 12 pm - 12:30 pm<br>安德鲁：上午 11 点至下午 3 点<br>乔安妮：中午 12 点至下午 2 点，下午 3：30 至下午 5 点<br>汉娜：中午12时至下午12时30分，下午4时至下午6时</p>
-<p>30 分钟会议的通用可用性：中午 12 点至下午 12：30</p>
-<h2 id="人类未来的诗歌"><a href="#人类未来的诗歌" class="headerlink" title="人类未来的诗歌"></a>人类未来的诗歌</h2><p>最后附上一首CHATGPT写的诗歌，人工智能在将会彻底颠覆人类社会的各个方面，希望这是写给人类的颂歌</p>
-<p><img src="/posts/e0a37648/lee/Documents/Blog/source/_posts/GPT-4%E4%BD%93%E9%AA%8C/poem.jpg" alt="poem"></p>
-<p>链接 <a href="http://ulemony.github.io/posts/e0a37648.html">http://ulemony.github.io/posts/e0a37648.html</a> </p>
+<p>链接 <a href="http://ulemony.github.io/posts/d0edc1ed.html">http://ulemony.github.io/posts/d0edc1ed.html</a> </p>
 ]]></content>
       <categories>
-        <category>AI</category>
+        <category>Linux</category>
       </categories>
       <tags>
-        <tag>ChatGPT</tag>
+        <tag>Linux</tag>
+        <tag>文件操作</tag>
       </tags>
   </entry>
 </search>
