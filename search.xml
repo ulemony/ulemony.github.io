@@ -98,6 +98,51 @@
       </tags>
   </entry>
   <entry>
+    <title>Jvm指令和工具</title>
+    <url>/posts/817f8310.html</url>
+    <content><![CDATA[<h2 id="Jvm指令和工具"><a href="#Jvm指令和工具" class="headerlink" title="Jvm指令和工具"></a>Jvm指令和工具</h2><h3 id="jps"><a href="#jps" class="headerlink" title="jps"></a>jps</h3><p> 查看java进程</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">lee<span class="meta">@lee</span>-mac ~ % jps</span><br><span class="line"><span class="number">63266</span> miniLegionInit.jar</span><br><span class="line"><span class="number">63964</span> Jps</span><br></pre></td></tr></table></figure>
+
+<h2 id="jconsole"><a href="#jconsole" class="headerlink" title="jconsole"></a>jconsole</h2><p>Java监视和管理平台</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jconsole</span><br></pre></td></tr></table></figure>
+
+<p><img src="/posts/817f8310/%E5%88%9D%E5%A7%8B%E5%8C%96%E7%95%8C%E9%9D%A2.png" alt="初始化界面"></p>
+<p><img src="/posts/817f8310/%E8%BF%90%E8%A1%8C%E7%95%8C%E9%9D%A2.png" alt="运行界面"></p>
+<h2 id="jstat"><a href="#jstat" class="headerlink" title="jstat"></a>jstat</h2><p>查看内存</p>
+<h3 id="常用命令1"><a href="#常用命令1" class="headerlink" title="常用命令1"></a>常用命令1</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jstat -gcutil pid interval</span><br><span class="line">pid:进程</span><br><span class="line">interval: 间隔时间</span><br><span class="line">lee@lee-mac ~ % jstat -gcutil 63266 1000 </span><br><span class="line">  S0     S1     E      O      M     CCS    YGC     YGCT    FGC    FGCT     GCT   </span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用命令2"><a href="#常用命令2" class="headerlink" title="常用命令2"></a>常用命令2</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jstat -gc pid</span><br><span class="line">lee@lee-mac ~ % jstat -gc 63266 </span><br><span class="line"> S0C    S1C    S0U    S1U      EC       EU        OC         OU       MC     MU    CCSC   CCSU   YGC     YGCT    FGC    FGCT     GCT   </span><br><span class="line">6656.0 7680.0  0.0    0.0   71680.0  63287.4   90624.0    13323.2   35496.0 33765.1 4608.0 4304.3     10    0.079   2      0.202    0.281</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用命令3"><a href="#常用命令3" class="headerlink" title="常用命令3"></a>常用命令3</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jstat -gcnew pid</span><br><span class="line">lee@lee-mac ~ % jstat -gcnew 63266 </span><br><span class="line"> S0C    S1C    S0U    S1U   TT MTT  DSS      EC       EU     YGC     YGCT  </span><br><span class="line">6656.0 7680.0    0.0    0.0  1  15 7680.0  71680.0  63287.4     10    0.079</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用命令4"><a href="#常用命令4" class="headerlink" title="常用命令4"></a>常用命令4</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jstat -gcold pid</span><br><span class="line">lee@lee-mac ~ % jstat -gcold 63266 </span><br><span class="line">   MC       MU      CCSC     CCSU       OC          OU       YGC    FGC    FGCT     GCT   </span><br><span class="line"> 35496.0  33765.1   4608.0   4304.3     90624.0     13323.2     10     2    0.202    0.281</span><br></pre></td></tr></table></figure>
+
+<h2 id="jstack"><a href="#jstack" class="headerlink" title="jstack"></a>jstack</h2><p>分析线程运行状况</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jstack pid</span><br></pre></td></tr></table></figure>
+
+<p>但是jconsole已经集成jstack和jstat的功能</p>
+<h2 id="jmap"><a href="#jmap" class="headerlink" title="jmap"></a>jmap</h2><p>可以把堆情况dump下来 然后用软件查看文件信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jmap -dump:file=a pid</span><br><span class="line">例如</span><br><span class="line">jmap -dump:file=a 63266</span><br></pre></td></tr></table></figure>
+
+<p>打印当前进程堆内存信息</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jmap -heap pid</span><br></pre></td></tr></table></figure>
+
+<h2 id="VisualVM"><a href="#VisualVM" class="headerlink" title="VisualVM"></a>VisualVM</h2><p>java虚拟机监控工具</p>
+<h4 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h4><p>1.进入jdk安装目录的bin目录，双击打开jvisualvm</p>
+<p>2.终端模式下输入命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jvisualvm</span><br></pre></td></tr></table></figure>
+
+
+<p>链接 <a href="http://ulemony.github.io/posts/817f8310.html">http://ulemony.github.io/posts/817f8310.html</a> </p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>jvm</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>GPT-4体验</title>
     <url>/posts/e0a37648.html</url>
     <content><![CDATA[<h1 id="GPT-4"><a href="#GPT-4" class="headerlink" title="GPT-4"></a>GPT-4</h1><p>今天openai发布了目前为止AI领域最先进的人工智能系统——GPT-4</p>
@@ -147,51 +192,6 @@
       </categories>
       <tags>
         <tag>ChatGPT</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Jvm指令和工具</title>
-    <url>/posts/817f8310.html</url>
-    <content><![CDATA[<h2 id="Jvm指令和工具"><a href="#Jvm指令和工具" class="headerlink" title="Jvm指令和工具"></a>Jvm指令和工具</h2><h3 id="jps"><a href="#jps" class="headerlink" title="jps"></a>jps</h3><p> 查看java进程</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">lee<span class="meta">@lee</span>-mac ~ % jps</span><br><span class="line"><span class="number">63266</span> miniLegionInit.jar</span><br><span class="line"><span class="number">63964</span> Jps</span><br></pre></td></tr></table></figure>
-
-<h2 id="jconsole"><a href="#jconsole" class="headerlink" title="jconsole"></a>jconsole</h2><p>Java监视和管理平台</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jconsole</span><br></pre></td></tr></table></figure>
-
-<p><img src="/posts/817f8310/%E5%88%9D%E5%A7%8B%E5%8C%96%E7%95%8C%E9%9D%A2.png" alt="初始化界面"></p>
-<p><img src="/posts/817f8310/%E8%BF%90%E8%A1%8C%E7%95%8C%E9%9D%A2.png" alt="运行界面"></p>
-<h2 id="jstat"><a href="#jstat" class="headerlink" title="jstat"></a>jstat</h2><p>查看内存</p>
-<h3 id="常用命令1"><a href="#常用命令1" class="headerlink" title="常用命令1"></a>常用命令1</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jstat -gcutil pid interval</span><br><span class="line">pid:进程</span><br><span class="line">interval: 间隔时间</span><br><span class="line">lee@lee-mac ~ % jstat -gcutil 63266 1000 </span><br><span class="line">  S0     S1     E      O      M     CCS    YGC     YGCT    FGC    FGCT     GCT   </span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br><span class="line">  0.00   0.00  88.29  14.70  95.12  93.41     10    0.079     2    0.202    0.281</span><br></pre></td></tr></table></figure>
-
-<h3 id="常用命令2"><a href="#常用命令2" class="headerlink" title="常用命令2"></a>常用命令2</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jstat -gc pid</span><br><span class="line">lee@lee-mac ~ % jstat -gc 63266 </span><br><span class="line"> S0C    S1C    S0U    S1U      EC       EU        OC         OU       MC     MU    CCSC   CCSU   YGC     YGCT    FGC    FGCT     GCT   </span><br><span class="line">6656.0 7680.0  0.0    0.0   71680.0  63287.4   90624.0    13323.2   35496.0 33765.1 4608.0 4304.3     10    0.079   2      0.202    0.281</span><br></pre></td></tr></table></figure>
-
-<h3 id="常用命令3"><a href="#常用命令3" class="headerlink" title="常用命令3"></a>常用命令3</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jstat -gcnew pid</span><br><span class="line">lee@lee-mac ~ % jstat -gcnew 63266 </span><br><span class="line"> S0C    S1C    S0U    S1U   TT MTT  DSS      EC       EU     YGC     YGCT  </span><br><span class="line">6656.0 7680.0    0.0    0.0  1  15 7680.0  71680.0  63287.4     10    0.079</span><br></pre></td></tr></table></figure>
-
-<h3 id="常用命令4"><a href="#常用命令4" class="headerlink" title="常用命令4"></a>常用命令4</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jstat -gcold pid</span><br><span class="line">lee@lee-mac ~ % jstat -gcold 63266 </span><br><span class="line">   MC       MU      CCSC     CCSU       OC          OU       YGC    FGC    FGCT     GCT   </span><br><span class="line"> 35496.0  33765.1   4608.0   4304.3     90624.0     13323.2     10     2    0.202    0.281</span><br></pre></td></tr></table></figure>
-
-<h2 id="jstack"><a href="#jstack" class="headerlink" title="jstack"></a>jstack</h2><p>分析线程运行状况</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jstack pid</span><br></pre></td></tr></table></figure>
-
-<p>但是jconsole已经集成jstack和jstat的功能</p>
-<h2 id="jmap"><a href="#jmap" class="headerlink" title="jmap"></a>jmap</h2><p>可以把堆情况dump下来 然后用软件查看文件信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jmap -dump:file=a pid</span><br><span class="line">例如</span><br><span class="line">jmap -dump:file=a 63266</span><br></pre></td></tr></table></figure>
-
-<p>打印当前进程堆内存信息</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jmap -heap pid</span><br></pre></td></tr></table></figure>
-
-<h2 id="VisualVM"><a href="#VisualVM" class="headerlink" title="VisualVM"></a>VisualVM</h2><p>java虚拟机监控工具</p>
-<h4 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h4><p>1.进入jdk安装目录的bin目录，双击打开jvisualvm</p>
-<p>2.终端模式下输入命令</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jvisualvm</span><br></pre></td></tr></table></figure>
-
-
-<p>链接 <a href="http://ulemony.github.io/posts/817f8310.html">http://ulemony.github.io/posts/817f8310.html</a> </p>
-]]></content>
-      <categories>
-        <category>java</category>
-      </categories>
-      <tags>
-        <tag>jvm</tag>
       </tags>
   </entry>
   <entry>
@@ -447,7 +447,7 @@
 <p>链接 <a href="http://ulemony.github.io/posts/ec6e45b4.html">http://ulemony.github.io/posts/ec6e45b4.html</a> </p>
 ]]></content>
       <categories>
-        <category>java</category>
+        <category>Java</category>
       </categories>
       <tags>
         <tag>springboot</tag>
@@ -498,7 +498,7 @@
 <p>链接 <a href="http://ulemony.github.io/posts/65703737.html">http://ulemony.github.io/posts/65703737.html</a> </p>
 ]]></content>
       <categories>
-        <category>java</category>
+        <category>Java</category>
       </categories>
       <tags>
         <tag>spring</tag>
@@ -528,7 +528,7 @@
 <p>链接 <a href="http://ulemony.github.io/posts/a5d86a59.html">http://ulemony.github.io/posts/a5d86a59.html</a> </p>
 ]]></content>
       <categories>
-        <category>java</category>
+        <category>Java</category>
       </categories>
       <tags>
         <tag>spring</tag>
@@ -624,7 +624,7 @@
 <p>链接 <a href="http://ulemony.github.io/posts/9fa1f056.html">http://ulemony.github.io/posts/9fa1f056.html</a> </p>
 ]]></content>
       <categories>
-        <category>java</category>
+        <category>Java</category>
       </categories>
       <tags>
         <tag>chatgpt</tag>
@@ -675,7 +675,7 @@
 <p>链接 <a href="http://ulemony.github.io/posts/9d7a9baf.html">http://ulemony.github.io/posts/9d7a9baf.html</a> </p>
 ]]></content>
       <categories>
-        <category>java</category>
+        <category>Java</category>
       </categories>
       <tags>
         <tag>SpringSecurity</tag>
@@ -727,7 +727,7 @@
 <p>链接 <a href="http://ulemony.github.io/posts/c7e03167.html">http://ulemony.github.io/posts/c7e03167.html</a> </p>
 ]]></content>
       <categories>
-        <category>java</category>
+        <category>Java</category>
       </categories>
       <tags>
         <tag>spring</tag>
