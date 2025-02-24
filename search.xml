@@ -740,7 +740,7 @@
 <h4 id="java虚拟机栈"><a href="#java虚拟机栈" class="headerlink" title="java虚拟机栈"></a>java虚拟机栈</h4><p>由栈帧组成，存储了局部变量表、操作数栈、动态链接、方法出口等信息</p>
 <p>局部变量表包含：</p>
 <ol>
-<li>基本数据类型（byte 1字节、char 2字节、short 2字节、int 4字节、float 4字节、long 8字节、double 8字节、boolean</li>
+<li>基本数据类型（byte 1字节、char 2字节、short 2字节、int 4字节、float 4字节、long 8字节、double 8字节、boolean）</li>
 <li>对象引用类型，只保存对象的地址，不保存对象内容</li>
 </ol>
 <p>这些数据类型的存储空间以<strong>局部变量槽（slot）</strong>表示</p>
@@ -775,7 +775,8 @@
 <p>​	例子：类的符号引用</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SymbolicReferenceExample</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">// 使用 String 类的符号引用</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;Hello&quot;</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 使用 Class 类的符号引用</span></span><br><span class="line">        Class&lt;?&gt; clazz = String.class;  <span class="comment">// 获取 String 类的 Class 对象</span></span><br><span class="line">        System.out.println(clazz.getName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h4 id="解释："><a href="#解释：" class="headerlink" title="解释："></a>解释：</h4><ul>
+<p>​	<strong>解释</strong></p>
+<ul>
 <li>在上面的代码中，<code>String.class</code> 是一个<strong>符号引用</strong>。它代表的是 <code>String</code> 类的类类型（<code>Class</code> 对象）。在编译时，JVM 只是记录了 <code>String.class</code>，而没有直接知道它在内存中的位置。只有在运行时，JVM 会根据符号引用 <code>String.class</code> 来查找并加载 <code>String</code> 类。</li>
 <li>在 <code>clazz.getName()</code> 调用时，JVM 会根据符号引用解析出 <code>String.class</code> 对应的类对象，并且返回类的名称 <code>&quot;java.lang.String&quot;</code>。</li>
 </ul>
@@ -886,6 +887,320 @@
       <tags>
         <tag>mybatis</tag>
         <tag>分页</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JVM垃圾回收 GC</title>
+    <url>/posts/935a6b06.html</url>
+    <content><![CDATA[<h4 id="GC-如何判断对象可回收"><a href="#GC-如何判断对象可回收" class="headerlink" title="GC 如何判断对象可回收"></a>GC 如何判断对象可回收</h4><h5 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h5><p>每个对象有一个引用计数器，每当有一个引用指向它，计数器 +1；引用断开时，计数器 -1；</p>
+<p>当计数器为 0 时，表示对象不再被引用，可以被回收。</p>
+<p><strong>缺点</strong>：无法处理循环引用的问题。例如，两个对象相互引用，但不再被外部引用，这种情况下计数器不会为 0。</p>
+<h5 id="可达性分析法"><a href="#可达性分析法" class="headerlink" title="可达性分析法"></a>可达性分析法</h5><p>GC Roots作为对象起始点，向下搜索，如果一个对象到GC Roots没有引用链则对象不可用，可以被回收</p>
+<p>常见的GC Roots：</p>
+<ul>
+<li><p>虚拟机栈中引用的对象，例如局部变量、临时变量</p>
+</li>
+<li><p>方法区中类静态属性引用的对象</p>
+</li>
+<li><p>方法区中常量引用的对象</p>
+</li>
+<li><p>本地方法栈中JNI引用的对象</p>
+</li>
+</ul>
+<p><strong>示例代码</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GCRootsDemo</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> GCRootsDemo staticField;      <span class="comment">// 静态成员变量 (GC Roots)</span></span><br><span class="line">    <span class="keyword">private</span> GCRootsDemo instanceField;           <span class="comment">// 实例成员变量 (非GC Roots)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">ARRAY_SIZE</span> <span class="operator">=</span> <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">// 1. 创建本地变量（GC Roots）</span></span><br><span class="line">        <span class="type">GCRootsDemo</span> <span class="variable">localVar</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">GCRootsDemo</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 静态成员变量引用（GC Roots）</span></span><br><span class="line">        staticField = <span class="keyword">new</span> <span class="title class_">GCRootsDemo</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 3. localVar 的实例成员变量引用（非GC Roots）</span></span><br><span class="line">        localVar.instanceField = <span class="keyword">new</span> <span class="title class_">GCRootsDemo</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 4. 数组对象的引用（数组本身是GC Roots）</span></span><br><span class="line">        GCRootsDemo[] array = <span class="keyword">new</span> <span class="title class_">GCRootsDemo</span>[ARRAY_SIZE];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; ARRAY_SIZE; i++) &#123;</span><br><span class="line">            array[i] = <span class="keyword">new</span> <span class="title class_">GCRootsDemo</span>(); <span class="comment">// 每个元素指向一个新对象</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 打破某些引用链</span></span><br><span class="line">        array[<span class="number">1</span>] = <span class="literal">null</span>;       <span class="comment">// 元素1指向的对象可以回收</span></span><br><span class="line">        localVar = <span class="literal">null</span>;       <span class="comment">// localVar不再指向对象</span></span><br><span class="line">        staticField = <span class="literal">null</span>;    <span class="comment">// staticField不再指向对象</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 主动触发GC</span></span><br><span class="line">        System.gc();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>引用关系图</strong></p>
+<p><em>初始状态</em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GC Roots:                  非GC Roots引用:</span><br><span class="line"> ┌──────────────┐          ┌───────────────┐</span><br><span class="line"> │ localVar     │ ───────► │ GCRootsDemo   │</span><br><span class="line"> │ staticField  │ ───────► │ GCRootsDemo   │</span><br><span class="line"> │ array        │ ───────► │ GCRootsDemo[] │</span><br><span class="line"> └──────────────┘          └───────────────┘</span><br><span class="line">                              │     │     │</span><br><span class="line">                              ▼     ▼     ▼</span><br><span class="line">                          Object  Object  Object</span><br><span class="line">                                (array[1] 被置 null后断开)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><em>断开引用后</em></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GC Roots:                  非GC Roots引用:</span><br><span class="line"> ┌──────────────┐          ┌───────────────┐</span><br><span class="line"> │ localVar (X) │          │ GCRootsDemo   │</span><br><span class="line"> │ staticField(X│          │               │</span><br><span class="line"> │ array        │ ───────► │ GCRootsDemo[] │</span><br><span class="line"> └──────────────┘          └───────────────┘</span><br><span class="line">                                     │     │</span><br><span class="line">                                     ▼     ▼</span><br><span class="line">                                 Object  Object</span><br><span class="line">                            (array[1] 不可达)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>GC<strong>回收分析</strong></p>
+<p><strong>存活的对象：</strong></p>
+<ul>
+<li><code>array</code> 本身及其 <code>array[0]</code> 和 <code>array[2]</code> 指向的对象。</li>
+<li><code>array[1]</code> 被置为 <code>null</code>，对应的对象会被GC。</li>
+</ul>
+<p><strong>可回收对象：</strong></p>
+<ul>
+<li><code>localVar</code> 和 <code>staticField</code> 被置为 <code>null</code>，它们之前引用的对象变得不可达，成为垃圾。</li>
+<li><code>array[1]</code> 的对象由于被置为 <code>null</code>，没有其他路径可达，也会被回收。</li>
+</ul>
+<h5 id="四种引用"><a href="#四种引用" class="headerlink" title="四种引用"></a>四种引用</h5><h6 id="强引用"><a href="#强引用" class="headerlink" title="强引用"></a><em>强引用</em></h6><p>最常见的引用类型，在引用期间不会被垃圾回收器回收，例如Object obj&#x3D;new Object();</p>
+<p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StrongReferenceDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">MyObject</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyObject</span>(); <span class="comment">// 强引用</span></span><br><span class="line">        <span class="comment">// obj对象会一直存在，直到 obj 变量超出作用域或被显式置为 null</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h6 id="软引用"><a href="#软引用" class="headerlink" title="软引用"></a><em>软引用</em></h6><p>在系统内存充足的情况下，软引用对象不会被回收；但在系统内存不足时，垃圾回收器会尽量回收软引用指向的对象</p>
+<p>需要用SoftReference类来实现</p>
+<p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.ref.SoftReference;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SoftReferenceDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">MyObject</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyObject</span>();</span><br><span class="line">        SoftReference&lt;MyObject&gt; softRef = <span class="keyword">new</span> <span class="title class_">SoftReference</span>&lt;&gt;(obj);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// obj 不再是强引用了</span></span><br><span class="line">        obj = <span class="literal">null</span>;</span><br><span class="line">        <span class="comment">// 在内存充足的情况下，softRef.get()可以返回对象</span></span><br><span class="line">        System.out.println(softRef.get()); </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>适用场景：</p>
+<p><strong>缓存：</strong> 例如，图片缓存、数据库查询结果缓存等。软引用能够使缓存对象在内存不足时被自动回收，避免了缓存导致的内存泄漏。</p>
+<p><strong>临时数据：</strong> 对一些临时对象使用软引用，当内存不够时允许对象被回收。</p>
+<h6 id="弱引用"><a href="#弱引用" class="headerlink" title="弱引用"></a><em>弱引用</em></h6><p>弱引用指向的对象在垃圾回收时会被回收，不管系统内存是否充足。即当一个对象只有弱引用时，它会在下一次垃圾回收时被回收。</p>
+<p>需要WeakReference类来实现</p>
+<p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.ref.WeakReference;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WeakReferenceDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">MyObject</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyObject</span>();</span><br><span class="line">        WeakReference&lt;MyObject&gt; weakRef = <span class="keyword">new</span> <span class="title class_">WeakReference</span>&lt;&gt;(obj);</span><br><span class="line"></span><br><span class="line">        obj = <span class="literal">null</span>; <span class="comment">// 删除强引用</span></span><br><span class="line">        System.gc(); <span class="comment">// 显式调用垃圾回收器</span></span><br><span class="line">        <span class="comment">// 因为没有强引用，weakRef.get() 返回 null</span></span><br><span class="line">        System.out.println(weakRef.get());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>适用场景：</p>
+<p><strong>事件监听：</strong> 当监听器对象使用弱引用时，监听器可以在没有强引用时被GC回收，而不影响事件的正常传递。</p>
+<p><strong>不可恢复的临时对象：</strong> 用弱引用来表示可以被回收的缓存对象。例如：图像、临时数据等，系统内存不足时会被回收。</p>
+<h6 id="虚引用"><a href="#虚引用" class="headerlink" title="虚引用"></a><em>虚引用</em></h6><p>虚引用是最弱的引用类型，几乎不影响垃圾回收器的回收行为。虚引用主要用于在对象被垃圾回收器回收后进行一些清理操作。虚引用不能通过 <code>get()</code> 方法获取对象，它的作用是跟踪对象的回收过程。需要PhantomReference来实现</p>
+<p>不能通过它直接访问对象，常与 ReferenceQueue 配合使用。</p>
+<p>示例代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.ref.PhantomReference;</span><br><span class="line"><span class="keyword">import</span> java.lang.ref.ReferenceQueue;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PhantomReferenceDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        <span class="type">MyObject</span> <span class="variable">obj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyObject</span>();</span><br><span class="line">        ReferenceQueue&lt;MyObject&gt; queue = <span class="keyword">new</span> <span class="title class_">ReferenceQueue</span>&lt;&gt;();</span><br><span class="line">        PhantomReference&lt;MyObject&gt; phantomRef = <span class="keyword">new</span> <span class="title class_">PhantomReference</span>&lt;&gt;(obj, queue);</span><br><span class="line"></span><br><span class="line">        obj = <span class="literal">null</span>; <span class="comment">// 删除强引用</span></span><br><span class="line">        System.gc(); <span class="comment">// 显式调用垃圾回收器</span></span><br><span class="line">        <span class="comment">// 此时对象已经被GC回收，但虚引用仍然存在</span></span><br><span class="line">        System.out.println(queue.remove()); <span class="comment">// 在GC后，会将虚引用加入到ReferenceQueue</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>适用场景：</p>
+<p><strong>资源清理</strong>：例如，在Java中引用了本地（native）资源（如文件句柄、数据库连接、socket连接等），虚引用可以帮助在对象回收时执行清理工作。</p>
+<p><strong>底层资源管理</strong>：如关闭操作系统的文件句柄、数据库连接等，在对象即将被回收时，可以通过虚引用确保相关资源被释放。</p>
+<h4 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h4><h5 id="标记-清除-Mark-Sweep"><a href="#标记-清除-Mark-Sweep" class="headerlink" title="标记-清除 Mark-Sweep"></a>标记-清除 Mark-Sweep</h5><p>首先标记出所有需要回 收的对象，在标记完成后，统一回收掉所有被标记的对象</p>
+<p>缺点：执行效率不稳定；产生大量的内存碎片</p>
+<p><img src="/posts/undefined/%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4.png" alt="标记清除"></p>
+<h5 id="标记-复制-Copying"><a href="#标记-复制-Copying" class="headerlink" title="标记-复制 Copying"></a>标记-复制 Copying</h5><p>将可用 内存按容量划分为大小相等的两块，每次只使用其中的一块。当这一块的内存用完了，就将还存活着 的对象复制到另外一块上面，然后再把已使用过的内存空间一次清理掉</p>
+<p>优点：避免了内存碎片</p>
+<p>缺点：可用内存是原来的一半，浪费空间</p>
+<p><img src="/posts/undefined/%E6%A0%87%E8%AE%B0%E5%A4%8D%E5%88%B6.png" alt="标记复制"></p>
+<p>在Young GC时采用标记复制算法</p>
+<p>![Young GC](Young GC.png)</p>
+<p>如此反复交换，当年龄达到16时，仍然存活的对象移至老年区</p>
+<h5 id="标记-整理-Mark-Compact"><a href="#标记-整理-Mark-Compact" class="headerlink" title="标记-整理 Mark-Compact"></a>标记-整理 Mark-Compact</h5><p>标记过程仍然与“标记-清除”算法一样，但后续步骤不是直接对可 回收对象进行清理，而是让所有存活的对象都向内存空间一端移动，然后直接清理掉边界以外的内存</p>
+<p>缺点：如果移动存活对象，尤其是在老年代这种每次回收都有大量对象存活区域，移动存活对象并更新所有引用这些对象的地方将会是一种极为负重的操作，而且这种对象移动操作必须全程暂停用户应用 程序才能进行，也就是STW （Stop The World）</p>
+<p><img src="/posts/undefined/%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86.png" alt="标记整理"></p>
+<table>
+<thead>
+<tr>
+<th>算法</th>
+<th>内存碎片化</th>
+<th>性能</th>
+<th>空间利用率</th>
+<th align="left">适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>标记-清除</td>
+<td>存在碎片</td>
+<td>一般</td>
+<td>高</td>
+<td align="left">对空间要求较高的场景</td>
+</tr>
+<tr>
+<td>标记-复制</td>
+<td>无碎片</td>
+<td>快</td>
+<td>低</td>
+<td align="left">新生代，短生命周期对象较多</td>
+</tr>
+<tr>
+<td>标记-整理</td>
+<td>无碎片</td>
+<td>较慢</td>
+<td>高</td>
+<td align="left">老年代，长生命周期对象较多</td>
+</tr>
+</tbody></table>
+<h4 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h4><table>
+<thead>
+<tr>
+<th>收集器</th>
+<th>类型</th>
+<th>新生代&#x2F;老年代</th>
+<th>算法</th>
+<th>优势</th>
+<th>劣势</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Serial</td>
+<td>单线程</td>
+<td>新生代</td>
+<td>标记-复制</td>
+<td>简单高效，适合单核环境</td>
+<td>暂停时间长</td>
+</tr>
+<tr>
+<td>ParNew</td>
+<td>多线程</td>
+<td>新生代</td>
+<td>标记-复制</td>
+<td>支持多核环境，与 CMS 兼容</td>
+<td>暂停时间依然较长</td>
+</tr>
+<tr>
+<td>Parallel Scavenge</td>
+<td>多线程</td>
+<td>新生代</td>
+<td>标记-复制</td>
+<td>吞吐量优先，自动调优</td>
+<td>暂停时间较长</td>
+</tr>
+<tr>
+<td>Serial Old</td>
+<td>单线程</td>
+<td>老年代</td>
+<td>标记-整理</td>
+<td>简单高效，与 Parallel Scavenge 兼容</td>
+<td>暂停时间长</td>
+</tr>
+<tr>
+<td>Parallel Old</td>
+<td>多线程</td>
+<td>老年代</td>
+<td>标记-整理</td>
+<td>高吞吐量，与 Parallel Scavenge 搭配</td>
+<td>暂停时间长</td>
+</tr>
+<tr>
+<td>CMS</td>
+<td>多线程</td>
+<td>老年代</td>
+<td>标记-清除</td>
+<td>低停顿，适合低延迟应用</td>
+<td>内存碎片化，GC 开销高</td>
+</tr>
+<tr>
+<td>G1</td>
+<td>多线程</td>
+<td>新生代+老年代</td>
+<td>标记-整理</td>
+<td>分区回收，低停顿，内存整理</td>
+<td>实现复杂，调优较难</td>
+</tr>
+</tbody></table>
+<h5 id="Serial收集器"><a href="#Serial收集器" class="headerlink" title="Serial收集器"></a>Serial收集器</h5><p>垃圾回收时，只有一个线程工作，所有其他线程暂停（”Stop The World”）。</p>
+<p><img src="/posts/undefined/Serial%E6%94%B6%E9%9B%86%E5%99%A8.png" alt="Serial收集器"></p>
+<h5 id="ParNew收集器"><a href="#ParNew收集器" class="headerlink" title="ParNew收集器"></a>ParNew收集器</h5><p>实质上是Serial收集器的多线程并行版本</p>
+<p><img src="/posts/undefined/lee/Documents/Blog/source/_posts/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6-GC/ParNew%E6%94%B6%E9%9B%86%E5%99%A8.png" alt="ParNew收集器"></p>
+<h5 id="Parallel-Scavenge收集器"><a href="#Parallel-Scavenge收集器" class="headerlink" title="Parallel Scavenge收集器"></a>Parallel Scavenge收集器</h5><p>目标则是达到一个可控制的吞吐量(Throughput)</p>
+<p>![Parallel Old收集器](Parallel Old收集器.png)</p>
+<h5 id="Serial-Old收集器"><a href="#Serial-Old收集器" class="headerlink" title="Serial Old收集器"></a>Serial Old收集器</h5><p>Serial Old是Serial收集器的老年代版本，它同样是一个单线程收集器</p>
+<p><img src="/posts/undefined/Serial%E6%94%B6%E9%9B%86%E5%99%A8.png" alt="Serial收集器"></p>
+<h5 id="Parallel-Old收集器"><a href="#Parallel-Old收集器" class="headerlink" title="Parallel Old收集器"></a>Parallel Old收集器</h5><p>Parallel Old是Parallel Scavenge收集器的老年代版本，与 Parallel Scavenge 收集器配合，适用于高吞吐量场景。</p>
+<p>![Parallel Old收集器](Parallel Old收集器.png)</p>
+<h5 id="CMS收集器"><a href="#CMS收集器" class="headerlink" title="CMS收集器"></a>CMS收集器</h5><p>是一种以获取最短回收停顿时间为目标的收集器</p>
+<p>4步过程：</p>
+<p>初始标记（CMS initial mark） - 只是标记一下GC Roots能直接关联的对象，速度很快，仍然需要暂停所有的工作线程。</p>
+<p>并发标记（CMS concurrent mark）-和用户线程一起工作，不需要暂停工作线程。标记全部可达对象。</p>
+<p>重新标记（CMS remark）- 为了修正在并发标记期间，因用户程序继续运行而导致标记产生变动的那一部分对象的标记记录，仍然需要暂停所有的工作线程。由于并发标记时，用户线程依然运行，因此在正式清理前，再做修正。</p>
+<p>并发清除（CMS concurrent sweep） - 清除GCRoots不可达对象，和用户线程一起工作，不需要暂停工作线程。基于标记结果，直接清理对象</p>
+<p><img src="/posts/undefined/CMS%E6%94%B6%E9%9B%86%E5%99%A8.png" alt="CMS收集器"></p>
+<p><img src="/posts/undefined/%E8%80%81%E5%B9%B4%E5%8C%BA%E5%B9%B6%E5%8F%91%E6%B8%85%E7%90%86%E5%89%8D.png" alt="老年区并发清理前"></p>
+<p><img src="/posts/undefined/lee/Documents/Blog/source/_posts/JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6-GC/%E8%80%81%E5%B9%B4%E5%8C%BA%E5%B9%B6%E5%8F%91%E6%B8%85%E7%90%86%E5%89%8D.png" alt="老年区并发清理后"></p>
+<p><em>并发清理后大量内存被释放，但并没有被压缩</em></p>
+<h5 id="G1收集器"><a href="#G1收集器" class="headerlink" title="G1收集器"></a>G1收集器</h5><h6 id="堆划分"><a href="#堆划分" class="headerlink" title="堆划分"></a>堆划分</h6><p>将整个内存堆区域分成大小相同的子区域Region，默认2048个分区；每个分区按需在年轻代和老年代之间切换</p>
+<p>每 个Region的 大 小 可 以 通 过 参 数 -XX: G1HeapRegionSize 设 定，取值范围为1MB~32MB，且应为2的N次幂。而对于那些超过了整个Region容量的超级大对象， 将会被存放在N个连续的Humongous Region之中</p>
+<p>![G1 堆划分](G1 堆划分-7623678.png)</p>
+<p><strong>RSet（Remembered Set）</strong></p>
+<p>记录了其它 Region 对当前 Region 的引用情况，这样回收某个Region时，不需要执行全堆扫描，只需扫描它的 RSet 就可以找到外部引用，来确定引用本分区内的对象是否存活，进而确定本分区内的对象存活情况</p>
+<p><strong>Card Table</strong></p>
+<p>它将每个 Region 进一步划分为更小的固定大小单位（通常 512 字节），称之为Card。Card的作用是标记某个内存区域中的对象是否有跨Region的引用。</p>
+<p>CardTable是一个数据结构，通常是一个数组，其中的每个元素对应一个Card。每个Card用于跟踪其代表的内存块中的引用对象是否跨越了不同的Region。在垃圾回收时CardTable用于快速查询某个内存区域内的对象是否还有跨Region的引用。如果某个区域的对象引用了其他区域的对象，相关的Card就会标记为“脏”（Dirty），即该Card区域有跨Region的引用。CardTable保存了这些脏标记，垃圾回收时G1会根据CardTable中脏标记的Card来检查哪些Region中的对象可能会被其他Region引用，从而避免扫描整个堆</p>
+<p><img src="/posts/undefined/Card.png" alt="Card"></p>
+<p>在回收时，Card Table 帮助 Rset 确定哪些区域可能存在引用，从而减少扫描工作。</p>
+<p><img src="/posts/undefined/%E8%84%8F%E5%8D%A1.png" alt="脏卡"></p>
+<p><strong>写屏障</strong></p>
+<p>更新Card状态使用了写屏障技术，当写屏障捕获到跨对象的引用时，会将涉及的Card标记为脏，同时将他们放入到一个脏队列中，JVM会通过单独的线程，定期读取脏队列中的数据，更新记忆集。</p>
+<p><img src="/posts/undefined/%E5%86%99%E5%B1%8F%E9%9A%9C.png" alt="写屏障"></p>
+<p><strong>HashTable</strong></p>
+<p><strong>RSet（Remembered Set）</strong> 的底层实现中采用了 <strong>HashTable</strong>（或者类似的哈希结构）来组织和存储数据。</p>
+<p>一个Region可能有多个线程在并发修改，因此也可能会并发修改 RSet。为避免冲突，G1垃圾回收器进一步把 RSet 划分成了多个 HashTable，每个线程都在各自的 HashTable 里修改。最终，从逻辑上来说，RSet 就是这些 HashTable 的集合。哈希表是实现 RSet 的一种常见方式</p>
+<p>HashTable 的 Key 是别的 Region 的起始地址，Value是一个集合，里面的元素是Card Table的Index。它记录哪些其他 Region 对当前 Region 中的对象有引用</p>
+<p>假设有三个 Region：<strong>Region A</strong>、<strong>Region B</strong> 和 <strong>Region C</strong>，它们的引用关系如下：</p>
+<ul>
+<li>Region A 的对象 <code>a1</code> 引用了 Region B 的对象 <code>b1</code>，a1位于卡片Card X。</li>
+<li>Region A 的对象 <code>a2</code> 引用了 Region C 的对象 <code>c1</code>，a2位于卡片Card Z。</li>
+</ul>
+<p><strong>Region B 的 RSet</strong>：</p>
+<ul>
+<li>记录 Region A 对它的引用。</li>
+<li>HashTable 中可能的键值对结构</li>
+</ul>
+<figure class="highlight mathematica"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Key</span><span class="operator">:</span> <span class="built_in">Region</span> <span class="variable">A</span></span><br><span class="line"><span class="built_in">Value</span><span class="operator">:</span> <span class="punctuation">[</span><span class="variable">Card</span> <span class="variable">X</span><span class="operator">,</span> <span class="variable">Card</span> <span class="variable">Y</span><span class="punctuation">]</span> （标记 <span class="built_in">Region</span> <span class="variable">A</span> 中的哪些卡片对 <span class="built_in">Region</span> <span class="variable">B</span> 有引用）</span><br></pre></td></tr></table></figure>
+
+<p><strong>Region C 的 RSet</strong>：</p>
+<ul>
+<li>记录 Region A 对它的引用。</li>
+<li>HashTable 中可能的键值对结构</li>
+</ul>
+<figure class="highlight mathematica"><table><tr><td class="code"><pre><span class="line"><span class="built_in">Key</span><span class="operator">:</span> <span class="built_in">Region</span> <span class="variable">A</span></span><br><span class="line"><span class="built_in">Value</span><span class="operator">:</span> <span class="punctuation">[</span><span class="variable">Card</span> <span class="variable">Z</span><span class="punctuation">]</span> （标记 <span class="built_in">Region</span> <span class="variable">A</span> 中的某个卡片对 <span class="built_in">Region</span> <span class="built_in">C</span> 有引用）</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h6 id="Young-GC"><a href="#Young-GC" class="headerlink" title="Young GC"></a>Young GC</h6><p>采用了三种关键技术：RSet、CardTable、写屏障</p>
+<p>当G1触发Yong GC时，只会扫描年轻代区域的对象，从GC Root根对象出发，很容易扫描出年轻代的对象及引用的其他年轻代的对象。</p>
+<p>如果年轻代的对象被老年代对象引用了，通过RememberSet来解决，回收器会将RSet中的对象也加入到GC Root中，有效避免年轻代的对象被错误回收</p>
+<p>![Young GC in G1](Young GC in G1.png)</p>
+<p>![End of Young GC with G1](End of Young GC with G1.png)</p>
+<ul>
+<li><p>Young Generation内存空间由不连续的区域组成，使得在需要时可以轻松调整大小</p>
+</li>
+<li><p>在Young GC时会STW，应用线程会停止</p>
+</li>
+<li><p>Young GC使用多个线程并行完成</p>
+</li>
+<li><p>存活对象会被复制到另外的survivor regions或old generation regions</p>
+</li>
+</ul>
+<h6 id="Mixed-GC"><a href="#Mixed-GC" class="headerlink" title="Mixed GC"></a>Mixed GC</h6><p><strong>初始标记</strong></p>
+<p><img src="/posts/undefined/%E5%88%9D%E5%A7%8B%E6%A0%87%E8%AE%B0.png" alt="初始标记"></p>
+<p>标记出所有 GC Roots 节点以及直接可达的对象，此阶段会STW，但耗时很短</p>
+<p><strong>并发标记</strong></p>
+<p><img src="/posts/undefined/%E5%B9%B6%E5%8F%91%E6%A0%87%E8%AE%B0.png" alt="并发标记"></p>
+<p>空区域被标记为X  将会在重新标记阶段被删除</p>
+<p>并发阶段采用三色标记法</p>
+<p><em>三色标记法</em></p>
+<p>白色：表示该对象还没被访问过,可能是垃圾，尚未标记为存活；初始时，所有对象默认为白色</p>
+<p>灰色：表示对象已经被访问过，但它引用对象还未被访问，该对象是存活的，需要进一步扫描其引用的对象，是一个过渡颜色，最终都会被标记为黑色</p>
+<p>黑色：该对象和其引用的对象都被扫描过，且这些对象都标记为存活，不再需要进一步扫描</p>
+<p><img src="/posts/undefined/%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0.png" alt="三色标记"></p>
+<p>三色标记法缺点：漏标</p>
+<p>在remark过程中，黑色指向了白色，如果不对黑色重新扫描，则会漏标，导致白色D对象被当作没有新引用指向从而回收掉</p>
+<p><img src="/posts/undefined/%E6%BC%8F%E6%A0%87.png" alt="漏标"></p>
+<p>产生漏标问题的两个条件：</p>
+<p>1.黑色对象指向了白色对象</p>
+<p>2.灰色对象指向白色对象的引用消失</p>
+<p>解决漏标问题，打破连个条件之一即可</p>
+<ol>
+<li><p>跟踪黑指向白的增加</p>
+<p>incremental update；增量更新，关注引用的增加，把黑色重新标记为灰色，下次重新扫描属性。CMS采用该方法</p>
+</li>
+<li><p>记录灰指向白的消失</p>
+<p>SATB snapshot at the beginning： 关注引用的删除，当灰指向白消失时，要把这个引用推到GC的堆栈，保证白还能被扫描到。G1采用该方法，是因为SATB可以和RSet相配合，RSet记录了其他对象指向自己的引用，当灰色指向白色消失时，引用会push到堆盏，由于RSet存在，不需要扫描整个堆去查找指向白色的引用，效率比较高</p>
+</li>
+</ol>
+<p><strong>SATB</strong></p>
+<p>意为“开始时快照”，核心思想是在并发标记的过程中创建堆内存的快照，确保即使应用线程修改了引用关系，回收器也能正确标记对象</p>
+<p>SATB的主要步骤：</p>
+<p>1.初始快照的创建</p>
+<p>​	在并发标记的开始阶段，会记录标记时刻的快照，也就是GC Roots的对象快照图</p>
+<p>2.并发标记过程</p>
+<p>​	遍历快照中的对象，灰色对象会递归扫描它们引用的对象，直到所有存活对象都变成黑色</p>
+<p>3.对象引用变更处理</p>
+<p>​	在并发标记阶段，对象的引用可能会被修改。G1使用写屏障来捕捉引用的变化，将引用的对象放入一个待处理的SATB队列，该队列是	每个线程独有的，最终会汇总到全局的SATB队列</p>
+<p>4.重新标记和处理跨代引用</p>
+<p>​	处理并发标记的引用变化，扫描跨代引用，确保所有存活对象被标记</p>
+<p><img src="/posts/undefined/SATB.png" alt="SATB"></p>
+<p>5.标记完成与垃圾回收</p>
+<p><strong>重新标记</strong></p>
+<p><img src="/posts/undefined/%E9%87%8D%E6%96%B0%E6%A0%87%E8%AE%B0.png" alt="重新标记"></p>
+<p>重新标记阶段是为了修正在并发标记期间，因应用程序继续运作而导致标记产生变动的那一部分标记记录，空区域被删除和回收，计算所有区域的区域活跃度</p>
+<p><strong>清理</strong></p>
+<p><img src="/posts/undefined/%E6%B8%85%E9%99%A4%E9%98%B6%E6%AE%B5.png" alt="清除阶段"></p>
+<p>选择活跃度最低的区域，这些区域可以最快被收集，且同时和年轻代一起收集</p>
+<p><strong>清除后</strong></p>
+<p><img src="/posts/undefined/%E6%B8%85%E9%99%A4%E5%90%8E.png" alt="清除后"></p>
+<p>清理阶段也会暂停用户线程，在最终标记阶段完成之后，G1垃圾回收器会整理<code>Region</code>区域，调整对应的记忆集，若识别到某个<code>Region</code>不存在任何存活对象时，会直接清理掉该<code>Region</code>，释放内存</p>
+<p>链接 <a href="http://ulemony.github.io/posts/undefined.html">http://ulemony.github.io/posts/undefined.html</a> </p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>jvm</tag>
       </tags>
   </entry>
 </search>
