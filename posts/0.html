@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ulemony.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"default"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="索引基础索引的基本原理索引的核心思想是通过为表中的列创建额外的数据结构，来加速查询过程 索引分类常见的索引类型：主键索引、唯一索引、普通索引、全文索引、组合索引">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阿木的博客">
+<meta property="og:url" content="http://ulemony.github.io/posts/0.html">
+<meta property="og:site_name" content="阿木的博客">
+<meta property="og:description" content="索引基础索引的基本原理索引的核心思想是通过为表中的列创建额外的数据结构，来加速查询过程 索引分类常见的索引类型：主键索引、唯一索引、普通索引、全文索引、组合索引">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E4%BA%8C%E5%8F%89%E6%A0%91.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E4%BA%8C%E5%8F%89%E6%A0%912.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/B%E6%A0%91.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/B+%E6%A0%91.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E9%9D%9E%E8%81%9A%E9%9B%86%E7%B4%A2%E5%BC%95.png">
+<meta property="article:published_time" content="2025-02-24T15:20:30.000Z">
+<meta property="article:modified_time" content="2025-06-04T07:20:27.885Z">
+<meta property="article:author" content="Jason Lee">
+<meta property="article:tag" content="索引">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ulemony.github.io/posts/undefined/%E4%BA%8C%E5%8F%89%E6%A0%91.png">
+
+
+<link rel="canonical" href="http://ulemony.github.io/posts/0.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://ulemony.github.io/posts/0.html","path":"posts/0.html","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | 阿木的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">阿木的博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">索引基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">索引的基本原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E5%88%86%E7%B1%BB"><span class="nav-number">1.2.</span> <span class="nav-text">索引分类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%BB%E9%94%AE%E7%B4%A2%E5%BC%95"><span class="nav-number">1.2.1.</span> <span class="nav-text">主键索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95"><span class="nav-number">1.2.2.</span> <span class="nav-text">唯一索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E7%B4%A2%E5%BC%95"><span class="nav-number">1.2.3.</span> <span class="nav-text">普通索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%A8%E6%96%87%E7%B4%A2%E5%BC%95"><span class="nav-number">1.2.4.</span> <span class="nav-text">全文索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%84%E5%90%88%E7%B4%A2%E5%BC%95"><span class="nav-number">1.2.5.</span> <span class="nav-text">组合索引</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E6%9C%BA%E5%88%B6"><span class="nav-number">1.3.</span> <span class="nav-text">索引机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.4.</span> <span class="nav-text">索引存储数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E8%A1%A8"><span class="nav-number">1.4.1.</span> <span class="nav-text">哈希表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91"><span class="nav-number">1.4.2.</span> <span class="nav-text">二叉查找树</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#B%E6%A0%91%EF%BC%88Balance-Tree%EF%BC%89"><span class="nav-number">1.4.3.</span> <span class="nav-text">B树（Balance Tree）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#B-%E6%A0%91"><span class="nav-number">1.4.4.</span> <span class="nav-text">B+树</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%E5%92%8C%E9%9D%9E%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95"><span class="nav-number">1.5.</span> <span class="nav-text">聚簇索引和非聚簇索引</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95"><span class="nav-number">1.5.1.</span> <span class="nav-text">聚簇索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%9D%9E%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95"><span class="nav-number">1.5.2.</span> <span class="nav-text">非聚簇索引</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%90%8D%E8%AF%8D"><span class="nav-number">1.6.</span> <span class="nav-text">相关名词</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9C%80%E5%B7%A6%E5%8C%B9%E9%85%8D%E5%8E%9F%E5%88%99"><span class="nav-number">1.6.1.</span> <span class="nav-text">最左匹配原则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E4%B8%8B%E6%8E%A8"><span class="nav-number">1.6.2.</span> <span class="nav-text">索引下推</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8E%9F%E5%88%99"><span class="nav-number">1.7.</span> <span class="nav-text">索引的使用原则</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%8D%E9%80%82%E5%90%88%E5%BB%BA%E7%B4%A2%E5%BC%95%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">1.7.1.</span> <span class="nav-text">不适合建索引的情况</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E5%A4%B1%E6%95%88%E5%9C%BA%E6%99%AF"><span class="nav-number">1.7.2.</span> <span class="nav-text">索引失效场景</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason Lee"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason Lee</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://ulemony.github.io/posts/0.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason Lee">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿木的博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | 阿木的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-02-24 23:20:30" itemprop="dateCreated datePublished" datetime="2025-02-24T23:20:30+08:00">2025-02-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-04 15:20:27" itemprop="dateModified" datetime="2025-06-04T15:20:27+08:00">2025-06-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Database/" itemprop="url" rel="index"><span itemprop="name">Database</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="索引基础"><a href="#索引基础" class="headerlink" title="索引基础"></a>索引基础</h3><h4 id="索引的基本原理"><a href="#索引的基本原理" class="headerlink" title="索引的基本原理"></a>索引的基本原理</h4><p>索引的核心思想是通过为表中的列创建额外的数据结构，来加速查询过程</p>
+<h4 id="索引分类"><a href="#索引分类" class="headerlink" title="索引分类"></a>索引分类</h4><p>常见的索引类型：主键索引、唯一索引、普通索引、全文索引、组合索引</p>
+<h5 id="主键索引"><a href="#主键索引" class="headerlink" title="主键索引"></a>主键索引</h5><p>把某个列设置为主键的时候，该列就是主键索引，每个表只能有一个主键索引，主键列的值是唯一的，不能为NULL</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> users (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY auto_increment,  <span class="comment">-- 主键索引</span></span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">50</span>) <span class="keyword">not</span> <span class="keyword">null</span> <span class="keyword">default</span> <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">    age <span class="type">INT</span></span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果创建表时没有主键索引，可以在创建之后添加</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">add</span> <span class="keyword">primary</span> key (column_name)</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="唯一索引"><a href="#唯一索引" class="headerlink" title="唯一索引"></a>唯一索引</h5><p>唯一索引和主键索引类似，保证索引列中的每个值是唯一的。但唯一索引允许存在 <code>NULL</code> 值，而且每个表可以有多个唯一索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> employees (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY auto_increment,</span><br><span class="line">    email <span class="type">VARCHAR</span>(<span class="number">100</span>) <span class="keyword">UNIQUE</span>,  <span class="comment">-- 唯一索引</span></span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">50</span>)</span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果创建表时没有唯一索引，可以创建后追加</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name</span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span> constraint_name <span class="keyword">UNIQUE</span> (column_name);</span><br><span class="line"><span class="comment">--constraint_name 指约束名，可以自定义</span></span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> users</span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">UNIQUE</span> (email);</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="普通索引"><a href="#普通索引" class="headerlink" title="普通索引"></a>普通索引</h5><p>不要求列中的值唯一，表中可以有多个普通索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> products (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">100</span>),</span><br><span class="line">    price <span class="type">DECIMAL</span>(<span class="number">10</span>, <span class="number">2</span>),</span><br><span class="line">    INDEX idx_price(price)  <span class="comment">-- 普通索引</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="全文索引"><a href="#全文索引" class="headerlink" title="全文索引"></a>全文索引</h5><p>通常用于对长文本字段进行复杂的搜索，例如查询特定的单词; 在MYSQL5.6之前只有MyISAM存储引擎支持全文索引，MYSQL5.6之后InnoDB存储引擎也支持全文索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> articles (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    title <span class="type">VARCHAR</span>(<span class="number">100</span>),</span><br><span class="line">    content TEXT,</span><br><span class="line">    FULLTEXT INDEX idx_fulltext(content)  <span class="comment">-- 全文索引</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>也可以在创建表后追加全文索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name</span><br><span class="line"><span class="keyword">ADD</span> FULLTEXT INDEX index_name (column_name);</span><br></pre></td></tr></table></figure>
+
+<p>可以利用MATCH和AGAINST来进行高效的全文搜索</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> articles <span class="keyword">WHERE</span> <span class="keyword">MATCH</span>(content) AGAINST(<span class="string">&#x27;database&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="组合索引"><a href="#组合索引" class="headerlink" title="组合索引"></a>组合索引</h5><p>由多个列组成的索引；遵循“最左前缀”原则</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> orders (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    customer_id <span class="type">INT</span>,</span><br><span class="line">    order_date <span class="type">DATE</span>,</span><br><span class="line">    amount <span class="type">DECIMAL</span>(<span class="number">10</span>, <span class="number">2</span>),</span><br><span class="line">    INDEX idx_customer_order(customer_id, order_date)  <span class="comment">-- 组合索引</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>也可以在创建表后追加组合索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name</span><br><span class="line"><span class="keyword">ADD</span> INDEX index_name (column1, column2, ...);</span><br></pre></td></tr></table></figure>
+
+<p>查询时可以利用这两个列来查询</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> orders <span class="keyword">WHERE</span> customer_id <span class="operator">=</span> <span class="number">101</span> <span class="keyword">AND</span> order_date <span class="keyword">BETWEEN</span> <span class="string">&#x27;2023-01-01&#x27;</span> <span class="keyword">AND</span> <span class="string">&#x27;2023-12-31&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>查看表的索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> INDEX <span class="keyword">FROM</span> 表名;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="索引机制"><a href="#索引机制" class="headerlink" title="索引机制"></a>索引机制</h4><p>添加完索引后，MySQL一般通过BTREE算法生成一个索引文件，在查询数据库时，找到索引文件进行遍历，找到相应的键从而获取数据</p>
+<p>创建索引产生的索引文件会占用磁盘空间，在增删改查时会对索引文件进行修改，性能会有所下降</p>
+<h4 id="索引存储数据结构"><a href="#索引存储数据结构" class="headerlink" title="索引存储数据结构"></a>索引存储数据结构</h4><h5 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h5><p>以键值对存储的数据结构，只要输入key就可以找到对应的value，等值查询高效，但不支持范围查询。在MySQL中，Memory存储引擎的默认索引类型就是哈希索引</p>
+<h5 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h5><p>当数据量大时，二叉树的树高会比较大，需要多次读取磁盘耗费时间</p>
+<p><img src="/posts/undefined/%E4%BA%8C%E5%8F%89%E6%A0%91.png" alt="二叉树"></p>
+<p><img src="/posts/undefined/%E4%BA%8C%E5%8F%89%E6%A0%912.png" alt="二叉树2"></p>
+<h5 id="B树（Balance-Tree）"><a href="#B树（Balance-Tree）" class="headerlink" title="B树（Balance Tree）"></a>B树（Balance Tree）</h5><p>图中的p节点为指向子节点的指针，每个节点称为页，页就是磁盘快，mysql中数据读取的基本单位是页</p>
+<p>B树和二叉树相比，每个节点存储量更多的键值和数据，而且拥有更多的子节点，高度很低，B树查找读取磁盘的次数很少，提高了查找效率</p>
+<p><img src="/posts/undefined/B%E6%A0%91.png" alt="B树"></p>
+<p>假如要查找id&#x3D;29的用户，查找流程如下：</p>
+<p>1.找到根节点也就是页1，判断29在17和35之间，选取指针p2找到页3</p>
+<p>2.把29和页3中的键值比较，29在26和30之间，选取指针p2找到页8</p>
+<p>3.将29和页8的键值比较，有匹配的的键值29，完成查找</p>
+<h5 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h5><ol>
+<li><p>B+树的非叶节点不存储数据，仅存储键值，所有数据存储在叶子节点，而且数据是按照顺序排列的，这使得B+树范围查找、排序查找、分组查找以及去重查找变得很简单。</p>
+</li>
+<li><p>如果B+树一个节点可以存储1000个键值，那么3层B+树可以存储1000x1000x1000&#x3D;10亿个数据。一般根节点常驻内存，查找10个数据只需要2次磁盘IO</p>
+</li>
+<li><p>B+树页之间通过双向链表连接，叶子节点中的数据通过单向链表连接</p>
+</li>
+<li><p>在Innodb存储引擎中，B+树索引是 聚簇索引，在MYISAM中，B+树索引的叶子节点不存储数据，而是数据的地址，属于非聚簇索引</p>
+</li>
+</ol>
+<p><img src="/posts/undefined/B+%E6%A0%91.png" alt="B+树"></p>
+<h4 id="聚簇索引和非聚簇索引"><a href="#聚簇索引和非聚簇索引" class="headerlink" title="聚簇索引和非聚簇索引"></a>聚簇索引和非聚簇索引</h4><p>在MySQL中，B+树按存储方式可分为聚簇索引和非聚簇索引</p>
+<h5 id="聚簇索引"><a href="#聚簇索引" class="headerlink" title="聚簇索引"></a>聚簇索引</h5><p>在InnoDB中，主键索引就是聚簇索引，即使不创建主键，系统也会主动创建隐式主键，以主键作为B+树索引的键值而构建的B+树索引为聚簇索引，叶子节点存储了行数据</p>
+<p>当执行sql语句：select * from user where id&gt;&#x3D;18 and id &lt;40，对应的数据查找过程（以上图为例）</p>
+<ol>
+<li>不需要从磁盘读取数据，直接从内存中读取根节点也就是页1，在页1中找到键值18，从而根据指针p2定位到页3</li>
+<li>从磁盘中读取页3并放入内存中，在页3中找到键值18，根据指针p1定位到页8</li>
+<li>从磁盘中读取页8并放入内存中，页中的数据是通过单向链表进行连接，且键值按照顺序存放，可以根据二分查找法定位到键值18</li>
+<li>因为是范围查找而去所有数据存放于叶子节点，且有序排列，可以对页8的键值遍历查询，可以一直找到键值为22的数据，此时页8的数据被全部遍历，由于页之间通过双向链表连接，可通过页8的指针定位到页9进行数据查询，一直到页12，发现41大于40不满足条件，查找终止</li>
+</ol>
+<h5 id="非聚簇索引"><a href="#非聚簇索引" class="headerlink" title="非聚簇索引"></a>非聚簇索引</h5><p>以主键之外的列值作为键值构建的B+树索引称之为非聚簇索引，也叫辅助索引（二级索引）</p>
+<p>和聚簇索引的区别在于非聚簇索引的叶子节点不存储表中的数据，而是该列对应的主键，数据表和索引表是分开存储的。查询时先找到主键，再用主键到聚簇索引中进行查找数据，这个过程称为 <strong>回表</strong>。</p>
+<p>当执行sql语句执行 select * from user where name &#x3D; ‘jim’，查找流程如下</p>
+<ol>
+<li><p>从内存读取根节点页1，根据指针p1定位到页2</p>
+</li>
+<li><p>根据页2中的指针p2定位到页6</p>
+</li>
+<li><p>找到索引对应的值jim，获取主键20</p>
+</li>
+<li><p>到主键索引中根据主键20 获取对应的数据</p>
+</li>
+</ol>
+<p><img src="/posts/undefined/%E9%9D%9E%E8%81%9A%E9%9B%86%E7%B4%A2%E5%BC%95.png" alt="非聚集索引"></p>
+<p>如果使用了覆盖索引，则不需要回表，直接通过辅助索引就可以查到需要的数据，覆盖索引的前提是查询列要被所建的索引覆盖</p>
+<p>例如对于数据表 <code>employees</code>，包含 <code>id</code>、<code>name</code> 和 <code>age</code> 三列：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> employees (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">100</span>),</span><br><span class="line">    age <span class="type">INT</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>可以为name 和age 创建一个复合索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> INDEX idx_name_age <span class="keyword">ON</span> employees (name, age);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>当执行查询  SELECT name, age FROM employees WHERE name &#x3D; ‘Alice’;</p>
+<p><code>idx_name_age</code> 索引中已经包含了 <code>name</code> 和 <code>age</code> 两个列，因此这个查询可以完全通过索引来获取结果，不需要访问实际的数据库</p>
+<h4 id="相关名词"><a href="#相关名词" class="headerlink" title="相关名词"></a>相关名词</h4><h5 id="最左匹配原则"><a href="#最左匹配原则" class="headerlink" title="最左匹配原则"></a>最左匹配原则</h5><p>在创建一个复合索引时，查询条件必须从复合索引的最左列开始，且不能跳过中间的任何列，才能有效使用索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> employees (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">100</span>),</span><br><span class="line">    age <span class="type">INT</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> INDEX idx_name_age <span class="keyword">ON</span> employees (name, age);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>索引 <code>idx_name_age</code> 是由 <code>name</code> 列和 <code>age</code> 列构成的复合索引，索引顺序是 **<code>name</code> -&gt; <code>age</code>**。</p>
+<ol>
+<li>完全匹配索引顺序</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> name <span class="operator">=</span> <span class="string">&#x27;Alice&#x27;</span> <span class="keyword">AND</span> age <span class="operator">=</span> <span class="number">30</span>;</span><br></pre></td></tr></table></figure>
+
+<p>查询首先按索引中的最左边的列 <code>name</code> 进行匹配，接着按 <code>age</code> 列进行匹配，符合复合索引的列顺序。</p>
+<ol start="2">
+<li><p>部分匹配索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> name <span class="operator">=</span> <span class="string">&#x27;Alice&#x27;</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>跳过中间列的查询</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> age <span class="operator">=</span> <span class="number">30</span> <span class="keyword">AND</span> name <span class="operator">=</span> <span class="string">&#x27;Alice&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>不符合最左匹配索引原则：在复合索引idx_name_age中，name列排在age列前面，查询条件没有从最左的列name开始匹配，而是从age开始</p>
+</li>
+</ol>
+<h5 id="索引下推"><a href="#索引下推" class="headerlink" title="索引下推"></a>索引下推</h5><p>过滤条件直接在索引层面进行应用，只有符合条件的数据会被返回，减少了不必要的回表操作</p>
+<p>假设employess表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> employees (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">100</span>),</span><br><span class="line">    age <span class="type">INT</span>,</span><br><span class="line">    salary <span class="type">DECIMAL</span>(<span class="number">10</span>, <span class="number">2</span>),</span><br><span class="line">    hire_date <span class="type">DATE</span></span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>为age和salary创建了复合索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> INDEX idx_age_salary <span class="keyword">ON</span> employees(age, salary);</span><br></pre></td></tr></table></figure>
+
+<p>当执行查询 </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> age <span class="operator">&gt;</span> <span class="number">30</span> <span class="keyword">AND</span> salary <span class="operator">&gt;</span> <span class="number">5000</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如果没有索引下推，mysql会扫描索引idx_age_salary 找到所有符合age&gt;30的记录，然后回表到employees表中查找salary&gt;5000的记录</p>
+<p>最终返回符合age&gt;30 和salary&gt;5000的记录</p>
+<p>当有索引下推，在扫描索引时不仅刷选age&gt;30的记录，还会同时应用salary&gt;5000的条件，这样只有同时符合这两个条件的数据才会被返回</p>
+<h4 id="索引的使用原则"><a href="#索引的使用原则" class="headerlink" title="索引的使用原则"></a>索引的使用原则</h4><h5 id="不适合建索引的情况"><a href="#不适合建索引的情况" class="headerlink" title="不适合建索引的情况"></a>不适合建索引的情况</h5><ol>
+<li>表记录太少</li>
+<li>区分度不高的字段例如性别不适合建索引</li>
+<li>where条件中用不到的字段不适合建立索引</li>
+<li>经常插入、删除、修改的表要减少索引</li>
+<li>text、image等类型不适合建立索引</li>
+<li>mysql能估计出全表扫描比使用索引更快的时候，不使用索引</li>
+<li>参与计算的列不适合建立索引</li>
+</ol>
+<h5 id="索引失效场景"><a href="#索引失效场景" class="headerlink" title="索引失效场景"></a>索引失效场景</h5><ol>
+<li><p>使用LIKE模糊匹配 左边有通配符</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> name <span class="keyword">LIKE</span> <span class="string">&#x27;%abc&#x27;</span>; <span class="comment">-- 索引失效</span></span><br></pre></td></tr></table></figure>
+
+<p>%在前，MYSQL无法通过索引定位前缀，只能全表扫描</p>
+<p>优化：改成右匹配</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> name <span class="keyword">LIKE</span> <span class="string">&#x27;abc%&#x27;</span>; <span class="comment">-- 可使用索引</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>在索引列上使用函数或表达式</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> <span class="keyword">YEAR</span>(birthdate) <span class="operator">=</span> <span class="number">1990</span>; <span class="comment">-- 索引失效</span></span><br></pre></td></tr></table></figure>
+
+<p>对索引列使用了函数 <code>YEAR()</code>，使得不能使用索引。</p>
+<p>优化：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> birthdate <span class="operator">&gt;=</span> <span class="string">&#x27;1990-01-01&#x27;</span> <span class="keyword">AND</span> birthdate <span class="operator">&lt;</span> <span class="string">&#x27;1991-01-01&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>隐式类型转换</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> phone <span class="operator">=</span> <span class="number">1234567890</span>; <span class="comment">-- 索引失效</span></span><br></pre></td></tr></table></figure>
+
+<p><code>phone</code> 是字符串类型，但用数字进行比较，发生隐式类型转换。</p>
+<p>优化：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> phone <span class="operator">=</span> <span class="string">&#x27;1234567890&#x27;</span>;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>​	</p>
+<ol start="4">
+<li><p>OR查询没有全部字段都使用索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;tom&#x27;</span> <span class="keyword">OR</span> age <span class="operator">=</span> <span class="number">18</span>; <span class="comment">-- 索引失效</span></span><br></pre></td></tr></table></figure>
+
+<p><code>username</code> 有索引，但 <code>age</code> 没有，MySQL 无法对整体使用索引。</p>
+<p>优化：确保所有OR条件字段都有索引，或者用UNION 拆开</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;tom&#x27;</span></span><br><span class="line"><span class="keyword">UNION</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> age <span class="operator">=</span> <span class="number">18</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>组合索引不满足最左匹配原则</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 组合索引：(username, age)</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> age <span class="operator">=</span> <span class="number">18</span>; <span class="comment">-- 索引失效</span></span><br></pre></td></tr></table></figure>
+
+<p>没有从最左列username开始匹配</p>
+<p>优化：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;tom&#x27;</span> <span class="keyword">AND</span> age <span class="operator">=</span> <span class="number">18</span>; <span class="comment">-- 使用索引</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>使用 <code>!=</code>、<code>&lt;&gt;</code>、<code>NOT IN</code>、<code>NOT LIKE</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> age <span class="operator">!=</span> <span class="number">18</span>; <span class="comment">-- 索引失效</span></span><br></pre></td></tr></table></figure>
+
+<p>这些操作无法快速过滤，只能回表或全表扫描</p>
+<p>优化：可以考虑业务侧改写逻辑</p>
+</li>
+<li><p>使用 <code>IS NULL</code> 和 <code>IS NOT NULL</code>（部分情况）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> deleted_at <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>; <span class="comment">-- 可能失效</span></span><br></pre></td></tr></table></figure>
+
+<p><code>IS NOT NULL</code> 一般不能使用索引，<code>IS NULL</code> 可部分使用索引。</p>
+<p>优化：尽量避免此类查询影响性能</p>
+</li>
+<li><p>使用范围查询后再使用排序</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> age <span class="operator">&gt;</span> <span class="number">18</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> username; <span class="comment">-- 可能失效</span></span><br></pre></td></tr></table></figure>
+
+<p>范围条件 <code>age &gt; 18</code> 会让后面的索引 <code>username</code> 排序失效。</p>
+<p>优化：排序字段应在范围字段之前，或使用覆盖索引等方式优化。</p>
+</li>
+<li><p>索引重复率太高</p>
+<p>即使有索引，如果字段的<strong>区分度低</strong>（如性别字段只有 “男&#x2F;女”），优化器可能认为全表扫描更快。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> gender <span class="operator">=</span> <span class="string">&#x27;男&#x27;</span>; <span class="comment">-- 索引可能不被使用</span></span><br></pre></td></tr></table></figure>
+
+<p>优化：如果表大并且经常查这个字段，可考虑使用 <strong>联合索引</strong> 或 <strong>添加统计列优化逻辑</strong>。</p>
+</li>
+<li><p>覆盖索引被打破</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 如果索引是 (username, age)，但查询了其他字段</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;tom&#x27;</span> <span class="keyword">AND</span> age <span class="operator">=</span> <span class="number">18</span>; <span class="comment">-- 不能使用覆盖索引</span></span><br></pre></td></tr></table></figure>
+
+<p>使用精确字段</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> username, age <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;tom&#x27;</span> <span class="keyword">AND</span> age <span class="operator">=</span> <span class="number">18</span>;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>​		</p>
+<p>链接 <a href="http://ulemony.github.io/posts/undefined.html">http://ulemony.github.io/posts/undefined.html</a> </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%B4%A2%E5%BC%95/" rel="tag"># 索引</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/935a6b06.html" rel="prev" title="JVM垃圾回收 GC">
+                  <i class="fa fa-chevron-left"></i> JVM垃圾回收 GC
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason Lee</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">104k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:35</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
