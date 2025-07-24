@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ulemony.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"default"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="如何根据需求设计数据库表1.流程理解清楚需求 –&gt; 根据需求分析需要几张表 –&gt;分析每张表需要哪些字段 –&gt; 每个表之间的关系，需要怎么关联 –&gt; 建表 对象和对象之间的关系是什么，如果是一对多，需要两张表；多对多，需要三张表，其中一个关系表维护这两个对象之间的关系">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库表设计">
+<meta property="og:url" content="http://ulemony.github.io/posts/da3ed1b.html">
+<meta property="og:site_name" content="阿木的博客">
+<meta property="og:description" content="如何根据需求设计数据库表1.流程理解清楚需求 –&gt; 根据需求分析需要几张表 –&gt;分析每张表需要哪些字段 –&gt; 每个表之间的关系，需要怎么关联 –&gt; 建表 对象和对象之间的关系是什么，如果是一对多，需要两张表；多对多，需要三张表，其中一个关系表维护这两个对象之间的关系">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E5%88%86%E5%BA%93%E5%8E%9F%E5%88%99.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E5%88%86%E8%A1%A81.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E5%88%86%E8%A1%A82.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E5%88%86%E8%A1%A83.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E5%86%97%E4%BD%99%E5%AD%97%E6%AE%B5.png">
+<meta property="article:published_time" content="2025-07-23T15:41:11.000Z">
+<meta property="article:modified_time" content="2025-07-24T09:14:28.371Z">
+<meta property="article:author" content="Jason Lee">
+<meta property="article:tag" content="databas design">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ulemony.github.io/posts/undefined/%E5%88%86%E5%BA%93%E5%8E%9F%E5%88%99.png">
+
+
+<link rel="canonical" href="http://ulemony.github.io/posts/da3ed1b.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://ulemony.github.io/posts/da3ed1b.html","path":"posts/da3ed1b.html","title":"数据库表设计"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>数据库表设计 | 阿木的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">阿木的博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%A0%B9%E6%8D%AE%E9%9C%80%E6%B1%82%E8%AE%BE%E8%AE%A1%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8"><span class="nav-number">1.</span> <span class="nav-text">如何根据需求设计数据库表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">1.流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%A1%A8%E8%AE%BE%E8%AE%A1%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">1.2.</span> <span class="nav-text">2.表设计注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%B8%80%E4%BA%9B%E7%BB%8F%E9%AA%8C"><span class="nav-number">1.3.</span> <span class="nav-text">3.一些经验</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E5%88%86%E5%BA%93"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 分库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2%E5%88%86%E8%A1%A8"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2分表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E5%86%97%E4%BD%99%E5%AD%97%E6%AE%B5"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.3 冗余字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E8%A7%86%E5%9B%BE"><span class="nav-number">1.3.4.</span> <span class="nav-text">3.4 视图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83"><span class="nav-number">1.3.5.</span> <span class="nav-text">3.5 命名规范</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason Lee"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason Lee</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://ulemony.github.io/posts/da3ed1b.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason Lee">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿木的博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="数据库表设计 | 阿木的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据库表设计
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-07-23 23:41:11" itemprop="dateCreated datePublished" datetime="2025-07-23T23:41:11+08:00">2025-07-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-24 17:14:28" itemprop="dateModified" datetime="2025-07-24T17:14:28+08:00">2025-07-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Database/" itemprop="url" rel="index"><span itemprop="name">Database</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>766</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="如何根据需求设计数据库表"><a href="#如何根据需求设计数据库表" class="headerlink" title="如何根据需求设计数据库表"></a>如何根据需求设计数据库表</h1><h2 id="1-流程"><a href="#1-流程" class="headerlink" title="1.流程"></a>1.流程</h2><p>理解清楚需求 –&gt; 根据需求分析需要几张表 –&gt;分析每张表需要哪些字段 –&gt; 每个表之间的关系，需要怎么关联</p>
+<p>–&gt; 建表</p>
+<p>对象和对象之间的关系是什么，如果是一对多，需要两张表；多对多，需要三张表，其中一个关系表维护这两个对象之间的关系</p>
+<h2 id="2-表设计注意事项"><a href="#2-表设计注意事项" class="headerlink" title="2.表设计注意事项"></a>2.表设计注意事项</h2><ol>
+<li><p>按照表规范命名，建表的时候必须有七个字段：cr_time、cr_id、up_time、up_id、rm_time、rm_id、removed</p>
+</li>
+<li><p>一张表的字段不要太多，如果太多考虑分成两个表</p>
+</li>
+<li><p>选择合适的字段类型、字段大小，能用整型的话不用字符型，如果数据量不大，该字段存储的数据类型不确定，可以使用字符类型，使得对存储内容兼容性更好</p>
+</li>
+<li><p>建表的时候最好加上字段注释和表注释</p>
+</li>
+</ol>
+<h2 id="3-一些经验"><a href="#3-一些经验" class="headerlink" title="3.一些经验"></a>3.一些经验</h2><h3 id="3-1-分库"><a href="#3-1-分库" class="headerlink" title="3.1 分库"></a>3.1 分库</h3><p>分库原则：每个子系统对应一个数据库</p>
+<p><img src="/posts/undefined/%E5%88%86%E5%BA%93%E5%8E%9F%E5%88%99.png" alt="分库原则"></p>
+<p>注意：在数据强一致的场景则涉及到数据库分布式事务</p>
+<h3 id="3-2分表"><a href="#3-2分表" class="headerlink" title="3.2分表"></a>3.2分表</h3><ol>
+<li><p>从主功能逻辑抽离主要几张表</p>
+<p><img src="/posts/undefined/%E5%88%86%E8%A1%A81.png" alt="分表1"></p>
+</li>
+<li><p>根据功能补充表</p>
+<p><img src="/posts/undefined/%E5%88%86%E8%A1%A82.png" alt="分表2"></p>
+</li>
+<li><p>检查多对多关系</p>
+<p><img src="/posts/undefined/%E5%88%86%E8%A1%A83.png" alt="分表3"></p>
+</li>
+</ol>
+<h3 id="3-3-冗余字段"><a href="#3-3-冗余字段" class="headerlink" title="3.3 冗余字段"></a>3.3 冗余字段</h3><p><img src="/posts/undefined/%E5%86%97%E4%BD%99%E5%AD%97%E6%AE%B5.png" alt="冗余字段"></p>
+<h3 id="3-4-视图"><a href="#3-4-视图" class="headerlink" title="3.4 视图"></a>3.4 视图</h3><p>视图能简化后端程序的SQL语句，如用户前台、管理员后台都需要显示热门博客，如果使用视图，就无需在多个接口维护多个复杂的SQL语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--根据简单SQL查询热门博客列表</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_hot</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-5-命名规范"><a href="#3-5-命名规范" class="headerlink" title="3.5 命名规范"></a>3.5 命名规范</h3><ol>
+<li>数据库名：与系统名相同，如user、shop</li>
+<li>表名：t_开头，如  t_blog、t_label, 如果是中间表，则结合两个表名  t_bloglabel</li>
+<li>视图名： v_ 开头，如 v_hot, v_rank</li>
+<li>字段名： 表名开头，如blog_id、label_id</li>
+<li>外键：与原来名字相同，如所有的博客id都为blog_id，如果引用多个相同外键，则用$标记 如resource_id$1、resource_id$2</li>
+</ol>
+<p>链接 <a href="http://ulemony.github.io/posts/undefined.html">http://ulemony.github.io/posts/undefined.html</a> </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/databas-design/" rel="tag"># databas design</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/bce68613.html" rel="prev" title="MySQL基础">
+                  <i class="fa fa-chevron-left"></i> MySQL基础
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason Lee</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">112k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:42</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>

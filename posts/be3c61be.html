@@ -19,15 +19,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"ulemony.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"default"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="链接 http:&#x2F;&#x2F;ulemony.github.io&#x2F;posts&#x2F;undefined.html">
+    <meta name="description" content="InnoDB 存储引擎的锁的算法Record lock单个行记录的锁，直接锁定某行记录的索引记录，通常用于唯一索引或主键索引上，当使用精确的查询条件例如id&#x3D;1时会使用记录锁 1SELECT * FROM users WHERE id &#x3D; 5 FOR UPDATE;  锁住主键为5的行">
 <meta property="og:type" content="article">
 <meta property="og:title" content="锁和事务">
 <meta property="og:url" content="http://ulemony.github.io/posts/be3c61be.html">
 <meta property="og:site_name" content="阿木的博客">
-<meta property="og:description" content="链接 http:&#x2F;&#x2F;ulemony.github.io&#x2F;posts&#x2F;undefined.html">
+<meta property="og:description" content="InnoDB 存储引擎的锁的算法Record lock单个行记录的锁，直接锁定某行记录的索引记录，通常用于唯一索引或主键索引上，当使用精确的查询条件例如id&#x3D;1时会使用记录锁 1SELECT * FROM users WHERE id &#x3D; 5 FOR UPDATE;  锁住主键为5的行">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-04T09:22:26.000Z">
-<meta property="article:modified_time" content="2025-06-04T09:24:06.907Z">
+<meta property="article:modified_time" content="2025-07-14T06:08:20.986Z">
 <meta property="article:author" content="Jason Lee">
 <meta property="article:tag" content="事务">
 <meta name="twitter:card" content="summary">
@@ -126,7 +126,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -139,6 +139,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E7%9A%84%E9%94%81%E7%9A%84%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">InnoDB 存储引擎的锁的算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Record-lock"><span class="nav-number">1.1.</span> <span class="nav-text">Record lock</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gap-lock"><span class="nav-number">1.2.</span> <span class="nav-text">Gap lock</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Next-key-lock"><span class="nav-number">1.3.</span> <span class="nav-text">Next-key lock</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Intention-Locks"><span class="nav-number">1.4.</span> <span class="nav-text">Intention  Locks</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%89%B9%E6%80%A7%E5%92%8C%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="nav-number">2.</span> <span class="nav-text">事务的基本特性和隔离级别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%9B%9B%E5%A4%A7%E7%89%B9%E6%80%A7ACID"><span class="nav-number">2.1.</span> <span class="nav-text">事务的四大特性ACID</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="nav-number">2.2.</span> <span class="nav-text">事务隔离级别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ACID%E9%9D%A0%E4%BB%80%E4%B9%88%E4%BF%9D%E8%AF%81"><span class="nav-number">2.3.</span> <span class="nav-text">ACID靠什么保证</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVCC"><span class="nav-number">3.</span> <span class="nav-text">MVCC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Readview"><span class="nav-number">3.1.</span> <span class="nav-text">Readview</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BD%93%E5%89%8D%E8%AF%BB%E5%92%8C%E5%BF%AB%E7%85%A7%E8%AF%BB"><span class="nav-number">3.2.</span> <span class="nav-text">当前读和快照读</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -153,7 +154,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -164,7 +165,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -219,9 +220,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2025-06-04 17:22:26 / 修改时间：17:24:06" itemprop="dateCreated datePublished" datetime="2025-06-04T17:22:26+08:00">2025-06-04</time>
+      <time title="创建时间：2025-06-04 17:22:26" itemprop="dateCreated datePublished" datetime="2025-06-04T17:22:26+08:00">2025-06-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-14 14:08:20" itemprop="dateModified" datetime="2025-07-14T14:08:20+08:00">2025-07-14</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -240,14 +247,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>47</span>
+      <span>4.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>4 分钟</span>
     </span>
 </div>
 
@@ -258,7 +265,310 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>链接 <a href="http://ulemony.github.io/posts/undefined.html">http://ulemony.github.io/posts/undefined.html</a> </p>
+        <h3 id="InnoDB-存储引擎的锁的算法"><a href="#InnoDB-存储引擎的锁的算法" class="headerlink" title="InnoDB 存储引擎的锁的算法"></a>InnoDB 存储引擎的锁的算法</h3><h4 id="Record-lock"><a href="#Record-lock" class="headerlink" title="Record lock"></a>Record lock</h4><p>单个行记录的锁，直接锁定某行记录的索引记录，通常用于唯一索引或主键索引上，当使用精确的查询条件例如id&#x3D;1时会使用记录锁</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> id <span class="operator">=</span> <span class="number">5</span> <span class="keyword">FOR</span> <span class="keyword">UPDATE</span>;</span><br></pre></td></tr></table></figure>
+
+<p>锁住主键为5的行</p>
+<h4 id="Gap-lock"><a href="#Gap-lock" class="headerlink" title="Gap lock"></a>Gap lock</h4><p>间隙锁，锁定一个范围，不包括记录本身</p>
+<p>形式是左开右开（left_record,right_record），在RR级别  为了解决幻读问题</p>
+<p>例子：表中有age索引记录24, 26, 30, 34</p>
+<p>执行语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> age <span class="keyword">BETWEEN</span> <span class="number">27</span> <span class="keyword">AND</span> <span class="number">29</span> <span class="keyword">FOR</span> <span class="keyword">UPDATE</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这时查询<strong>没有命中任何记录</strong>（因为 27~29 不存在）。</p>
+<blockquote>
+<p>所以 InnoDB 会加一个 <strong>Gap Lock</strong> 锁住 <code>26 和 30 之间的间隙</code>。</p>
+<p>(26, 30) ← 这就是 Gap Lock</p>
+</blockquote>
+<p>执行语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> age <span class="operator">&gt;</span> <span class="number">25</span> <span class="keyword">FOR</span> <span class="keyword">UPDATE</span>;</span><br></pre></td></tr></table></figure>
+
+<p>加锁（24，+∞）</p>
+<p>执行语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> age <span class="operator">=</span><span class="number">28</span> <span class="keyword">FOR</span> <span class="keyword">UPDATE</span>;</span><br></pre></td></tr></table></figure>
+
+<p>因为28不存在，为了防止后续幻读，在就近区间加锁（26，30）</p>
+<p>执行语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> age <span class="operator">=</span><span class="number">26</span> <span class="keyword">FOR</span> <span class="keyword">UPDATE</span>;</span><br></pre></td></tr></table></figure>
+
+<p>只会锁住age&#x3D;26这一行数据</p>
+<p>执行语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> age <span class="operator">&gt;</span> <span class="number">26</span> <span class="keyword">and</span> age <span class="operator">&lt;</span> <span class="number">32</span> <span class="keyword">FOR</span> <span class="keyword">UPDATE</span>;</span><br></pre></td></tr></table></figure>
+
+<p>命中的记录age&#x3D;30 锁住的区间（26，30]、（30，34]</p>
+<p>间隙锁和临键锁在一起</p>
+<h4 id="Next-key-lock"><a href="#Next-key-lock" class="headerlink" title="Next-key lock"></a>Next-key lock</h4><p>也叫临键锁，record+gap 锁定一个范围，包含记录本身</p>
+<p>形式是左开右闭区间(prev_key, current_key],MYSQL默认级别是RR、默认上临键锁</p>
+<p>例子：表中有age索引记录24, 26, 30, 34</p>
+<p>执行语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> age <span class="operator">=</span> <span class="number">30</span> <span class="keyword">FOR</span> <span class="keyword">UPDATE</span>;</span><br></pre></td></tr></table></figure>
+
+<p>加锁的实际范围 (26, 30]</p>
+<p>修改age&#x3D;26不受影响，因为没有加record lock</p>
+<p>插入新的age&#x3D;26会被阻塞，因为gap被锁</p>
+<p>在B+树中… 24 → 26 → 30 …  这意味着新记录age&#x3D;26要插在「现有的 age &#x3D; 26」记录 <strong>的前或后</strong>（根据主键二级排序）<br> ⚠️ 也就是：<strong>插入点落在 (26, 30)</strong> 的 gap 中 —— 而不是你以为的 26 本身！而（24，26）这个区间已经上了gap lock导致无法插入</p>
+<p>执行语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> age <span class="keyword">BETWEEN</span> <span class="number">26</span> <span class="keyword">AND</span> <span class="number">29</span> <span class="keyword">FOR</span> <span class="keyword">UPDATE</span>;</span><br></pre></td></tr></table></figure>
+
+<p>命中记录age&#x3D;26 加锁情况如下</p>
+<table>
+<thead>
+<tr>
+<th>区间</th>
+<th>为什么被锁</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>(24, 26)</code></td>
+<td>是 <code>26</code> 这个 Next-Key 的左间隙</td>
+</tr>
+<tr>
+<td><code>26</code></td>
+<td>是命中记录，必须加 Record Lock</td>
+</tr>
+<tr>
+<td><code>(26, 30)</code></td>
+<td>是“命中范围内但没有记录”的间隙锁</td>
+</tr>
+</tbody></table>
+<h4 id="Intention-Locks"><a href="#Intention-Locks" class="headerlink" title="Intention  Locks"></a>Intention  Locks</h4><p>意向锁本质是一种表级锁，但不是真正锁住数据的锁，而是表示“对某些行加锁”的意图</p>
+<p>类型：意向共享锁IS、意向排他锁IX</p>
+<p>会话a</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">BEGIN</span>;</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> id <span class="operator">=</span> <span class="number">1</span> <span class="keyword">FOR</span> <span class="keyword">UPDATE</span>;</span><br></pre></td></tr></table></figure>
+
+<p>对id&#x3D;1 的行加了排他锁X，MYSQL会在该表上加一个意向排他锁IX</p>
+<p>会话b</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LOCK <span class="keyword">TABLE</span> employees READ;</span><br></pre></td></tr></table></figure>
+
+<p>会尝试对整个表加一个共享锁S</p>
+<p>这与会话a的IX冲突导致会话b阻塞</p>
+<p>意向锁是自动加的</p>
+<table>
+<thead>
+<tr>
+<th>行级锁操作</th>
+<th>表级意向锁类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SELECT ... LOCK IN SHARE MODE</code></td>
+<td>意向共享锁（IS）</td>
+</tr>
+<tr>
+<td><code>SELECT ... FOR UPDATE</code></td>
+<td>意向排他锁（IX）</td>
+</tr>
+<tr>
+<td><code>INSERT</code> &#x2F; <code>UPDATE</code> &#x2F; <code>DELETE</code></td>
+<td>意向排他锁（IX）</td>
+</tr>
+</tbody></table>
+<p>意向锁和真正的锁区别</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>作用范围</th>
+<th>是否锁具体数据</th>
+<th>加锁目标</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>行锁（S&#x2F;X）</td>
+<td>行级别</td>
+<td>是</td>
+<td>具体某一行记录</td>
+</tr>
+<tr>
+<td>表锁（S&#x2F;X）</td>
+<td>表级别</td>
+<td>是</td>
+<td>整张表</td>
+</tr>
+<tr>
+<td>意向锁</td>
+<td>表级别</td>
+<td>否</td>
+<td>表结构上的“意图”</td>
+</tr>
+</tbody></table>
+<p>查看锁 使用mysql8版本</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> performance_schema.data_locks;</span><br></pre></td></tr></table></figure>
+
+<h3 id="事务的基本特性和隔离级别"><a href="#事务的基本特性和隔离级别" class="headerlink" title="事务的基本特性和隔离级别"></a>事务的基本特性和隔离级别</h3><h4 id="事务的四大特性ACID"><a href="#事务的四大特性ACID" class="headerlink" title="事务的四大特性ACID"></a>事务的四大特性ACID</h4><p>事务是一组要么全部成功，要么全部失败的数据库操作，具备以下特性</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>A - 原子性 (Atomicity)</strong></td>
+<td>事务是最小执行单位，操作要么都成功，要么都失败，不可能只执行一部分。 用于保证事务不可分割。</td>
+</tr>
+<tr>
+<td><strong>C - 一致性 (Consistency)</strong></td>
+<td>事务执行前后，数据处于一致状态（满足所有业务&#x2F;约束条件）。 例如扣款和加款必须一致。</td>
+</tr>
+<tr>
+<td><strong>I - 隔离性 (Isolation)</strong></td>
+<td>多个事务并发执行时，相互之间不能互相干扰，<strong>中间状态不可见</strong>。</td>
+</tr>
+<tr>
+<td><strong>D - 持久性 (Durability)</strong></td>
+<td>一旦事务提交，结果永久保存，即使系统崩溃也不会丢失。 通常靠日志机制（如 redo log）实现。</td>
+</tr>
+</tbody></table>
+<h4 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h4><table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>能否读到未提交数据？</th>
+<th>会有不可重复读？</th>
+<th>会有幻读？</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1. Read Uncommitted（读未提交）</strong></td>
+<td>✅是</td>
+<td>✅是</td>
+<td>✅是</td>
+</tr>
+<tr>
+<td><strong>2. Read Committed（读已提交）</strong></td>
+<td>❌否</td>
+<td>✅是</td>
+<td>✅是</td>
+</tr>
+<tr>
+<td><strong>3. Repeatable Read（可重复读）</strong>（MySQL默认）</td>
+<td>❌否</td>
+<td>❌否</td>
+<td>✅是（但MySQL通过间隙锁防止幻读）</td>
+</tr>
+<tr>
+<td><strong>4. Serializable（可串行化）</strong></td>
+<td>❌否</td>
+<td>❌否</td>
+<td>❌否（加表锁，性能最低）</td>
+</tr>
+</tbody></table>
+<p>脏读： 一个事务读取了另外一个事务尚未提交的数据。例如事务a读取账户余额，此时事务b修改账户余额但还未有提交，后面因某些原因rollback了操作，那么事务a读取到的数据是不准确的</p>
+<p>不可重复读： 一个事务两次查询到的数据不一致，可能是其他事务更新了该数据</p>
+<p>幻读：在一个事务中，两次查询符合条件的记录数不一致，可能是因为在两次查询的过程中，其他事务插入了新的几行数据</p>
+<h4 id="ACID靠什么保证"><a href="#ACID靠什么保证" class="headerlink" title="ACID靠什么保证"></a>ACID靠什么保证</h4><p>A原子性靠Undo Log保证，当执行事务时，InnoDB会记录Undo Log，用于出错时回滚之前的修改，事务实行失败或者ROLLBACK，就根据Undo Log来撤销对数据页的修改</p>
+<p>C一致性靠其他三大特性进行保证，同时数据库层面的约束例如主键、唯一索引、外键也助于保证一致性</p>
+<p>I隔离性 由多版本并发控制MVCC和锁机制保证</p>
+<p>D持久性由Redo Log和磁盘刷写策略保证，mysql修改数据同时会把修改写入到Redo Log并刷盘，如果系统崩溃，MYSQL重启时根据Redo Log恢复数据</p>
+<h3 id="MVCC"><a href="#MVCC" class="headerlink" title="MVCC"></a>MVCC</h3><p>在每一行数据都会有两个隐藏字段trx_id和roll_pointer，trx_id是当前事务有写操作才申请的自增id</p>
+<p>roll_pointer：每次对记录修改的时候，都会把老版本写入到Undo Log中，roll_pointer指向了上一个版本的位置</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>trx_id</code></td>
+<td>最后一次修改该行的事务 ID</td>
+</tr>
+<tr>
+<td><code>roll_pointer</code></td>
+<td>指向 Undo Log（撤销日志）的指针，保存旧版本数据</td>
+</tr>
+</tbody></table>
+<h4 id="Readview"><a href="#Readview" class="headerlink" title="Readview"></a>Readview</h4><p>它是MVCC的核心组件之一，是快照读的“时间快照”，可以用来判断一个trx_id是已经提交还是正在运行的。包含了以下四个字段</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>m_ids</code></td>
+<td>当前系统中<strong>活跃事务的 ID 列表</strong>（未提交）</td>
+</tr>
+<tr>
+<td><code>min_trx_id</code></td>
+<td>m_ids 中最小事务 ID</td>
+</tr>
+<tr>
+<td><code>max_trx_id</code></td>
+<td>当前系统中尚未分配的下一个事务 ID</td>
+</tr>
+<tr>
+<td><code>creator_trx_id</code></td>
+<td>创建当前 Read View 的事务 ID</td>
+</tr>
+</tbody></table>
+<p>判断过程：</p>
+<p>访问数据，获取数据中的事务id</p>
+<p>1.如果trx_id &lt; min_trx_id，说明是已经提交的事务，数据可以访问</p>
+<p>2.如果trx_id ≥ max_trx_id ，说明是未来提交的事务，数据不可以访问</p>
+<p>3.如果min_trx_id ≤ trx_id &lt; max_trx_id，先判断是否&#x3D;<code>creator_trx_id</code>如果是，说明是自己改的，可以访问，</p>
+<p>否则再判断是不是处于<code>m_ids</code>，如果是说明事务未提交，数据不可访问，否则就是已经提交的事务，数据可以访问</p>
+<p>如果某个版本的数据对当前事务不可见的话，那就顺着版本链找到下一个版本的数据，继续按照上边的步骤判断 可见性，依此类推，直到版本链中的最后一个版本。如果最后一个版本也不可见的话，那么就意味着该条记录对 该事务完全不可见，查询结果就不包含该记录。</p>
+<p>例如有一条数据 <code>age = 30</code>，它被多次修改，形成了一个<strong>版本链</strong>：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">记录最新版本：</span><br><span class="line"><span class="selector-attr">[age=34, trx_id=104]</span>  ---&gt;  <span class="selector-attr">[age=32, trx_id=102]</span>  ---&gt;  <span class="selector-attr">[age=30, trx_id=100]</span></span><br><span class="line">                         ↑                 ↑</span><br><span class="line">                       Undo2            Undo1</span><br></pre></td></tr></table></figure>
+
+<p>假如当前在事务id&#x3D;105中执行快照读，ReadView如下</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">m_ids = [104]</span><br><span class="line">min_trx_id = 104</span><br><span class="line">max_trx_id = 106</span><br><span class="line">creator_trx_id = 105</span><br></pre></td></tr></table></figure>
+
+<p>现在要读取这条记录，那么从版本链的开头进行判断</p>
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>trx_id</th>
+<th>判断</th>
+<th>是否可见</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>age&#x3D;34</td>
+<td>104</td>
+<td>trx_id ∈ m_ids ⇒ 活跃事务未提交</td>
+<td>❌ 不可见</td>
+</tr>
+<tr>
+<td>age&#x3D;32</td>
+<td>102</td>
+<td>trx_id &lt; min_trx_id，且不在 m_ids</td>
+<td>✅ 可见</td>
+</tr>
+<tr>
+<td>✅ 所以读取 age &#x3D; 32</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>已提交读的隔离级别下，每一次查询的时候都会生成一个独立的Readview而可重复读，则在第一次读的时候生成Readview，之后都是复用之前的Readview</p>
+<h4 id="当前读和快照读"><a href="#当前读和快照读" class="headerlink" title="当前读和快照读"></a>当前读和快照读</h4><p>依赖Readview的读取又叫做快照读，特点：</p>
+<p>非锁定读取不加锁； 读的是事务开始时的数据快照 ；使用MVCC 依赖Undo Log和ReadView ；默认在可重复读或读已提交隔离级别下启用</p>
+<p>例如</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 在一个事务中</span></span><br><span class="line"><span class="keyword">START</span> TRANSACTION;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> age <span class="operator">=</span> <span class="number">30</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如果此时有其他事务修改了 <code>age = 30</code> 的行，该 SELECT 仍然读到的是<strong>当前事务开始时</strong>那一刻的版本。</p>
+<p>典型语句：</p>
+<p><code>SELECT</code>（无 <code>FOR UPDATE</code> 或 <code>LOCK IN SHARE MODE</code>）</p>
+<p><code>SELECT</code> 语句默认就是快照读</p>
+<p>当前读，特点：</p>
+<p>读取的是行的<strong>最新版本</strong>（真实数据）。</p>
+<p>会对读取的行<strong>加锁</strong>（共享锁或排他锁）。</p>
+<p>能看到其他事务提交后的最新数据。</p>
+<p>如果遇到未提交的数据，可能会<strong>阻塞</strong>，直到数据可用。</p>
+<p>例如</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">START</span> TRANSACTION;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> age <span class="operator">=</span> <span class="number">30</span> <span class="keyword">FOR</span> <span class="keyword">UPDATE</span>;</span><br></pre></td></tr></table></figure>
+
+<p>会加上排他锁，阻塞其他修改该行的事务。读取的是最新数据，确保数据不会被其他人修改。</p>
+<p>典型语句：</p>
+<p>SELECT … FOR UPDATE<br>SELECT … LOCK IN SHARE MODE</p>
+<p><code>UPDATE</code>、<code>INSERT</code>、<code>DELETE</code> 都属于当前读</p>
+<p>链接 <a href="http://ulemony.github.io/posts/be3c61be.html">http://ulemony.github.io/posts/be3c61be.html</a> </p>
 
     </div>
 
@@ -280,6 +590,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/posts/bce68613.html" rel="next" title="MySQL基础">
+                  MySQL基础 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -311,13 +624,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">104k</span>
+    <span title="站点总字数">112k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:35</span>
+    <span title="站点阅读时长">1:42</span>
   </span>
 </div>
 

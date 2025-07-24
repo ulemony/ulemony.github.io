@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ulemony.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"default"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="mysql1. 存储引擎对比   对比项 InnoDB MyISAM    事务支持 ✅ 支持（ACID），支持事务的四种隔离级别 ❌ 不支持事务   锁机制 行级锁 + 多种锁（意向锁、间隙锁等） 表级锁   并发能力 高并发性能好 并发性能差，写时锁表   外键支持 ✅ 支持外键 ❌ 不支持外键   崩溃恢复能力 ✅ 强（支持崩溃恢复、Redo&#x2F;Undo Log） ❌ 弱，崩溃后易数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL基础">
+<meta property="og:url" content="http://ulemony.github.io/posts/bce68613.html">
+<meta property="og:site_name" content="阿木的博客">
+<meta property="og:description" content="mysql1. 存储引擎对比   对比项 InnoDB MyISAM    事务支持 ✅ 支持（ACID），支持事务的四种隔离级别 ❌ 不支持事务   锁机制 行级锁 + 多种锁（意向锁、间隙锁等） 表级锁   并发能力 高并发性能好 并发性能差，写时锁表   外键支持 ✅ 支持外键 ❌ 不支持外键   崩溃恢复能力 ✅ 强（支持崩溃恢复、Redo&#x2F;Undo Log） ❌ 弱，崩溃后易数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E4%BC%98%E5%8C%96%E5%89%8D%E7%BB%9F%E8%AE%A1.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E8%A1%A8%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E4%BC%98%E5%8C%96%E5%89%8D%E7%BB%9F%E8%AE%A1.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E4%BC%98%E5%8C%96%E5%90%8E%E7%BB%9F%E8%AE%A1.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E6%85%A2%E6%9F%A5%E8%AF%A2.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%922.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E8%A1%A8%E7%BB%93%E6%9E%842.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E4%BC%98%E5%8C%96%E5%90%8E%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E4%BC%98%E5%8C%96%E5%90%8E%E7%BB%9F%E8%AE%A12.png">
+<meta property="article:published_time" content="2025-06-06T11:16:36.000Z">
+<meta property="article:modified_time" content="2025-07-24T09:13:34.501Z">
+<meta property="article:author" content="Jason Lee">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ulemony.github.io/posts/undefined/%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5.png">
+
+
+<link rel="canonical" href="http://ulemony.github.io/posts/bce68613.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://ulemony.github.io/posts/bce68613.html","path":"posts/bce68613.html","title":"MySQL基础"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>MySQL基础 | 阿木的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">阿木的博客</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mysql"><span class="nav-number">1.</span> <span class="nav-text">mysql</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E5%AF%B9%E6%AF%94"><span class="nav-number">2.</span> <span class="nav-text">1. 存储引擎对比</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Explain%E8%AF%AD%E5%8F%A5%E7%BB%93%E6%9E%9C%E5%90%84%E5%AD%97%E6%AE%B5%E5%88%86%E5%88%AB%E8%A1%A8%E7%A4%BA%E4%BB%80%E4%B9%88"><span class="nav-number">3.</span> <span class="nav-text">2.Explain语句结果各字段分别表示什么</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-type%E5%B8%B8%E8%A7%81%E5%80%BC%E8%AF%B4%E6%98%8E"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 type常见值说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-Extra%E5%B8%B8%E8%A7%81%E5%80%BC%E8%AF%B4%E6%98%8E"><span class="nav-number">3.2.</span> <span class="nav-text">2.2 Extra常见值说明</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Mysql%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5%E5%8E%9F%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">3.Mysql主从同步原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1%E5%90%8C%E6%AD%A5%E6%B5%81%E7%A8%8B"><span class="nav-number">4.1.</span> <span class="nav-text">3.1同步流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E5%90%8C%E6%AD%A5%E7%AD%96%E7%95%A5"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 同步策略</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E4%BA%86%E7%B4%A2%E5%BC%95%EF%BC%8C%E8%BF%98%E6%98%AF%E6%85%A2%E6%9F%A5%E8%AF%A2"><span class="nav-number">5.</span> <span class="nav-text">4.为什么使用了索引，还是慢查询</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF1-%E6%85%A2SQL%E7%9A%84%E5%8E%9F%E5%9B%A0%E6%98%AF%E6%B2%A1%E5%91%BD%E4%B8%AD%E7%B4%A2%E5%BC%95"><span class="nav-number">5.1.</span> <span class="nav-text">场景1: 慢SQL的原因是没命中索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF2-%E6%85%A2SQL%E7%9A%84%E5%8E%9F%E5%9B%A0%E6%98%AF%E5%91%BD%E4%B8%AD%E4%BA%86%EF%BC%8C%E4%BD%86%E6%98%AFUsing-filesort"><span class="nav-number">5.2.</span> <span class="nav-text">场景2:慢SQL的原因是命中了，但是Using filesort</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jason Lee"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jason Lee</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://ulemony.github.io/posts/bce68613.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jason Lee">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿木的博客">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="MySQL基础 | 阿木的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MySQL基础
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2025-06-06 19:16:36" itemprop="dateCreated datePublished" datetime="2025-06-06T19:16:36+08:00">2025-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-24 17:13:34" itemprop="dateModified" datetime="2025-07-24T17:13:34+08:00">2025-07-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Database/" itemprop="url" rel="index"><span itemprop="name">Database</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h1><h1 id="1-存储引擎对比"><a href="#1-存储引擎对比" class="headerlink" title="1. 存储引擎对比"></a>1. 存储引擎对比</h1><table>
+<thead>
+<tr>
+<th>对比项</th>
+<th><strong>InnoDB</strong></th>
+<th><strong>MyISAM</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>事务支持</strong></td>
+<td>✅ 支持（ACID），支持事务的四种隔离级别</td>
+<td>❌ 不支持事务</td>
+</tr>
+<tr>
+<td><strong>锁机制</strong></td>
+<td>行级锁 + 多种锁（意向锁、间隙锁等）</td>
+<td>表级锁</td>
+</tr>
+<tr>
+<td><strong>并发能力</strong></td>
+<td>高并发性能好</td>
+<td>并发性能差，写时锁表</td>
+</tr>
+<tr>
+<td><strong>外键支持</strong></td>
+<td>✅ 支持外键</td>
+<td>❌ 不支持外键</td>
+</tr>
+<tr>
+<td><strong>崩溃恢复能力</strong></td>
+<td>✅ 强（支持崩溃恢复、Redo&#x2F;Undo Log）</td>
+<td>❌ 弱，崩溃后易数据损坏</td>
+</tr>
+<tr>
+<td><strong>MVCC 支持</strong></td>
+<td>✅ 支持（多版本并发控制）</td>
+<td>❌ 不支持</td>
+</tr>
+<tr>
+<td><strong>全文索引</strong></td>
+<td>✅ 支持（MySQL 5.6+）</td>
+<td>✅ 支持（较早）</td>
+</tr>
+<tr>
+<td><strong>索引结构</strong></td>
+<td>聚簇索引（主键与数据在一起）</td>
+<td>非聚簇索引（索引与数据分离）</td>
+</tr>
+<tr>
+<td><strong>存储文件</strong></td>
+<td><code>.ibd</code> 或共享表空间</td>
+<td><code>.MYD</code>（数据） + <code>.MYI</code>（索引）</td>
+</tr>
+<tr>
+<td><strong>表行统计</strong></td>
+<td>估算值（快速但不准）</td>
+<td>精确计数（慢）</td>
+</tr>
+<tr>
+<td><strong>表空间大小</strong></td>
+<td>通常较大</td>
+<td>通常较小</td>
+</tr>
+<tr>
+<td><strong>删除数据后空间</strong></td>
+<td>不会自动收缩（可用 OPTIMIZE）</td>
+<td>可重用空间</td>
+</tr>
+<tr>
+<td><strong>使用场景</strong></td>
+<td>事务系统、高并发、数据一致性要求高</td>
+<td>静态数据查询为主、读多写少</td>
+</tr>
+<tr>
+<td><strong>默认引擎（5.5+）</strong></td>
+<td>✅ 是</td>
+<td>❌ 否</td>
+</tr>
+</tbody></table>
+<h1 id="2-Explain语句结果各字段分别表示什么"><a href="#2-Explain语句结果各字段分别表示什么" class="headerlink" title="2.Explain语句结果各字段分别表示什么"></a>2.Explain语句结果各字段分别表示什么</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">EXPLAIN <span class="keyword">SELECT</span> name <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> age <span class="operator">=</span> <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line"><span class="operator">|</span> id <span class="operator">|</span> select_type <span class="operator">|</span> <span class="keyword">table</span>     <span class="operator">|</span> partitions <span class="operator">|</span> type <span class="operator">|</span> possible\_keys <span class="operator">|</span> key      <span class="operator">|</span> key_len <span class="operator">|</span> <span class="keyword">ref</span>   <span class="operator">|</span> <span class="keyword">rows</span> <span class="operator">|</span> filtered <span class="operator">|</span> Extra       <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="comment">-- | ------------ | --------- | ---------- | ---- | -------------- | -------- | -------- | ----- | ---- | -------- | ----------- |</span></span><br><span class="line"><span class="operator">|</span> <span class="number">1</span>  <span class="operator">|</span> SIMPLE       <span class="operator">|</span> employees <span class="operator">|</span> <span class="keyword">NULL</span>       <span class="operator">|</span> <span class="keyword">ref</span>  <span class="operator">|</span> idx\_age       <span class="operator">|</span> idx\_age <span class="operator">|</span> <span class="number">5</span>        <span class="operator">|</span> const <span class="operator">|</span> <span class="number">3</span>    <span class="operator">|</span> <span class="number">100.00</span>   <span class="operator">|</span> <span class="keyword">Using</span> index <span class="operator">|</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>字段解释：</p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>id</strong></td>
+<td>一个select对应一个id，如果是一个select的join操作，会有两个相同id。如果有子查询id会增加，如果能转join的子查询会优化成join。</td>
+</tr>
+<tr>
+<td><strong>select_type</strong></td>
+<td>查询类型，如 <code>SIMPLE</code>（简单查询）、<code>PRIMARY</code>、<code>SUBQUERY</code> 等。</td>
+</tr>
+<tr>
+<td><strong>table</strong></td>
+<td>当前访问的表名或别名。</td>
+</tr>
+<tr>
+<td><strong>partitions</strong></td>
+<td>如果用到分区表，这里会显示所使用的分区；没有分区则为 <code>NULL</code>。</td>
+</tr>
+<tr>
+<td><strong>type</strong></td>
+<td><strong>连接类型（访问方式）</strong>，反映性能的关键字段（见下方类型说明）。</td>
+</tr>
+<tr>
+<td><strong>possible_keys</strong></td>
+<td>查询可能使用的索引列表（优化器认为可用）。</td>
+</tr>
+<tr>
+<td><strong>key</strong></td>
+<td>实际使用的索引。如果为 <code>NULL</code>，表示未使用索引。</td>
+</tr>
+<tr>
+<td><strong>key_len</strong></td>
+<td>实际使用索引的长度（字节数）。表示索引利用了多少列。</td>
+</tr>
+<tr>
+<td><strong>ref</strong></td>
+<td>使用索引进行等值查询时与索引进行比较的对象（常为常量或列）。</td>
+</tr>
+<tr>
+<td><strong>rows</strong></td>
+<td>MySQL <strong>预估</strong>扫描的行数（越小越好）。</td>
+</tr>
+<tr>
+<td><strong>filtered</strong></td>
+<td>过滤后保留的百分比（估算值），与 <code>rows</code> 一起判断数据过滤情况。</td>
+</tr>
+<tr>
+<td><strong>Extra</strong></td>
+<td>附加信息，例如是否用到临时表、排序，是否用到索引等。</td>
+</tr>
+</tbody></table>
+<h2 id="2-1-type常见值说明"><a href="#2-1-type常见值说明" class="headerlink" title="2.1 type常见值说明"></a>2.1 type常见值说明</h2><table>
+<thead>
+<tr>
+<th><code>type</code> 值</th>
+<th>含义说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>system</strong></td>
+<td>表仅有一行（系统表）</td>
+</tr>
+<tr>
+<td><strong>const</strong></td>
+<td>索引唯一匹配一行（如主键或唯一键）</td>
+</tr>
+<tr>
+<td><strong>eq_ref</strong></td>
+<td>多表连接中，使用主键或唯一索引</td>
+</tr>
+<tr>
+<td><strong>ref</strong></td>
+<td>使用普通索引等值匹配（如 <code>WHERE age = 30</code>）</td>
+</tr>
+<tr>
+<td><strong>range</strong></td>
+<td>使用索引范围扫描（如 <code>BETWEEN</code>、<code>&gt;</code>、<code>&lt;</code>）</td>
+</tr>
+<tr>
+<td><strong>index</strong></td>
+<td>扫描整个索引（不访问数据行）</td>
+</tr>
+<tr>
+<td><strong>ALL</strong></td>
+<td>全表扫描</td>
+</tr>
+</tbody></table>
+<h2 id="2-2-Extra常见值说明"><a href="#2-2-Extra常见值说明" class="headerlink" title="2.2 Extra常见值说明"></a>2.2 Extra常见值说明</h2><table>
+<thead>
+<tr>
+<th>Extra 值</th>
+<th>含义说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Using index</strong></td>
+<td>覆盖索引（只用索引就能获取数据）</td>
+</tr>
+<tr>
+<td><strong>Using where</strong></td>
+<td>使用了 <code>WHERE</code> 条件进行过滤</td>
+</tr>
+<tr>
+<td><strong>Using temporary</strong></td>
+<td>使用了临时表（如排序、分组时）</td>
+</tr>
+<tr>
+<td><strong>Using filesort</strong></td>
+<td>使用文件排序（不能用索引排序）</td>
+</tr>
+<tr>
+<td><strong>NULL</strong></td>
+<td>没有额外操作</td>
+</tr>
+</tbody></table>
+<h1 id="3-Mysql主从同步原理"><a href="#3-Mysql主从同步原理" class="headerlink" title="3.Mysql主从同步原理"></a>3.Mysql主从同步原理</h1><h2 id="3-1同步流程"><a href="#3-1同步流程" class="headerlink" title="3.1同步流程"></a>3.1同步流程</h2><p><strong>主库（Master）写 binlog</strong></p>
+<ul>
+<li>主库执行完一个事务后，会把操作记录写入 <code>binlog</code>（如 insert、update 等 DML 操作）。</li>
+</ul>
+<p><strong>从库（Slave）IO线程读 binlog</strong></p>
+<ul>
+<li>从库启动后，会开启一个 <strong>IO 线程</strong> 去连接主库的 <code>binlog dump 线程</code>，将主库的 binlog 日志拉到自己本地，并写入 <code>relay log</code>。</li>
+</ul>
+<p><strong>从库 SQL线程执行 relay log</strong></p>
+<ul>
+<li>从库的 <strong>SQL 线程</strong> 读取 <code>relay log</code> 的内容，并在本地重放（执行相同 SQL），以达到主从一致。</li>
+</ul>
+<p><img src="/posts/undefined/%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5.png" alt="主从同步"></p>
+<h2 id="3-2-同步策略"><a href="#3-2-同步策略" class="headerlink" title="3.2 同步策略"></a>3.2 同步策略</h2><ul>
+<li><p>异步复制，master不管slave，只管自己写binlog，slave异步去同步，这种新能最好，但是一致性最差。</p>
+</li>
+<li><p>半同步复制，事务提交要求n个slave收到日志才算提交成功，当n设置为全部slave节点就是同步复制了。</p>
+</li>
+<li><p>全同步复制，事务提交要求全部的slave收到日志才算提交成功</p>
+</li>
+</ul>
+<h1 id="4-为什么使用了索引，还是慢查询"><a href="#4-为什么使用了索引，还是慢查询" class="headerlink" title="4.为什么使用了索引，还是慢查询"></a>4.为什么使用了索引，还是慢查询</h1><h2 id="场景1-慢SQL的原因是没命中索引"><a href="#场景1-慢SQL的原因是没命中索引" class="headerlink" title="场景1: 慢SQL的原因是没命中索引"></a>场景1: 慢SQL的原因是没命中索引</h2><p>实时分析：</p>
+<p><img src="/posts/undefined/%E4%BC%98%E5%8C%96%E5%89%8D%E7%BB%9F%E8%AE%A1.png" alt="优化前统计"></p>
+<p>慢SQL</p>
+<p>在慢查询中，最多的一条语句是</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> `white_user` <span class="keyword">WHERE</span> `user_id`<span class="operator">=</span>? <span class="keyword">AND</span> `status`<span class="operator">=</span>? <span class="keyword">AND</span> `level`<span class="operator">=</span>? <span class="keyword">AND</span> `type`<span class="operator">=</span>? LIMIT ?,?;</span><br></pre></td></tr></table></figure>
+
+<p>表结构</p>
+<p><img src="/posts/undefined/%E8%A1%A8%E7%BB%93%E6%9E%84.png" alt="表结构"></p>
+<p>执行计划</p>
+<p><img src="/posts/undefined/%E4%BC%98%E5%8C%96%E5%89%8D%E7%BB%9F%E8%AE%A1.png" alt="优化前统计"></p>
+<p>由执行计划的key看到没有用到索引</p>
+<p>解决办法：创建索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> `white_user` <span class="keyword">add</span> `idx_user_id_status_level_type`(`user_id`,`status`,`level`,`type`);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>优化后统计：</p>
+<p><img src="/posts/undefined/%E4%BC%98%E5%8C%96%E5%90%8E%E7%BB%9F%E8%AE%A1.png" alt="优化后统计"></p>
+<h2 id="场景2-慢SQL的原因是命中了，但是Using-filesort"><a href="#场景2-慢SQL的原因是命中了，但是Using-filesort" class="headerlink" title="场景2:慢SQL的原因是命中了，但是Using filesort"></a>场景2:慢SQL的原因是命中了，但是Using filesort</h2><p>查询商家的退款订单列表且按倒叙排序</p>
+<p><img src="/posts/undefined/%E6%85%A2%E6%9F%A5%E8%AF%A2.png" alt="慢查询"></p>
+<p>执行计划</p>
+<p><img src="/posts/undefined/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%922.png" alt="执行计划2"></p>
+<p>Using filesort 文件排序比较慢，一般在order by的时候出现</p>
+<p>部分表结构</p>
+<p><img src="/posts/undefined/%E8%A1%A8%E7%BB%93%E6%9E%842.png" alt="表结构2"></p>
+<p>解决办法：用到索引的同时，也不要进行文件排序，而是进行create_time的排序</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> `refund_cuser` <span class="keyword">add</span> index `idx_buser_id_createtime`(`buser_id`,`create_time`);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>通过执行计划发现已经没有了using filesort</p>
+<p><img src="/posts/undefined/%E4%BC%98%E5%8C%96%E5%90%8E%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92.png" alt="优化后执行计划"></p>
+<p>优化后统计</p>
+<p><img src="/posts/undefined/%E4%BC%98%E5%8C%96%E5%90%8E%E7%BB%9F%E8%AE%A12.png" alt="优化后统计2"></p>
+<p>链接 <a href="http://ulemony.github.io/posts/undefined.html">http://ulemony.github.io/posts/undefined.html</a> </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/be3c61be.html" rel="prev" title="锁和事务">
+                  <i class="fa fa-chevron-left"></i> 锁和事务
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/da3ed1b.html" rel="next" title="数据库表设计">
+                  数据库表设计 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason Lee</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">112k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:42</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
