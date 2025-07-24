@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Dockerfile用法</title>
+    <url>/posts/387270af.html</url>
+    <content><![CDATA[<h2 id="Dockerfile用法"><a href="#Dockerfile用法" class="headerlink" title="Dockerfile用法"></a>Dockerfile用法</h2><h3 id="常见配置"><a href="#常见配置" class="headerlink" title="常见配置"></a>常见配置</h3><p>From XXX（基于什么镜像）<br>WORKDIR（指定shell语句运行在那个路径下）<br>COPY（将宿主机的文件拷贝到某路径下）<br>RUN（运行shell语句，只要构建就会运行，如echo 321 &gt;&gt; 1.txt）<br>CMD （指定镜像启动运行的脚本，只有容器真正运行的时候才会运行的脚本，执行后容器的生命周期即结束，且一般为阻塞式语句，如tail语句）</p>
+<p>一般语句为：<br>FROM WORKDIR COPY-ADD RUN CMD-ENTRYPOINT<br>ENTRYPOINT非json则以ENTRYPOT为准，如果ENTRYPOINT和CMD都是JSON则ENTRYPOINT+CMD拼接成shell</p>
+<p>EXPOSE—暴露镜像的指定端口<br>VOLUME—指定映射文件<br>ENV—指定doker的环境变量，运行时一直生效<br>ARG—构建参数，运行时无效，可以构建时候临时修改变量<br>LABEL—指定元数据，便于找到docker<br>ONBUILD—当前镜像构建的时候不会执行，基于当前镜像的镜像去构建的时候才会执行<br>STOPSIGNAL—指定容器使用什么信号，一般指定信号名<br>HEALTHCHECK—检查容易的健康状态<br>SHELL—指定linux为&#x2F;bin&#x2F;sh，windows为cmd</p>
+<h3 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FROM alpine</span><br><span class="line">LABEl k=&quot;v&quot; k1=&quot;v1&quot;</span><br><span class="line">WORKDIR /app</span><br><span class="line">COPY src/ /app</span><br><span class="line">RUN echo helloword &gt;&gt; 1.txt</span><br><span class="line">ARG B=11</span><br><span class="line">ONBUILD ENV C=100</span><br><span class="line">CMD echo $C</span><br></pre></td></tr></table></figure>
+
+<h3 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h3><p>使用Dockerfile构建镜像：docker build -t &lt;存放Dockerfile的文件夹&gt;</p>
+<p>例如：在当前文件夹构建名为test的镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker build -t test .</span><br></pre></td></tr></table></figure>
+
+
+<p>链接 <a href="http://ulemony.github.io/posts/387270af.html">http://ulemony.github.io/posts/387270af.html</a> </p>
+]]></content>
+      <categories>
+        <category>容器</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Docker常见命令</title>
     <url>/posts/a70288e8.html</url>
     <content><![CDATA[<h2 id="Docker常见命令"><a href="#Docker常见命令" class="headerlink" title="Docker常见命令"></a>Docker常见命令</h2><p>添加阿里云镜像</p>
@@ -76,25 +98,55 @@
       </tags>
   </entry>
   <entry>
-    <title>Dockerfile用法</title>
-    <url>/posts/387270af.html</url>
-    <content><![CDATA[<h2 id="Dockerfile用法"><a href="#Dockerfile用法" class="headerlink" title="Dockerfile用法"></a>Dockerfile用法</h2><h3 id="常见配置"><a href="#常见配置" class="headerlink" title="常见配置"></a>常见配置</h3><p>From XXX（基于什么镜像）<br>WORKDIR（指定shell语句运行在那个路径下）<br>COPY（将宿主机的文件拷贝到某路径下）<br>RUN（运行shell语句，只要构建就会运行，如echo 321 &gt;&gt; 1.txt）<br>CMD （指定镜像启动运行的脚本，只有容器真正运行的时候才会运行的脚本，执行后容器的生命周期即结束，且一般为阻塞式语句，如tail语句）</p>
-<p>一般语句为：<br>FROM WORKDIR COPY-ADD RUN CMD-ENTRYPOINT<br>ENTRYPOINT非json则以ENTRYPOT为准，如果ENTRYPOINT和CMD都是JSON则ENTRYPOINT+CMD拼接成shell</p>
-<p>EXPOSE—暴露镜像的指定端口<br>VOLUME—指定映射文件<br>ENV—指定doker的环境变量，运行时一直生效<br>ARG—构建参数，运行时无效，可以构建时候临时修改变量<br>LABEL—指定元数据，便于找到docker<br>ONBUILD—当前镜像构建的时候不会执行，基于当前镜像的镜像去构建的时候才会执行<br>STOPSIGNAL—指定容器使用什么信号，一般指定信号名<br>HEALTHCHECK—检查容易的健康状态<br>SHELL—指定linux为&#x2F;bin&#x2F;sh，windows为cmd</p>
-<h3 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FROM alpine</span><br><span class="line">LABEl k=&quot;v&quot; k1=&quot;v1&quot;</span><br><span class="line">WORKDIR /app</span><br><span class="line">COPY src/ /app</span><br><span class="line">RUN echo helloword &gt;&gt; 1.txt</span><br><span class="line">ARG B=11</span><br><span class="line">ONBUILD ENV C=100</span><br><span class="line">CMD echo $C</span><br></pre></td></tr></table></figure>
+    <title>GPT-4体验</title>
+    <url>/posts/e0a37648.html</url>
+    <content><![CDATA[<h1 id="GPT-4"><a href="#GPT-4" class="headerlink" title="GPT-4"></a>GPT-4</h1><p>今天openai发布了目前为止AI领域最先进的人工智能系统——GPT-4</p>
+<p><img src="/posts/e0a37648/GPT-4.jpg" alt="head"></p>
+<p>于是申请注册体验，由于人太多，估计要等几个工作日，期待能通过申请</p>
+<h2 id="GPT-4可以做什么"><a href="#GPT-4可以做什么" class="headerlink" title="GPT-4可以做什么"></a>GPT-4可以做什么</h2><h3 id="1-Creativity-创造力"><a href="#1-Creativity-创造力" class="headerlink" title="1.Creativity 创造力"></a>1.Creativity 创造力</h3><p>它可以生成、编辑和迭代用户进行创意和技术写作任务，例如创作歌曲、编写剧本或学习用户的写作风格。</p>
+<p>例如我们输入要求让它解释灰姑娘的故事情节，它会根据要求生成相应的结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Input</span><br><span class="line"></span><br><span class="line">Explain the plot of Cinderella in a sentence where each word has to begin with the next letter in the alphabet from A to Z, without repeating any letters.</span><br><span class="line">用一个句子解释灰姑娘的情节，其中每个单词必须以字母表中从 A 到 Z 的下一个字母开头，不要重复任何字母</span><br></pre></td></tr></table></figure>
 
-<h3 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h3><p>使用Dockerfile构建镜像：docker build -t &lt;存放Dockerfile的文件夹&gt;</p>
-<p>例如：在当前文件夹构建名为test的镜像</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker build -t test .</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Output</span><br><span class="line"></span><br><span class="line">A beautiful Cinderella, dwelling eagerly, finally gains happiness; inspiring jealous kin, love magically nurtures opulent prince; quietly rescues, slipper triumphs, uniting very wondrously, xenial youth zealously.</span><br><span class="line">美丽的灰姑娘，急切地栖息着，终于获得了幸福;激发嫉妒的亲人，爱情神奇地培育出华丽的王子;悄悄地营救，拖鞋胜利，团结得非常奇妙，青春热心。</span><br></pre></td></tr></table></figure>
+
+<p>这个功能对于写作辅助可谓一大利器，对于写论文、高考作文训练真是大大滴好呀！</p>
+<h3 id="2-Visual-input-图像输入"><a href="#2-Visual-input-图像输入" class="headerlink" title="2.Visual input  图像输入"></a>2.Visual input  图像输入</h3><p>GPT-4 根据输入的图像并生成标题、分类和分析，例如我们输入一张图片，询问它可以利用图片中的原材料做成什么食物</p>
+<p>它会识别图片内容并给出建议：煎饼或华夫饼&#x2F;薄饼&#x2F;法式吐司&#x2F;煎蛋或煎蛋饼    （没有广东肠粉差评～-～）</p>
+<p>如果你对有选择困难症，可以拍下自家的冰箱，让chatgt告诉你今天吃什么</p>
+<p>PS：很好奇发一张九转大肠的图片给chatgt，它给的食谱会不会保留大肠原来的味道～-～</p>
+<p><img src="/posts/e0a37648/food.jpg" alt="food"></p>
+<h3 id="3-Longer-context-更长的文字处理"><a href="#3-Longer-context-更长的文字处理" class="headerlink" title="3.Longer context 更长的文字处理"></a>3.Longer context 更长的文字处理</h3><p>GPT-4 能够处理超过 25，000 字的文本，允许使用长篇内容创建、扩展对话以及文档搜索和分析等用例。</p>
+<p>打个比方，附上蕾哈娜的维基百科信息网址，让它分析蕾哈娜在超级碗中的表现以及过人之处：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Input</span><br><span class="line">[Text from: https://en.wikipedia.org/wiki/Rihanna]</span><br><span class="line"></span><br><span class="line">Describe her Super Bowl performance and what made it special.</span><br></pre></td></tr></table></figure>
+
+<p>GPT-4会从长达几万字的维基百科介绍中提炼出如下结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Output</span><br><span class="line">Rihanna&#x27;s Super Bowl LVII halftime show performance was special for a number of reasons. For one, it marked her first live performance in over five years, and it was her first time headlining the Super Bowl halftime show. Additionally, she made history by becoming the first person to perform at the Super Bowl while pregnant. The show itself was critically acclaimed, with many praising her high-energy performance and impressive vocals. It also garnered a massive viewership, becoming the second most-watched halftime show in history.</span><br><span class="line">蕾哈娜的超级碗LVII中场秀表演很特别，原因有很多。首先，这是她五年多来的第一次现场表演，这是她第一次在超级碗中场秀中担任头条新闻。此外，她创造了历史，成为第一个在怀孕期间在超级碗上表演的人。该节目本身广受好评，许多人称赞她的高能量表演和令人印象深刻的人声。它还获得了大量的收视率，成为历史上收视率第二高的中场秀。</span><br></pre></td></tr></table></figure>
 
 
-<p>链接 <a href="http://ulemony.github.io/posts/387270af.html">http://ulemony.github.io/posts/387270af.html</a> </p>
+
+<h2 id="GPT-4的亮点"><a href="#GPT-4的亮点" class="headerlink" title="GPT-4的亮点"></a>GPT-4的亮点</h2><p>GPT-4在其先进的推理能力方面超过了上一个版本ChatGPT。</p>
+<p>例如同一个问题，GPT-4比ChatGPT给出了更加精准的答案</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Input</span><br><span class="line"></span><br><span class="line">Andrew is free from 11 am to 3 pm, Joanne is free from noon to 2 pm and then 3:30 pm to 5 pm. Hannah is available at noon for half an hour, and then 4 pm to 6 pm. What are some options for start times for a 30 minute meeting for Andrew, Hannah, and Joanne?安德鲁从上午 11 点到下午 3 点有空，乔安妮从中午到下午 2 点，然后下午 3：30 到下午 5 点自由。汉娜在中午半小时可用，然后下午4点到6点。对于安德鲁、汉娜和乔安妮来说，30 分钟会议的开始时间有哪些选择？</span><br></pre></td></tr></table></figure>
+
+
+
+<p>ChatGPT给出的答案</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Output</span><br><span class="line">Here is a list of their availability:</span><br><span class="line">- Andrew: 11 am to 3 pm</span><br><span class="line">- Joanne: noon to 2 pm, and 3:30 pm to 5 pm</span><br><span class="line">- Hannah: noon to 12:30 pm, and 4 pm to 6 pm</span><br><span class="line"></span><br><span class="line">Based on their availability, there is a 30-minute window where all three of them are available, which is from 4 pm to 4:30 pm. So, the meeting can be scheduled at 4 pm.</span><br><span class="line">以下是它们的可用性列表：</span><br><span class="line">- 安德鲁：上午 11 点至下午 3 点</span><br><span class="line">- 乔安妮：中午至下午 2 点，下午 3：30 至下午 5 点</span><br><span class="line">- 汉娜：中午至下午 12：30，下午 4 点至下午 6 点</span><br><span class="line"></span><br><span class="line">根据他们的可用性，有一个 30 分钟的窗口，所有三个都可用，即下午 4 点到 4：30。因此，会议可以安排在下午 4 点。</span><br></pre></td></tr></table></figure>
+
+
+
+<p>GPT-4给出的答案</p>
+<p>Andrew: 11 am - 3 pm Joanne: 12 pm - 2 pm, 3:30 pm - 5 pm Hannah: 12 pm - 12:30 pm, 4 pm - 6 pm Common availability for a 30-minute meeting: 12 pm - 12:30 pm<br>安德鲁：上午 11 点至下午 3 点<br>乔安妮：中午 12 点至下午 2 点，下午 3：30 至下午 5 点<br>汉娜：中午12时至下午12时30分，下午4时至下午6时</p>
+<p>30 分钟会议的通用可用性：中午 12 点至下午 12：30</p>
+<h2 id="人类未来的诗歌"><a href="#人类未来的诗歌" class="headerlink" title="人类未来的诗歌"></a>人类未来的诗歌</h2><p>最后附上一首CHATGPT写的诗歌，人工智能在将会彻底颠覆人类社会的各个方面，希望这是写给人类的颂歌</p>
+<p><img src="/posts/e0a37648/poem.jpg" alt="poem"></p>
+<p>链接 <a href="http://ulemony.github.io/posts/e0a37648.html">http://ulemony.github.io/posts/e0a37648.html</a> </p>
 ]]></content>
       <categories>
-        <category>容器</category>
+        <category>AI</category>
       </categories>
       <tags>
-        <tag>docker</tag>
+        <tag>ChatGPT</tag>
       </tags>
   </entry>
   <entry>
@@ -220,58 +272,6 @@
       </categories>
       <tags>
         <tag>jvm</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>GPT-4体验</title>
-    <url>/posts/e0a37648.html</url>
-    <content><![CDATA[<h1 id="GPT-4"><a href="#GPT-4" class="headerlink" title="GPT-4"></a>GPT-4</h1><p>今天openai发布了目前为止AI领域最先进的人工智能系统——GPT-4</p>
-<p><img src="/posts/e0a37648/GPT-4.jpg" alt="head"></p>
-<p>于是申请注册体验，由于人太多，估计要等几个工作日，期待能通过申请</p>
-<h2 id="GPT-4可以做什么"><a href="#GPT-4可以做什么" class="headerlink" title="GPT-4可以做什么"></a>GPT-4可以做什么</h2><h3 id="1-Creativity-创造力"><a href="#1-Creativity-创造力" class="headerlink" title="1.Creativity 创造力"></a>1.Creativity 创造力</h3><p>它可以生成、编辑和迭代用户进行创意和技术写作任务，例如创作歌曲、编写剧本或学习用户的写作风格。</p>
-<p>例如我们输入要求让它解释灰姑娘的故事情节，它会根据要求生成相应的结果：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Input</span><br><span class="line"></span><br><span class="line">Explain the plot of Cinderella in a sentence where each word has to begin with the next letter in the alphabet from A to Z, without repeating any letters.</span><br><span class="line">用一个句子解释灰姑娘的情节，其中每个单词必须以字母表中从 A 到 Z 的下一个字母开头，不要重复任何字母</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Output</span><br><span class="line"></span><br><span class="line">A beautiful Cinderella, dwelling eagerly, finally gains happiness; inspiring jealous kin, love magically nurtures opulent prince; quietly rescues, slipper triumphs, uniting very wondrously, xenial youth zealously.</span><br><span class="line">美丽的灰姑娘，急切地栖息着，终于获得了幸福;激发嫉妒的亲人，爱情神奇地培育出华丽的王子;悄悄地营救，拖鞋胜利，团结得非常奇妙，青春热心。</span><br></pre></td></tr></table></figure>
-
-<p>这个功能对于写作辅助可谓一大利器，对于写论文、高考作文训练真是大大滴好呀！</p>
-<h3 id="2-Visual-input-图像输入"><a href="#2-Visual-input-图像输入" class="headerlink" title="2.Visual input  图像输入"></a>2.Visual input  图像输入</h3><p>GPT-4 根据输入的图像并生成标题、分类和分析，例如我们输入一张图片，询问它可以利用图片中的原材料做成什么食物</p>
-<p>它会识别图片内容并给出建议：煎饼或华夫饼&#x2F;薄饼&#x2F;法式吐司&#x2F;煎蛋或煎蛋饼    （没有广东肠粉差评～-～）</p>
-<p>如果你对有选择困难症，可以拍下自家的冰箱，让chatgt告诉你今天吃什么</p>
-<p>PS：很好奇发一张九转大肠的图片给chatgt，它给的食谱会不会保留大肠原来的味道～-～</p>
-<p><img src="/posts/e0a37648/food.jpg" alt="food"></p>
-<h3 id="3-Longer-context-更长的文字处理"><a href="#3-Longer-context-更长的文字处理" class="headerlink" title="3.Longer context 更长的文字处理"></a>3.Longer context 更长的文字处理</h3><p>GPT-4 能够处理超过 25，000 字的文本，允许使用长篇内容创建、扩展对话以及文档搜索和分析等用例。</p>
-<p>打个比方，附上蕾哈娜的维基百科信息网址，让它分析蕾哈娜在超级碗中的表现以及过人之处：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Input</span><br><span class="line">[Text from: https://en.wikipedia.org/wiki/Rihanna]</span><br><span class="line"></span><br><span class="line">Describe her Super Bowl performance and what made it special.</span><br></pre></td></tr></table></figure>
-
-<p>GPT-4会从长达几万字的维基百科介绍中提炼出如下结果：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Output</span><br><span class="line">Rihanna&#x27;s Super Bowl LVII halftime show performance was special for a number of reasons. For one, it marked her first live performance in over five years, and it was her first time headlining the Super Bowl halftime show. Additionally, she made history by becoming the first person to perform at the Super Bowl while pregnant. The show itself was critically acclaimed, with many praising her high-energy performance and impressive vocals. It also garnered a massive viewership, becoming the second most-watched halftime show in history.</span><br><span class="line">蕾哈娜的超级碗LVII中场秀表演很特别，原因有很多。首先，这是她五年多来的第一次现场表演，这是她第一次在超级碗中场秀中担任头条新闻。此外，她创造了历史，成为第一个在怀孕期间在超级碗上表演的人。该节目本身广受好评，许多人称赞她的高能量表演和令人印象深刻的人声。它还获得了大量的收视率，成为历史上收视率第二高的中场秀。</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="GPT-4的亮点"><a href="#GPT-4的亮点" class="headerlink" title="GPT-4的亮点"></a>GPT-4的亮点</h2><p>GPT-4在其先进的推理能力方面超过了上一个版本ChatGPT。</p>
-<p>例如同一个问题，GPT-4比ChatGPT给出了更加精准的答案</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Input</span><br><span class="line"></span><br><span class="line">Andrew is free from 11 am to 3 pm, Joanne is free from noon to 2 pm and then 3:30 pm to 5 pm. Hannah is available at noon for half an hour, and then 4 pm to 6 pm. What are some options for start times for a 30 minute meeting for Andrew, Hannah, and Joanne?安德鲁从上午 11 点到下午 3 点有空，乔安妮从中午到下午 2 点，然后下午 3：30 到下午 5 点自由。汉娜在中午半小时可用，然后下午4点到6点。对于安德鲁、汉娜和乔安妮来说，30 分钟会议的开始时间有哪些选择？</span><br></pre></td></tr></table></figure>
-
-
-
-<p>ChatGPT给出的答案</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Output</span><br><span class="line">Here is a list of their availability:</span><br><span class="line">- Andrew: 11 am to 3 pm</span><br><span class="line">- Joanne: noon to 2 pm, and 3:30 pm to 5 pm</span><br><span class="line">- Hannah: noon to 12:30 pm, and 4 pm to 6 pm</span><br><span class="line"></span><br><span class="line">Based on their availability, there is a 30-minute window where all three of them are available, which is from 4 pm to 4:30 pm. So, the meeting can be scheduled at 4 pm.</span><br><span class="line">以下是它们的可用性列表：</span><br><span class="line">- 安德鲁：上午 11 点至下午 3 点</span><br><span class="line">- 乔安妮：中午至下午 2 点，下午 3：30 至下午 5 点</span><br><span class="line">- 汉娜：中午至下午 12：30，下午 4 点至下午 6 点</span><br><span class="line"></span><br><span class="line">根据他们的可用性，有一个 30 分钟的窗口，所有三个都可用，即下午 4 点到 4：30。因此，会议可以安排在下午 4 点。</span><br></pre></td></tr></table></figure>
-
-
-
-<p>GPT-4给出的答案</p>
-<p>Andrew: 11 am - 3 pm Joanne: 12 pm - 2 pm, 3:30 pm - 5 pm Hannah: 12 pm - 12:30 pm, 4 pm - 6 pm Common availability for a 30-minute meeting: 12 pm - 12:30 pm<br>安德鲁：上午 11 点至下午 3 点<br>乔安妮：中午 12 点至下午 2 点，下午 3：30 至下午 5 点<br>汉娜：中午12时至下午12时30分，下午4时至下午6时</p>
-<p>30 分钟会议的通用可用性：中午 12 点至下午 12：30</p>
-<h2 id="人类未来的诗歌"><a href="#人类未来的诗歌" class="headerlink" title="人类未来的诗歌"></a>人类未来的诗歌</h2><p>最后附上一首CHATGPT写的诗歌，人工智能在将会彻底颠覆人类社会的各个方面，希望这是写给人类的颂歌</p>
-<p><img src="/posts/e0a37648/poem.jpg" alt="poem"></p>
-<p>链接 <a href="http://ulemony.github.io/posts/e0a37648.html">http://ulemony.github.io/posts/e0a37648.html</a> </p>
-]]></content>
-      <categories>
-        <category>AI</category>
-      </categories>
-      <tags>
-        <tag>ChatGPT</tag>
       </tags>
   </entry>
   <entry>
@@ -569,7 +569,7 @@
 <ul>
 <li>从库的 <strong>SQL 线程</strong> 读取 <code>relay log</code> 的内容，并在本地重放（执行相同 SQL），以达到主从一致。</li>
 </ul>
-<p><img src="/posts/undefined/%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5.png" alt="主从同步"></p>
+<p><img src="/posts/bce68613/%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5.png" alt="主从同步"></p>
 <h2 id="3-2-同步策略"><a href="#3-2-同步策略" class="headerlink" title="3.2 同步策略"></a>3.2 同步策略</h2><ul>
 <li><p>异步复制，master不管slave，只管自己写binlog，slave异步去同步，这种新能最好，但是一致性最差。</p>
 </li>
@@ -579,15 +579,15 @@
 </li>
 </ul>
 <h1 id="4-为什么使用了索引，还是慢查询"><a href="#4-为什么使用了索引，还是慢查询" class="headerlink" title="4.为什么使用了索引，还是慢查询"></a>4.为什么使用了索引，还是慢查询</h1><h2 id="场景1-慢SQL的原因是没命中索引"><a href="#场景1-慢SQL的原因是没命中索引" class="headerlink" title="场景1: 慢SQL的原因是没命中索引"></a>场景1: 慢SQL的原因是没命中索引</h2><p>实时分析：</p>
-<p><img src="/posts/undefined/%E4%BC%98%E5%8C%96%E5%89%8D%E7%BB%9F%E8%AE%A1.png" alt="优化前统计"></p>
+<p><img src="/posts/bce68613/%E4%BC%98%E5%8C%96%E5%89%8D%E7%BB%9F%E8%AE%A1.png" alt="优化前统计"></p>
 <p>慢SQL</p>
 <p>在慢查询中，最多的一条语句是</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> `white_user` <span class="keyword">WHERE</span> `user_id`<span class="operator">=</span>? <span class="keyword">AND</span> `status`<span class="operator">=</span>? <span class="keyword">AND</span> `level`<span class="operator">=</span>? <span class="keyword">AND</span> `type`<span class="operator">=</span>? LIMIT ?,?;</span><br></pre></td></tr></table></figure>
 
 <p>表结构</p>
-<p><img src="/posts/undefined/%E8%A1%A8%E7%BB%93%E6%9E%84.png" alt="表结构"></p>
+<p><img src="/posts/bce68613/%E8%A1%A8%E7%BB%93%E6%9E%84.png" alt="表结构"></p>
 <p>执行计划</p>
-<p><img src="/posts/undefined/%E4%BC%98%E5%8C%96%E5%89%8D%E7%BB%9F%E8%AE%A1.png" alt="优化前统计"></p>
+<p><img src="/posts/bce68613/%E4%BC%98%E5%8C%96%E5%89%8D%E7%BB%9F%E8%AE%A1.png" alt="优化前统计"></p>
 <p>由执行计划的key看到没有用到索引</p>
 <p>解决办法：创建索引</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> `white_user` <span class="keyword">add</span> `idx_user_id_status_level_type`(`user_id`,`status`,`level`,`type`);</span><br></pre></td></tr></table></figure>
@@ -595,24 +595,24 @@
 
 
 <p>优化后统计：</p>
-<p><img src="/posts/undefined/%E4%BC%98%E5%8C%96%E5%90%8E%E7%BB%9F%E8%AE%A1.png" alt="优化后统计"></p>
+<p><img src="/posts/bce68613/%E4%BC%98%E5%8C%96%E5%90%8E%E7%BB%9F%E8%AE%A1.png" alt="优化后统计"></p>
 <h2 id="场景2-慢SQL的原因是命中了，但是Using-filesort"><a href="#场景2-慢SQL的原因是命中了，但是Using-filesort" class="headerlink" title="场景2:慢SQL的原因是命中了，但是Using filesort"></a>场景2:慢SQL的原因是命中了，但是Using filesort</h2><p>查询商家的退款订单列表且按倒叙排序</p>
-<p><img src="/posts/undefined/%E6%85%A2%E6%9F%A5%E8%AF%A2.png" alt="慢查询"></p>
+<p><img src="/posts/bce68613/%E6%85%A2%E6%9F%A5%E8%AF%A2.png" alt="慢查询"></p>
 <p>执行计划</p>
-<p><img src="/posts/undefined/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%922.png" alt="执行计划2"></p>
+<p><img src="/posts/bce68613/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%922.png" alt="执行计划2"></p>
 <p>Using filesort 文件排序比较慢，一般在order by的时候出现</p>
 <p>部分表结构</p>
-<p><img src="/posts/undefined/%E8%A1%A8%E7%BB%93%E6%9E%842.png" alt="表结构2"></p>
+<p><img src="/posts/bce68613/%E8%A1%A8%E7%BB%93%E6%9E%842.png" alt="表结构2"></p>
 <p>解决办法：用到索引的同时，也不要进行文件排序，而是进行create_time的排序</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> `refund_cuser` <span class="keyword">add</span> index `idx_buser_id_createtime`(`buser_id`,`create_time`);</span><br></pre></td></tr></table></figure>
 
 
 
 <p>通过执行计划发现已经没有了using filesort</p>
-<p><img src="/posts/undefined/%E4%BC%98%E5%8C%96%E5%90%8E%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92.png" alt="优化后执行计划"></p>
+<p><img src="/posts/bce68613/%E4%BC%98%E5%8C%96%E5%90%8E%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92.png" alt="优化后执行计划"></p>
 <p>优化后统计</p>
-<p><img src="/posts/undefined/%E4%BC%98%E5%8C%96%E5%90%8E%E7%BB%9F%E8%AE%A12.png" alt="优化后统计2"></p>
-<p>链接 <a href="http://ulemony.github.io/posts/undefined.html">http://ulemony.github.io/posts/undefined.html</a> </p>
+<p><img src="/posts/bce68613/%E4%BC%98%E5%8C%96%E5%90%8E%E7%BB%9F%E8%AE%A12.png" alt="优化后统计2"></p>
+<p>链接 <a href="http://ulemony.github.io/posts/bce68613.html">http://ulemony.github.io/posts/bce68613.html</a> </p>
 ]]></content>
       <categories>
         <category>Database</category>
@@ -884,28 +884,6 @@
       </tags>
   </entry>
   <entry>
-    <title>springboot+redis实现缓存</title>
-    <url>/posts/af5af1e3.html</url>
-    <content><![CDATA[<h2 id="Springbooot整合redis实现缓存"><a href="#Springbooot整合redis实现缓存" class="headerlink" title="Springbooot整合redis实现缓存"></a>Springbooot整合redis实现缓存</h2><h4 id="依赖引入"><a href="#依赖引入" class="headerlink" title="依赖引入"></a>依赖引入</h4><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>fastjson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;fastjson.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="comment">&lt;!--spring boot 集成redis所需common-pool2--&gt;</span></span><br><span class="line"> <span class="comment">&lt;!-- https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 --&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.commons<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-pool2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;commons-pool2.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.commons<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-lang3<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-codec<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-codec<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.15<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">spring:</span><br><span class="line">  redis:</span><br><span class="line">    port: <span class="number">6379</span></span><br><span class="line">    host: <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line">    password: <span class="number">123456</span></span><br><span class="line"></span><br><span class="line">  cache:</span><br><span class="line">    type: redis</span><br></pre></td></tr></table></figure>
-
-<h4 id="配置类"><a href="#配置类" class="headerlink" title="配置类"></a>配置类</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableCaching</span></span><br><span class="line"><span class="meta">@ConditionalOnClass(RedisOperations.class)</span></span><br><span class="line"><span class="meta">@EnableConfigurationProperties(RedisProperties.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RedisConfig</span> <span class="keyword">extends</span> <span class="title class_">CachingConfigurerSupport</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *设置<span class="doctag">@Cacheable</span> 序列化方式以及缓过期时间</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> RedisCacheConfiguration <span class="title function_">redisCacheConfiguration</span><span class="params">()</span>&#123;</span><br><span class="line">        FastJsonRedisSerializer&lt;Object&gt; fastJsonRedisSerializer=<span class="keyword">new</span> <span class="title class_">FastJsonRedisSerializer</span>&lt;&gt;(Object.class);</span><br><span class="line">        RedisCacheConfiguration cacheConfiguration=RedisCacheConfiguration.defaultCacheConfig();</span><br><span class="line">        cacheConfiguration=cacheConfiguration.serializeValuesWith(RedisSerializationContext.</span><br><span class="line">                SerializationPair.fromSerializer(fastJsonRedisSerializer)).entryTtl(Duration.ofHours(<span class="number">1</span>));</span><br><span class="line">        <span class="keyword">return</span> cacheConfiguration;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean(name = &quot;redisTemplate&quot;)</span></span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean(name = &quot;redisTemplate&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> RedisTemplate&lt;Object,Object&gt; <span class="title function_">redisTemplate</span><span class="params">(RedisConnectionFactory redisConnectionFactory)</span>&#123;</span><br><span class="line">        RedisTemplate&lt;Object,Object&gt; template=<span class="keyword">new</span> <span class="title class_">RedisTemplate</span>&lt;&gt;();</span><br><span class="line">        <span class="comment">//序列化</span></span><br><span class="line">        FastJsonRedisSerializer&lt;Object&gt; fastJsonRedisSerializer= <span class="keyword">new</span> <span class="title class_">FastJsonRedisSerializer</span>&lt;&gt;(Object.class);</span><br><span class="line">        <span class="comment">//value值采用fastJsonRedisSerializer</span></span><br><span class="line">        template.setValueSerializer(fastJsonRedisSerializer);</span><br><span class="line">        template.setHashValueSerializer(fastJsonRedisSerializer);</span><br><span class="line">        <span class="comment">//指定序列化白名单</span></span><br><span class="line">        ParserConfig.getGlobalInstance().addAccept(<span class="string">&quot;com.example.springbootdemo.pojo&quot;</span>);</span><br><span class="line">        <span class="comment">//key值采用StringSerializer</span></span><br><span class="line">        template.setKeySerializer(<span class="keyword">new</span> <span class="title class_">StringRedisSerializer</span>());</span><br><span class="line">        template.setHashKeySerializer(<span class="keyword">new</span> <span class="title class_">StringRedisSerializer</span>());</span><br><span class="line">        template.setConnectionFactory(redisConnectionFactory);</span><br><span class="line">        <span class="keyword">return</span> template;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *自定义缓存key生成策略</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean(name = &quot;selfkeyGenerator&quot;)</span></span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> KeyGenerator <span class="title function_">keyGenerator</span><span class="params">()</span> &#123;</span><br><span class="line">       <span class="keyword">return</span> (target,method,params) -&gt; &#123;</span><br><span class="line">           StringBuilder builder=<span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">           builder.append(method.getName());</span><br><span class="line">           builder.append(<span class="string">&quot;_&quot;</span>);</span><br><span class="line">           <span class="keyword">for</span>(Object obj: params)&#123;</span><br><span class="line">               builder.append(JSON.toJSONString(obj).hashCode());</span><br><span class="line">               builder.append(<span class="string">&quot;_&quot;</span>);</span><br><span class="line">           &#125;</span><br><span class="line">           String string=builder.toString();</span><br><span class="line"></span><br><span class="line">           <span class="comment">// 做SHA256 Hash计算，得到一个SHA256摘要作为Key</span></span><br><span class="line">           <span class="keyword">return</span> DigestUtils.sha256(string);</span><br><span class="line">       &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> CacheErrorHandler <span class="title function_">errorHandler</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 异常处理，当Redis发生异常时，打印日志，但是程序正常走</span></span><br><span class="line">        log.info(<span class="string">&quot;初始化 -&gt; [&#123;&#125;]&quot;</span>, <span class="string">&quot;Redis CacheErrorHandler&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">CacheErrorHandler</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleCacheGetError</span><span class="params">(RuntimeException e, Cache cache, Object key)</span> &#123;</span><br><span class="line">                log.error(<span class="string">&quot;Redis occur handleCacheGetError：key -&gt; [&#123;&#125;]&quot;</span>, key, e);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleCachePutError</span><span class="params">(RuntimeException e, Cache cache, Object key, Object value)</span> &#123;</span><br><span class="line">                log.error(<span class="string">&quot;Redis occur handleCachePutError：key -&gt; [&#123;&#125;]；value -&gt; [&#123;&#125;]&quot;</span>, key, value, e);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleCacheEvictError</span><span class="params">(RuntimeException e, Cache cache, Object key)</span> &#123;</span><br><span class="line">                log.error(<span class="string">&quot;Redis occur handleCacheEvictError：key -&gt; [&#123;&#125;]&quot;</span>, key, e);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleCacheClearError</span><span class="params">(RuntimeException e, Cache cache)</span> &#123;</span><br><span class="line">                log.error(<span class="string">&quot;Redis occur handleCacheClearError：&quot;</span>, e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FastJsonRedisSerializer</span>&lt;T&gt; <span class="keyword">implements</span> <span class="title class_">RedisSerializer</span>&lt;T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Class&lt;T&gt; clazz;</span><br><span class="line">    FastJsonRedisSerializer(Class&lt;T&gt; clazz)&#123;</span><br><span class="line">        <span class="built_in">super</span>();</span><br><span class="line">        <span class="built_in">this</span>.clazz=clazz;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">byte</span>[] serialize(T t) <span class="keyword">throws</span> SerializationException &#123;</span><br><span class="line">        <span class="keyword">if</span>(t == <span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> JSON.toJSONString(t, SerializerFeature.WriteClassName).getBytes(StandardCharsets.UTF_8);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> T <span class="title function_">deserialize</span><span class="params">(<span class="type">byte</span>[] bytes)</span> <span class="keyword">throws</span> SerializationException &#123;</span><br><span class="line">        <span class="keyword">if</span>(bytes == <span class="literal">null</span> || bytes.length == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        String str=<span class="keyword">new</span> <span class="title class_">String</span>(bytes,StandardCharsets.UTF_8);</span><br><span class="line">        <span class="keyword">return</span> JSON.parseObject(str,clazz);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">StringRedisSerializer</span> <span class="keyword">implements</span> <span class="title class_">RedisSerializer</span>&lt;Object&gt;&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Charset charset;</span><br><span class="line">    StringRedisSerializer()&#123;</span><br><span class="line">        <span class="built_in">this</span>(StandardCharsets.UTF_8);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">StringRedisSerializer</span><span class="params">(Charset charset)</span>&#123;</span><br><span class="line">        Assert.notNull(charset,<span class="string">&quot;Charset must not be null!&quot;</span>);</span><br><span class="line">        <span class="built_in">this</span>.charset=charset;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">byte</span>[] serialize(Object o) <span class="keyword">throws</span> SerializationException &#123;</span><br><span class="line">        String string=JSON.toJSONString(o);</span><br><span class="line">        <span class="keyword">if</span>(!StringUtils.hasLength(string))&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//去掉字符串中的双引号</span></span><br><span class="line">        string=string.replace(<span class="string">&quot;\&quot;&quot;</span>,<span class="string">&quot; &quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> string.getBytes(charset);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">deserialize</span><span class="params">(<span class="type">byte</span>[] bytes)</span> <span class="keyword">throws</span> SerializationException &#123;</span><br><span class="line">        <span class="keyword">return</span> (bytes == <span class="literal">null</span> ? <span class="literal">null</span> : <span class="keyword">new</span> <span class="title class_">String</span>(bytes,charset));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//    @Cacheable(value = &quot;user&quot;,key = &quot;&#x27;id:&#x27;+ #p0&quot;)</span></span><br><span class="line">    <span class="meta">@Cacheable(value = &quot;user&quot;,keyGenerator = &quot;selfkeyGenerator&quot;)</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> User <span class="title function_">findUserById</span><span class="params">(Long id)</span> &#123;</span><br><span class="line">        User user=userMapper.selectById(id);</span><br><span class="line">        <span class="keyword">if</span>(user==<span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">EntityNotFoundException</span>(User.class,<span class="string">&quot;id&quot;</span>,id.toString());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> user;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>链接 <a href="http://ulemony.github.io/posts/af5af1e3.html">http://ulemony.github.io/posts/af5af1e3.html</a> </p>
-]]></content>
-      <categories>
-        <category>Java</category>
-        <category>Redis</category>
-      </categories>
-      <tags>
-        <tag>缓存</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>chatgpt聊天机器人部署</title>
     <url>/posts/9fa1f056.html</url>
     <content><![CDATA[<h1 id="window环境下的部署"><a href="#window环境下的部署" class="headerlink" title="window环境下的部署"></a>window环境下的部署</h1><h2 id="后端项目部署"><a href="#后端项目部署" class="headerlink" title="后端项目部署"></a>后端项目部署</h2><h3 id="1-环境准备"><a href="#1-环境准备" class="headerlink" title="1.环境准备"></a>1.环境准备</h3><h4 id="1-1-jdk1-8安装"><a href="#1-1-jdk1-8安装" class="headerlink" title="1.1 jdk1.8安装"></a>1.1 jdk1.8安装</h4><p>安装教程</p>
@@ -999,6 +977,28 @@
       </categories>
       <tags>
         <tag>chatgpt</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>springboot+redis实现缓存</title>
+    <url>/posts/af5af1e3.html</url>
+    <content><![CDATA[<h2 id="Springbooot整合redis实现缓存"><a href="#Springbooot整合redis实现缓存" class="headerlink" title="Springbooot整合redis实现缓存"></a>Springbooot整合redis实现缓存</h2><h4 id="依赖引入"><a href="#依赖引入" class="headerlink" title="依赖引入"></a>依赖引入</h4><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>fastjson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;fastjson.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="comment">&lt;!--spring boot 集成redis所需common-pool2--&gt;</span></span><br><span class="line"> <span class="comment">&lt;!-- https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 --&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.commons<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-pool2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;commons-pool2.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.commons<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-lang3<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-codec<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-codec<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.15<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">spring:</span><br><span class="line">  redis:</span><br><span class="line">    port: <span class="number">6379</span></span><br><span class="line">    host: <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line">    password: <span class="number">123456</span></span><br><span class="line"></span><br><span class="line">  cache:</span><br><span class="line">    type: redis</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置类"><a href="#配置类" class="headerlink" title="配置类"></a>配置类</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableCaching</span></span><br><span class="line"><span class="meta">@ConditionalOnClass(RedisOperations.class)</span></span><br><span class="line"><span class="meta">@EnableConfigurationProperties(RedisProperties.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RedisConfig</span> <span class="keyword">extends</span> <span class="title class_">CachingConfigurerSupport</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *设置<span class="doctag">@Cacheable</span> 序列化方式以及缓过期时间</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> RedisCacheConfiguration <span class="title function_">redisCacheConfiguration</span><span class="params">()</span>&#123;</span><br><span class="line">        FastJsonRedisSerializer&lt;Object&gt; fastJsonRedisSerializer=<span class="keyword">new</span> <span class="title class_">FastJsonRedisSerializer</span>&lt;&gt;(Object.class);</span><br><span class="line">        RedisCacheConfiguration cacheConfiguration=RedisCacheConfiguration.defaultCacheConfig();</span><br><span class="line">        cacheConfiguration=cacheConfiguration.serializeValuesWith(RedisSerializationContext.</span><br><span class="line">                SerializationPair.fromSerializer(fastJsonRedisSerializer)).entryTtl(Duration.ofHours(<span class="number">1</span>));</span><br><span class="line">        <span class="keyword">return</span> cacheConfiguration;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean(name = &quot;redisTemplate&quot;)</span></span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean(name = &quot;redisTemplate&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> RedisTemplate&lt;Object,Object&gt; <span class="title function_">redisTemplate</span><span class="params">(RedisConnectionFactory redisConnectionFactory)</span>&#123;</span><br><span class="line">        RedisTemplate&lt;Object,Object&gt; template=<span class="keyword">new</span> <span class="title class_">RedisTemplate</span>&lt;&gt;();</span><br><span class="line">        <span class="comment">//序列化</span></span><br><span class="line">        FastJsonRedisSerializer&lt;Object&gt; fastJsonRedisSerializer= <span class="keyword">new</span> <span class="title class_">FastJsonRedisSerializer</span>&lt;&gt;(Object.class);</span><br><span class="line">        <span class="comment">//value值采用fastJsonRedisSerializer</span></span><br><span class="line">        template.setValueSerializer(fastJsonRedisSerializer);</span><br><span class="line">        template.setHashValueSerializer(fastJsonRedisSerializer);</span><br><span class="line">        <span class="comment">//指定序列化白名单</span></span><br><span class="line">        ParserConfig.getGlobalInstance().addAccept(<span class="string">&quot;com.example.springbootdemo.pojo&quot;</span>);</span><br><span class="line">        <span class="comment">//key值采用StringSerializer</span></span><br><span class="line">        template.setKeySerializer(<span class="keyword">new</span> <span class="title class_">StringRedisSerializer</span>());</span><br><span class="line">        template.setHashKeySerializer(<span class="keyword">new</span> <span class="title class_">StringRedisSerializer</span>());</span><br><span class="line">        template.setConnectionFactory(redisConnectionFactory);</span><br><span class="line">        <span class="keyword">return</span> template;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *自定义缓存key生成策略</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean(name = &quot;selfkeyGenerator&quot;)</span></span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> KeyGenerator <span class="title function_">keyGenerator</span><span class="params">()</span> &#123;</span><br><span class="line">       <span class="keyword">return</span> (target,method,params) -&gt; &#123;</span><br><span class="line">           StringBuilder builder=<span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">           builder.append(method.getName());</span><br><span class="line">           builder.append(<span class="string">&quot;_&quot;</span>);</span><br><span class="line">           <span class="keyword">for</span>(Object obj: params)&#123;</span><br><span class="line">               builder.append(JSON.toJSONString(obj).hashCode());</span><br><span class="line">               builder.append(<span class="string">&quot;_&quot;</span>);</span><br><span class="line">           &#125;</span><br><span class="line">           String string=builder.toString();</span><br><span class="line"></span><br><span class="line">           <span class="comment">// 做SHA256 Hash计算，得到一个SHA256摘要作为Key</span></span><br><span class="line">           <span class="keyword">return</span> DigestUtils.sha256(string);</span><br><span class="line">       &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> CacheErrorHandler <span class="title function_">errorHandler</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 异常处理，当Redis发生异常时，打印日志，但是程序正常走</span></span><br><span class="line">        log.info(<span class="string">&quot;初始化 -&gt; [&#123;&#125;]&quot;</span>, <span class="string">&quot;Redis CacheErrorHandler&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">CacheErrorHandler</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleCacheGetError</span><span class="params">(RuntimeException e, Cache cache, Object key)</span> &#123;</span><br><span class="line">                log.error(<span class="string">&quot;Redis occur handleCacheGetError：key -&gt; [&#123;&#125;]&quot;</span>, key, e);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleCachePutError</span><span class="params">(RuntimeException e, Cache cache, Object key, Object value)</span> &#123;</span><br><span class="line">                log.error(<span class="string">&quot;Redis occur handleCachePutError：key -&gt; [&#123;&#125;]；value -&gt; [&#123;&#125;]&quot;</span>, key, value, e);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleCacheEvictError</span><span class="params">(RuntimeException e, Cache cache, Object key)</span> &#123;</span><br><span class="line">                log.error(<span class="string">&quot;Redis occur handleCacheEvictError：key -&gt; [&#123;&#125;]&quot;</span>, key, e);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleCacheClearError</span><span class="params">(RuntimeException e, Cache cache)</span> &#123;</span><br><span class="line">                log.error(<span class="string">&quot;Redis occur handleCacheClearError：&quot;</span>, e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FastJsonRedisSerializer</span>&lt;T&gt; <span class="keyword">implements</span> <span class="title class_">RedisSerializer</span>&lt;T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Class&lt;T&gt; clazz;</span><br><span class="line">    FastJsonRedisSerializer(Class&lt;T&gt; clazz)&#123;</span><br><span class="line">        <span class="built_in">super</span>();</span><br><span class="line">        <span class="built_in">this</span>.clazz=clazz;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">byte</span>[] serialize(T t) <span class="keyword">throws</span> SerializationException &#123;</span><br><span class="line">        <span class="keyword">if</span>(t == <span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> JSON.toJSONString(t, SerializerFeature.WriteClassName).getBytes(StandardCharsets.UTF_8);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> T <span class="title function_">deserialize</span><span class="params">(<span class="type">byte</span>[] bytes)</span> <span class="keyword">throws</span> SerializationException &#123;</span><br><span class="line">        <span class="keyword">if</span>(bytes == <span class="literal">null</span> || bytes.length == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        String str=<span class="keyword">new</span> <span class="title class_">String</span>(bytes,StandardCharsets.UTF_8);</span><br><span class="line">        <span class="keyword">return</span> JSON.parseObject(str,clazz);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">StringRedisSerializer</span> <span class="keyword">implements</span> <span class="title class_">RedisSerializer</span>&lt;Object&gt;&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Charset charset;</span><br><span class="line">    StringRedisSerializer()&#123;</span><br><span class="line">        <span class="built_in">this</span>(StandardCharsets.UTF_8);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">StringRedisSerializer</span><span class="params">(Charset charset)</span>&#123;</span><br><span class="line">        Assert.notNull(charset,<span class="string">&quot;Charset must not be null!&quot;</span>);</span><br><span class="line">        <span class="built_in">this</span>.charset=charset;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">byte</span>[] serialize(Object o) <span class="keyword">throws</span> SerializationException &#123;</span><br><span class="line">        String string=JSON.toJSONString(o);</span><br><span class="line">        <span class="keyword">if</span>(!StringUtils.hasLength(string))&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//去掉字符串中的双引号</span></span><br><span class="line">        string=string.replace(<span class="string">&quot;\&quot;&quot;</span>,<span class="string">&quot; &quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> string.getBytes(charset);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">deserialize</span><span class="params">(<span class="type">byte</span>[] bytes)</span> <span class="keyword">throws</span> SerializationException &#123;</span><br><span class="line">        <span class="keyword">return</span> (bytes == <span class="literal">null</span> ? <span class="literal">null</span> : <span class="keyword">new</span> <span class="title class_">String</span>(bytes,charset));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//    @Cacheable(value = &quot;user&quot;,key = &quot;&#x27;id:&#x27;+ #p0&quot;)</span></span><br><span class="line">    <span class="meta">@Cacheable(value = &quot;user&quot;,keyGenerator = &quot;selfkeyGenerator&quot;)</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> User <span class="title function_">findUserById</span><span class="params">(Long id)</span> &#123;</span><br><span class="line">        User user=userMapper.selectById(id);</span><br><span class="line">        <span class="keyword">if</span>(user==<span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">EntityNotFoundException</span>(User.class,<span class="string">&quot;id&quot;</span>,id.toString());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> user;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>链接 <a href="http://ulemony.github.io/posts/af5af1e3.html">http://ulemony.github.io/posts/af5af1e3.html</a> </p>
+]]></content>
+      <categories>
+        <category>Java</category>
+        <category>Redis</category>
+      </categories>
+      <tags>
+        <tag>缓存</tag>
       </tags>
   </entry>
   <entry>
@@ -1123,20 +1123,20 @@
 </li>
 </ol>
 <h2 id="3-一些经验"><a href="#3-一些经验" class="headerlink" title="3.一些经验"></a>3.一些经验</h2><h3 id="3-1-分库"><a href="#3-1-分库" class="headerlink" title="3.1 分库"></a>3.1 分库</h3><p>分库原则：每个子系统对应一个数据库</p>
-<p><img src="/posts/undefined/%E5%88%86%E5%BA%93%E5%8E%9F%E5%88%99.png" alt="分库原则"></p>
+<p><img src="/posts/da3ed1b/%E5%88%86%E5%BA%93%E5%8E%9F%E5%88%99.png" alt="分库原则"></p>
 <p>注意：在数据强一致的场景则涉及到数据库分布式事务</p>
 <h3 id="3-2分表"><a href="#3-2分表" class="headerlink" title="3.2分表"></a>3.2分表</h3><ol>
 <li><p>从主功能逻辑抽离主要几张表</p>
-<p><img src="/posts/undefined/%E5%88%86%E8%A1%A81.png" alt="分表1"></p>
+<p><img src="/posts/da3ed1b/%E5%88%86%E8%A1%A81.png" alt="分表1"></p>
 </li>
 <li><p>根据功能补充表</p>
-<p><img src="/posts/undefined/%E5%88%86%E8%A1%A82.png" alt="分表2"></p>
+<p><img src="/posts/da3ed1b/%E5%88%86%E8%A1%A82.png" alt="分表2"></p>
 </li>
 <li><p>检查多对多关系</p>
-<p><img src="/posts/undefined/%E5%88%86%E8%A1%A83.png" alt="分表3"></p>
+<p><img src="/posts/da3ed1b/%E5%88%86%E8%A1%A83.png" alt="分表3"></p>
 </li>
 </ol>
-<h3 id="3-3-冗余字段"><a href="#3-3-冗余字段" class="headerlink" title="3.3 冗余字段"></a>3.3 冗余字段</h3><p><img src="/posts/undefined/%E5%86%97%E4%BD%99%E5%AD%97%E6%AE%B5.png" alt="冗余字段"></p>
+<h3 id="3-3-冗余字段"><a href="#3-3-冗余字段" class="headerlink" title="3.3 冗余字段"></a>3.3 冗余字段</h3><p><img src="/posts/da3ed1b/%E5%86%97%E4%BD%99%E5%AD%97%E6%AE%B5.png" alt="冗余字段"></p>
 <h3 id="3-4-视图"><a href="#3-4-视图" class="headerlink" title="3.4 视图"></a>3.4 视图</h3><p>视图能简化后端程序的SQL语句，如用户前台、管理员后台都需要显示热门博客，如果使用视图，就无需在多个接口维护多个复杂的SQL语句</p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">--根据简单SQL查询热门博客列表</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_hot</span><br></pre></td></tr></table></figure>
 
@@ -1149,13 +1149,250 @@
 <li>字段名： 表名开头，如blog_id、label_id</li>
 <li>外键：与原来名字相同，如所有的博客id都为blog_id，如果引用多个相同外键，则用$标记 如resource_id$1、resource_id$2</li>
 </ol>
-<p>链接 <a href="http://ulemony.github.io/posts/undefined.html">http://ulemony.github.io/posts/undefined.html</a> </p>
+<p>链接 <a href="http://ulemony.github.io/posts/da3ed1b.html">http://ulemony.github.io/posts/da3ed1b.html</a> </p>
 ]]></content>
       <categories>
         <category>Database</category>
       </categories>
       <tags>
         <tag>databas design</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>索引</title>
+    <url>/posts/df9a61f7.html</url>
+    <content><![CDATA[<h3 id="索引基础"><a href="#索引基础" class="headerlink" title="索引基础"></a>索引基础</h3><h4 id="索引的基本原理"><a href="#索引的基本原理" class="headerlink" title="索引的基本原理"></a>索引的基本原理</h4><p>索引的核心思想是通过为表中的列创建额外的数据结构，来加速查询过程</p>
+<h4 id="索引分类"><a href="#索引分类" class="headerlink" title="索引分类"></a>索引分类</h4><p>常见的索引类型：主键索引、唯一索引、普通索引、全文索引、组合索引</p>
+<h5 id="主键索引"><a href="#主键索引" class="headerlink" title="主键索引"></a>主键索引</h5><p>把某个列设置为主键的时候，该列就是主键索引，每个表只能有一个主键索引，主键列的值是唯一的，不能为NULL</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> users (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY auto_increment,  <span class="comment">-- 主键索引</span></span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">50</span>) <span class="keyword">not</span> <span class="keyword">null</span> <span class="keyword">default</span> <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">    age <span class="type">INT</span></span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果创建表时没有主键索引，可以在创建之后添加</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">add</span> <span class="keyword">primary</span> key (column_name)</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="唯一索引"><a href="#唯一索引" class="headerlink" title="唯一索引"></a>唯一索引</h5><p>唯一索引和主键索引类似，保证索引列中的每个值是唯一的。但唯一索引允许存在 <code>NULL</code> 值，而且每个表可以有多个唯一索引</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> employees (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY auto_increment,</span><br><span class="line">    email <span class="type">VARCHAR</span>(<span class="number">100</span>) <span class="keyword">UNIQUE</span>,  <span class="comment">-- 唯一索引</span></span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">50</span>)</span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果创建表时没有唯一索引，可以创建后追加</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name</span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span> constraint_name <span class="keyword">UNIQUE</span> (column_name);</span><br><span class="line"><span class="comment">--constraint_name 指约束名，可以自定义</span></span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> users</span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">UNIQUE</span> (email);</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="普通索引"><a href="#普通索引" class="headerlink" title="普通索引"></a>普通索引</h5><p>不要求列中的值唯一，表中可以有多个普通索引</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> products (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">100</span>),</span><br><span class="line">    price <span class="type">DECIMAL</span>(<span class="number">10</span>, <span class="number">2</span>),</span><br><span class="line">    INDEX idx_price(price)  <span class="comment">-- 普通索引</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="全文索引"><a href="#全文索引" class="headerlink" title="全文索引"></a>全文索引</h5><p>通常用于对长文本字段进行复杂的搜索，例如查询特定的单词; 在MYSQL5.6之前只有MyISAM存储引擎支持全文索引，MYSQL5.6之后InnoDB存储引擎也支持全文索引</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> articles (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    title <span class="type">VARCHAR</span>(<span class="number">100</span>),</span><br><span class="line">    content TEXT,</span><br><span class="line">    FULLTEXT INDEX idx_fulltext(content)  <span class="comment">-- 全文索引</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>也可以在创建表后追加全文索引</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name</span><br><span class="line"><span class="keyword">ADD</span> FULLTEXT INDEX index_name (column_name);</span><br></pre></td></tr></table></figure>
+
+<p>可以利用MATCH和AGAINST来进行高效的全文搜索</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> articles <span class="keyword">WHERE</span> <span class="keyword">MATCH</span>(content) AGAINST(<span class="string">&#x27;database&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="组合索引"><a href="#组合索引" class="headerlink" title="组合索引"></a>组合索引</h5><p>由多个列组成的索引；遵循“最左前缀”原则</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> orders (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    customer_id <span class="type">INT</span>,</span><br><span class="line">    order_date <span class="type">DATE</span>,</span><br><span class="line">    amount <span class="type">DECIMAL</span>(<span class="number">10</span>, <span class="number">2</span>),</span><br><span class="line">    INDEX idx_customer_order(customer_id, order_date)  <span class="comment">-- 组合索引</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>也可以在创建表后追加组合索引</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name</span><br><span class="line"><span class="keyword">ADD</span> INDEX index_name (column1, column2, ...);</span><br></pre></td></tr></table></figure>
+
+<p>查询时可以利用这两个列来查询</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> orders <span class="keyword">WHERE</span> customer_id <span class="operator">=</span> <span class="number">101</span> <span class="keyword">AND</span> order_date <span class="keyword">BETWEEN</span> <span class="string">&#x27;2023-01-01&#x27;</span> <span class="keyword">AND</span> <span class="string">&#x27;2023-12-31&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>查看表的索引</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> INDEX <span class="keyword">FROM</span> 表名;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="索引机制"><a href="#索引机制" class="headerlink" title="索引机制"></a>索引机制</h4><p>添加完索引后，MySQL一般通过BTREE算法生成一个索引文件，在查询数据库时，找到索引文件进行遍历，找到相应的键从而获取数据</p>
+<p>创建索引产生的索引文件会占用磁盘空间，在增删改查时会对索引文件进行修改，性能会有所下降</p>
+<h4 id="索引存储数据结构"><a href="#索引存储数据结构" class="headerlink" title="索引存储数据结构"></a>索引存储数据结构</h4><h5 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h5><p>以键值对存储的数据结构，只要输入key就可以找到对应的value，等值查询高效，但不支持范围查询。在MySQL中，Memory存储引擎的默认索引类型就是哈希索引</p>
+<h5 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h5><p>当数据量大时，二叉树的树高会比较大，需要多次读取磁盘耗费时间</p>
+<p><img src="/posts/df9a61f7/%E4%BA%8C%E5%8F%89%E6%A0%91.png" alt="二叉树"></p>
+<p><img src="/posts/df9a61f7/%E4%BA%8C%E5%8F%89%E6%A0%912.png" alt="二叉树2"></p>
+<h5 id="B树（Balance-Tree）"><a href="#B树（Balance-Tree）" class="headerlink" title="B树（Balance Tree）"></a>B树（Balance Tree）</h5><p>图中的p节点为指向子节点的指针，每个节点称为页，页就是磁盘快，mysql中数据读取的基本单位是页</p>
+<p>B树和二叉树相比，每个节点存储量更多的键值和数据，而且拥有更多的子节点，高度很低，B树查找读取磁盘的次数很少，提高了查找效率</p>
+<p><img src="/posts/df9a61f7/B%E6%A0%91.png" alt="B树"></p>
+<p>假如要查找id&#x3D;29的用户，查找流程如下：</p>
+<p>1.找到根节点也就是页1，判断29在17和35之间，选取指针p2找到页3</p>
+<p>2.把29和页3中的键值比较，29在26和30之间，选取指针p2找到页8</p>
+<p>3.将29和页8的键值比较，有匹配的的键值29，完成查找</p>
+<h5 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h5><ol>
+<li><p>B+树的非叶节点不存储数据，仅存储键值，所有数据存储在叶子节点，而且数据是按照顺序排列的，这使得B+树范围查找、排序查找、分组查找以及去重查找变得很简单。</p>
+</li>
+<li><p>如果B+树一个节点可以存储1000个键值，那么3层B+树可以存储1000x1000x1000&#x3D;10亿个数据。一般根节点常驻内存，查找10个数据只需要2次磁盘IO</p>
+</li>
+<li><p>B+树页之间通过双向链表连接，叶子节点中的数据通过单向链表连接</p>
+</li>
+<li><p>在Innodb存储引擎中，B+树索引是 聚簇索引，在MYISAM中，B+树索引的叶子节点不存储数据，而是数据的地址，属于非聚簇索引</p>
+</li>
+</ol>
+<p><img src="/posts/df9a61f7/B+%E6%A0%91.png" alt="B+树"></p>
+<h4 id="聚簇索引和非聚簇索引"><a href="#聚簇索引和非聚簇索引" class="headerlink" title="聚簇索引和非聚簇索引"></a>聚簇索引和非聚簇索引</h4><p>在MySQL中，B+树按存储方式可分为聚簇索引和非聚簇索引</p>
+<h5 id="聚簇索引"><a href="#聚簇索引" class="headerlink" title="聚簇索引"></a>聚簇索引</h5><p>在InnoDB中，主键索引就是聚簇索引，即使不创建主键，系统也会主动创建隐式主键，以主键作为B+树索引的键值而构建的B+树索引为聚簇索引，叶子节点存储了行数据</p>
+<p>当执行sql语句：select * from user where id&gt;&#x3D;18 and id &lt;40，对应的数据查找过程（以上图为例）</p>
+<ol>
+<li>不需要从磁盘读取数据，直接从内存中读取根节点也就是页1，在页1中找到键值18，从而根据指针p2定位到页3</li>
+<li>从磁盘中读取页3并放入内存中，在页3中找到键值18，根据指针p1定位到页8</li>
+<li>从磁盘中读取页8并放入内存中，页中的数据是通过单向链表进行连接，且键值按照顺序存放，可以根据二分查找法定位到键值18</li>
+<li>因为是范围查找而去所有数据存放于叶子节点，且有序排列，可以对页8的键值遍历查询，可以一直找到键值为22的数据，此时页8的数据被全部遍历，由于页之间通过双向链表连接，可通过页8的指针定位到页9进行数据查询，一直到页12，发现41大于40不满足条件，查找终止</li>
+</ol>
+<h5 id="非聚簇索引"><a href="#非聚簇索引" class="headerlink" title="非聚簇索引"></a>非聚簇索引</h5><p>以主键之外的列值作为键值构建的B+树索引称之为非聚簇索引，也叫辅助索引（二级索引）</p>
+<p>和聚簇索引的区别在于非聚簇索引的叶子节点不存储表中的数据，而是该列对应的主键，数据表和索引表是分开存储的。查询时先找到主键，再用主键到聚簇索引中进行查找数据，这个过程称为 <strong>回表</strong>。</p>
+<p>当执行sql语句执行 select * from user where name &#x3D; ‘jim’，查找流程如下</p>
+<ol>
+<li><p>从内存读取根节点页1，根据指针p1定位到页2</p>
+</li>
+<li><p>根据页2中的指针p2定位到页6</p>
+</li>
+<li><p>找到索引对应的值jim，获取主键20</p>
+</li>
+<li><p>到主键索引中根据主键20 获取对应的数据</p>
+</li>
+</ol>
+<p><img src="/posts/df9a61f7/%E9%9D%9E%E8%81%9A%E9%9B%86%E7%B4%A2%E5%BC%95.png" alt="非聚集索引"></p>
+<p>如果使用了覆盖索引，则不需要回表，直接通过辅助索引就可以查到需要的数据，覆盖索引的前提是查询列要被所建的索引覆盖</p>
+<p>例如对于数据表 <code>employees</code>，包含 <code>id</code>、<code>name</code> 和 <code>age</code> 三列：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> employees (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">100</span>),</span><br><span class="line">    age <span class="type">INT</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>可以为name 和age 创建一个复合索引</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> INDEX idx_name_age <span class="keyword">ON</span> employees (name, age);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>当执行查询  SELECT name, age FROM employees WHERE name &#x3D; ‘Alice’;</p>
+<p><code>idx_name_age</code> 索引中已经包含了 <code>name</code> 和 <code>age</code> 两个列，因此这个查询可以完全通过索引来获取结果，不需要访问实际的数据库</p>
+<h4 id="相关名词"><a href="#相关名词" class="headerlink" title="相关名词"></a>相关名词</h4><h5 id="最左匹配原则"><a href="#最左匹配原则" class="headerlink" title="最左匹配原则"></a>最左匹配原则</h5><p>在创建一个复合索引时，查询条件必须从复合索引的最左列开始，且不能跳过中间的任何列，才能有效使用索引</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> employees (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">100</span>),</span><br><span class="line">    age <span class="type">INT</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> INDEX idx_name_age <span class="keyword">ON</span> employees (name, age);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>索引 <code>idx_name_age</code> 是由 <code>name</code> 列和 <code>age</code> 列构成的复合索引，索引顺序是 **<code>name</code> -&gt; <code>age</code>**。</p>
+<ol>
+<li>完全匹配索引顺序</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> name <span class="operator">=</span> <span class="string">&#x27;Alice&#x27;</span> <span class="keyword">AND</span> age <span class="operator">=</span> <span class="number">30</span>;</span><br></pre></td></tr></table></figure>
+
+<p>查询首先按索引中的最左边的列 <code>name</code> 进行匹配，接着按 <code>age</code> 列进行匹配，符合复合索引的列顺序。</p>
+<ol start="2">
+<li><p>部分匹配索引</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> name <span class="operator">=</span> <span class="string">&#x27;Alice&#x27;</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>跳过中间列的查询</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> age <span class="operator">=</span> <span class="number">30</span> <span class="keyword">AND</span> name <span class="operator">=</span> <span class="string">&#x27;Alice&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>不符合最左匹配索引原则：在复合索引idx_name_age中，name列排在age列前面，查询条件没有从最左的列name开始匹配，而是从age开始</p>
+</li>
+</ol>
+<h5 id="索引下推"><a href="#索引下推" class="headerlink" title="索引下推"></a>索引下推</h5><p>过滤条件直接在索引层面进行应用，只有符合条件的数据会被返回，减少了不必要的回表操作</p>
+<p>假设employess表</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> employees (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">100</span>),</span><br><span class="line">    age <span class="type">INT</span>,</span><br><span class="line">    salary <span class="type">DECIMAL</span>(<span class="number">10</span>, <span class="number">2</span>),</span><br><span class="line">    hire_date <span class="type">DATE</span></span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>为age和salary创建了复合索引</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> INDEX idx_age_salary <span class="keyword">ON</span> employees(age, salary);</span><br></pre></td></tr></table></figure>
+
+<p>当执行查询 </p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> age <span class="operator">&gt;</span> <span class="number">30</span> <span class="keyword">AND</span> salary <span class="operator">&gt;</span> <span class="number">5000</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如果没有索引下推，mysql会扫描索引idx_age_salary 找到所有符合age&gt;30的记录，然后回表到employees表中查找salary&gt;5000的记录</p>
+<p>最终返回符合age&gt;30 和salary&gt;5000的记录</p>
+<p>当有索引下推，在扫描索引时不仅刷选age&gt;30的记录，还会同时应用salary&gt;5000的条件，这样只有同时符合这两个条件的数据才会被返回</p>
+<h4 id="索引的使用原则"><a href="#索引的使用原则" class="headerlink" title="索引的使用原则"></a>索引的使用原则</h4><h5 id="不适合建索引的情况"><a href="#不适合建索引的情况" class="headerlink" title="不适合建索引的情况"></a>不适合建索引的情况</h5><ol>
+<li>表记录太少</li>
+<li>区分度不高的字段例如性别不适合建索引</li>
+<li>where条件中用不到的字段不适合建立索引</li>
+<li>经常插入、删除、修改的表要减少索引</li>
+<li>text、image等类型不适合建立索引</li>
+<li>mysql能估计出全表扫描比使用索引更快的时候，不使用索引</li>
+<li>参与计算的列不适合建立索引</li>
+</ol>
+<h5 id="索引失效场景"><a href="#索引失效场景" class="headerlink" title="索引失效场景"></a>索引失效场景</h5><ol>
+<li><p>使用LIKE模糊匹配 左边有通配符</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> name <span class="keyword">LIKE</span> <span class="string">&#x27;%abc&#x27;</span>; <span class="comment">-- 索引失效</span></span><br></pre></td></tr></table></figure>
+
+<p>%在前，MYSQL无法通过索引定位前缀，只能全表扫描</p>
+<p>优化：改成右匹配</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> name <span class="keyword">LIKE</span> <span class="string">&#x27;abc%&#x27;</span>; <span class="comment">-- 可使用索引</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>在索引列上使用函数或表达式</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> <span class="keyword">YEAR</span>(birthdate) <span class="operator">=</span> <span class="number">1990</span>; <span class="comment">-- 索引失效</span></span><br></pre></td></tr></table></figure>
+
+<p>对索引列使用了函数 <code>YEAR()</code>，使得不能使用索引。</p>
+<p>优化：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> birthdate <span class="operator">&gt;=</span> <span class="string">&#x27;1990-01-01&#x27;</span> <span class="keyword">AND</span> birthdate <span class="operator">&lt;</span> <span class="string">&#x27;1991-01-01&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>隐式类型转换</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> phone <span class="operator">=</span> <span class="number">1234567890</span>; <span class="comment">-- 索引失效</span></span><br></pre></td></tr></table></figure>
+
+<p><code>phone</code> 是字符串类型，但用数字进行比较，发生隐式类型转换。</p>
+<p>优化：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> phone <span class="operator">=</span> <span class="string">&#x27;1234567890&#x27;</span>;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>​	</p>
+<ol start="4">
+<li><p>OR查询没有全部字段都使用索引</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;tom&#x27;</span> <span class="keyword">OR</span> age <span class="operator">=</span> <span class="number">18</span>; <span class="comment">-- 索引失效</span></span><br></pre></td></tr></table></figure>
+
+<p><code>username</code> 有索引，但 <code>age</code> 没有，MySQL 无法对整体使用索引。</p>
+<p>优化：确保所有OR条件字段都有索引，或者用UNION 拆开</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;tom&#x27;</span></span><br><span class="line"><span class="keyword">UNION</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> age <span class="operator">=</span> <span class="number">18</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>组合索引不满足最左匹配原则</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 组合索引：(username, age)</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> age <span class="operator">=</span> <span class="number">18</span>; <span class="comment">-- 索引失效</span></span><br></pre></td></tr></table></figure>
+
+<p>没有从最左列username开始匹配</p>
+<p>优化：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;tom&#x27;</span> <span class="keyword">AND</span> age <span class="operator">=</span> <span class="number">18</span>; <span class="comment">-- 使用索引</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>使用 <code>!=</code>、<code>&lt;&gt;</code>、<code>NOT IN</code>、<code>NOT LIKE</code></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> age <span class="operator">!=</span> <span class="number">18</span>; <span class="comment">-- 索引失效</span></span><br></pre></td></tr></table></figure>
+
+<p>这些操作无法快速过滤，只能回表或全表扫描</p>
+<p>优化：可以考虑业务侧改写逻辑</p>
+</li>
+<li><p>使用 <code>IS NULL</code> 和 <code>IS NOT NULL</code>（部分情况）</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> deleted_at <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>; <span class="comment">-- 可能失效</span></span><br></pre></td></tr></table></figure>
+
+<p><code>IS NOT NULL</code> 一般不能使用索引，<code>IS NULL</code> 可部分使用索引。</p>
+<p>优化：尽量避免此类查询影响性能</p>
+</li>
+<li><p>使用范围查询后再使用排序</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> age <span class="operator">&gt;</span> <span class="number">18</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> username; <span class="comment">-- 可能失效</span></span><br></pre></td></tr></table></figure>
+
+<p>范围条件 <code>age &gt; 18</code> 会让后面的索引 <code>username</code> 排序失效。</p>
+<p>优化：排序字段应在范围字段之前，或使用覆盖索引等方式优化。</p>
+</li>
+<li><p>索引重复率太高</p>
+<p>即使有索引，如果字段的<strong>区分度低</strong>（如性别字段只有 “男&#x2F;女”），优化器可能认为全表扫描更快。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> gender <span class="operator">=</span> <span class="string">&#x27;男&#x27;</span>; <span class="comment">-- 索引可能不被使用</span></span><br></pre></td></tr></table></figure>
+
+<p>优化：如果表大并且经常查这个字段，可考虑使用 <strong>联合索引</strong> 或 <strong>添加统计列优化逻辑</strong>。</p>
+</li>
+<li><p>覆盖索引被打破</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 如果索引是 (username, age)，但查询了其他字段</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;tom&#x27;</span> <span class="keyword">AND</span> age <span class="operator">=</span> <span class="number">18</span>; <span class="comment">-- 不能使用覆盖索引</span></span><br></pre></td></tr></table></figure>
+
+<p>使用精确字段</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> username, age <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;tom&#x27;</span> <span class="keyword">AND</span> age <span class="operator">=</span> <span class="number">18</span>;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>链接 <a href="http://ulemony.github.io/posts/df9a61f7.html">http://ulemony.github.io/posts/df9a61f7.html</a> </p>
+]]></content>
+      <categories>
+        <category>Database</category>
+      </categories>
+      <tags>
+        <tag>索引</tag>
       </tags>
   </entry>
   <entry>
@@ -1471,243 +1708,6 @@
       </categories>
       <tags>
         <tag>事务</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>索引</title>
-    <url>/posts/df9a61f7.html</url>
-    <content><![CDATA[<h3 id="索引基础"><a href="#索引基础" class="headerlink" title="索引基础"></a>索引基础</h3><h4 id="索引的基本原理"><a href="#索引的基本原理" class="headerlink" title="索引的基本原理"></a>索引的基本原理</h4><p>索引的核心思想是通过为表中的列创建额外的数据结构，来加速查询过程</p>
-<h4 id="索引分类"><a href="#索引分类" class="headerlink" title="索引分类"></a>索引分类</h4><p>常见的索引类型：主键索引、唯一索引、普通索引、全文索引、组合索引</p>
-<h5 id="主键索引"><a href="#主键索引" class="headerlink" title="主键索引"></a>主键索引</h5><p>把某个列设置为主键的时候，该列就是主键索引，每个表只能有一个主键索引，主键列的值是唯一的，不能为NULL</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> users (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY auto_increment,  <span class="comment">-- 主键索引</span></span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">50</span>) <span class="keyword">not</span> <span class="keyword">null</span> <span class="keyword">default</span> <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">    age <span class="type">INT</span></span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>如果创建表时没有主键索引，可以在创建之后添加</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> table_name <span class="keyword">add</span> <span class="keyword">primary</span> key (column_name)</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="唯一索引"><a href="#唯一索引" class="headerlink" title="唯一索引"></a>唯一索引</h5><p>唯一索引和主键索引类似，保证索引列中的每个值是唯一的。但唯一索引允许存在 <code>NULL</code> 值，而且每个表可以有多个唯一索引</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> employees (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY auto_increment,</span><br><span class="line">    email <span class="type">VARCHAR</span>(<span class="number">100</span>) <span class="keyword">UNIQUE</span>,  <span class="comment">-- 唯一索引</span></span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">50</span>)</span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>如果创建表时没有唯一索引，可以创建后追加</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name</span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span> constraint_name <span class="keyword">UNIQUE</span> (column_name);</span><br><span class="line"><span class="comment">--constraint_name 指约束名，可以自定义</span></span><br></pre></td></tr></table></figure>
-
-<p>或者</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> users</span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">UNIQUE</span> (email);</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="普通索引"><a href="#普通索引" class="headerlink" title="普通索引"></a>普通索引</h5><p>不要求列中的值唯一，表中可以有多个普通索引</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> products (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">100</span>),</span><br><span class="line">    price <span class="type">DECIMAL</span>(<span class="number">10</span>, <span class="number">2</span>),</span><br><span class="line">    INDEX idx_price(price)  <span class="comment">-- 普通索引</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="全文索引"><a href="#全文索引" class="headerlink" title="全文索引"></a>全文索引</h5><p>通常用于对长文本字段进行复杂的搜索，例如查询特定的单词; 在MYSQL5.6之前只有MyISAM存储引擎支持全文索引，MYSQL5.6之后InnoDB存储引擎也支持全文索引</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> articles (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    title <span class="type">VARCHAR</span>(<span class="number">100</span>),</span><br><span class="line">    content TEXT,</span><br><span class="line">    FULLTEXT INDEX idx_fulltext(content)  <span class="comment">-- 全文索引</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-
-<p>也可以在创建表后追加全文索引</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name</span><br><span class="line"><span class="keyword">ADD</span> FULLTEXT INDEX index_name (column_name);</span><br></pre></td></tr></table></figure>
-
-<p>可以利用MATCH和AGAINST来进行高效的全文搜索</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> articles <span class="keyword">WHERE</span> <span class="keyword">MATCH</span>(content) AGAINST(<span class="string">&#x27;database&#x27;</span>);</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="组合索引"><a href="#组合索引" class="headerlink" title="组合索引"></a>组合索引</h5><p>由多个列组成的索引；遵循“最左前缀”原则</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> orders (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    customer_id <span class="type">INT</span>,</span><br><span class="line">    order_date <span class="type">DATE</span>,</span><br><span class="line">    amount <span class="type">DECIMAL</span>(<span class="number">10</span>, <span class="number">2</span>),</span><br><span class="line">    INDEX idx_customer_order(customer_id, order_date)  <span class="comment">-- 组合索引</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-
-<p>也可以在创建表后追加组合索引</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name</span><br><span class="line"><span class="keyword">ADD</span> INDEX index_name (column1, column2, ...);</span><br></pre></td></tr></table></figure>
-
-<p>查询时可以利用这两个列来查询</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> orders <span class="keyword">WHERE</span> customer_id <span class="operator">=</span> <span class="number">101</span> <span class="keyword">AND</span> order_date <span class="keyword">BETWEEN</span> <span class="string">&#x27;2023-01-01&#x27;</span> <span class="keyword">AND</span> <span class="string">&#x27;2023-12-31&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>查看表的索引</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> INDEX <span class="keyword">FROM</span> 表名;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="索引机制"><a href="#索引机制" class="headerlink" title="索引机制"></a>索引机制</h4><p>添加完索引后，MySQL一般通过BTREE算法生成一个索引文件，在查询数据库时，找到索引文件进行遍历，找到相应的键从而获取数据</p>
-<p>创建索引产生的索引文件会占用磁盘空间，在增删改查时会对索引文件进行修改，性能会有所下降</p>
-<h4 id="索引存储数据结构"><a href="#索引存储数据结构" class="headerlink" title="索引存储数据结构"></a>索引存储数据结构</h4><h5 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h5><p>以键值对存储的数据结构，只要输入key就可以找到对应的value，等值查询高效，但不支持范围查询。在MySQL中，Memory存储引擎的默认索引类型就是哈希索引</p>
-<h5 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h5><p>当数据量大时，二叉树的树高会比较大，需要多次读取磁盘耗费时间</p>
-<p><img src="/posts/df9a61f7/%E4%BA%8C%E5%8F%89%E6%A0%91.png" alt="二叉树"></p>
-<p><img src="/posts/df9a61f7/%E4%BA%8C%E5%8F%89%E6%A0%912.png" alt="二叉树2"></p>
-<h5 id="B树（Balance-Tree）"><a href="#B树（Balance-Tree）" class="headerlink" title="B树（Balance Tree）"></a>B树（Balance Tree）</h5><p>图中的p节点为指向子节点的指针，每个节点称为页，页就是磁盘快，mysql中数据读取的基本单位是页</p>
-<p>B树和二叉树相比，每个节点存储量更多的键值和数据，而且拥有更多的子节点，高度很低，B树查找读取磁盘的次数很少，提高了查找效率</p>
-<p><img src="/posts/df9a61f7/B%E6%A0%91.png" alt="B树"></p>
-<p>假如要查找id&#x3D;29的用户，查找流程如下：</p>
-<p>1.找到根节点也就是页1，判断29在17和35之间，选取指针p2找到页3</p>
-<p>2.把29和页3中的键值比较，29在26和30之间，选取指针p2找到页8</p>
-<p>3.将29和页8的键值比较，有匹配的的键值29，完成查找</p>
-<h5 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h5><ol>
-<li><p>B+树的非叶节点不存储数据，仅存储键值，所有数据存储在叶子节点，而且数据是按照顺序排列的，这使得B+树范围查找、排序查找、分组查找以及去重查找变得很简单。</p>
-</li>
-<li><p>如果B+树一个节点可以存储1000个键值，那么3层B+树可以存储1000x1000x1000&#x3D;10亿个数据。一般根节点常驻内存，查找10个数据只需要2次磁盘IO</p>
-</li>
-<li><p>B+树页之间通过双向链表连接，叶子节点中的数据通过单向链表连接</p>
-</li>
-<li><p>在Innodb存储引擎中，B+树索引是 聚簇索引，在MYISAM中，B+树索引的叶子节点不存储数据，而是数据的地址，属于非聚簇索引</p>
-</li>
-</ol>
-<p><img src="/posts/df9a61f7/B+%E6%A0%91.png" alt="B+树"></p>
-<h4 id="聚簇索引和非聚簇索引"><a href="#聚簇索引和非聚簇索引" class="headerlink" title="聚簇索引和非聚簇索引"></a>聚簇索引和非聚簇索引</h4><p>在MySQL中，B+树按存储方式可分为聚簇索引和非聚簇索引</p>
-<h5 id="聚簇索引"><a href="#聚簇索引" class="headerlink" title="聚簇索引"></a>聚簇索引</h5><p>在InnoDB中，主键索引就是聚簇索引，即使不创建主键，系统也会主动创建隐式主键，以主键作为B+树索引的键值而构建的B+树索引为聚簇索引，叶子节点存储了行数据</p>
-<p>当执行sql语句：select * from user where id&gt;&#x3D;18 and id &lt;40，对应的数据查找过程（以上图为例）</p>
-<ol>
-<li>不需要从磁盘读取数据，直接从内存中读取根节点也就是页1，在页1中找到键值18，从而根据指针p2定位到页3</li>
-<li>从磁盘中读取页3并放入内存中，在页3中找到键值18，根据指针p1定位到页8</li>
-<li>从磁盘中读取页8并放入内存中，页中的数据是通过单向链表进行连接，且键值按照顺序存放，可以根据二分查找法定位到键值18</li>
-<li>因为是范围查找而去所有数据存放于叶子节点，且有序排列，可以对页8的键值遍历查询，可以一直找到键值为22的数据，此时页8的数据被全部遍历，由于页之间通过双向链表连接，可通过页8的指针定位到页9进行数据查询，一直到页12，发现41大于40不满足条件，查找终止</li>
-</ol>
-<h5 id="非聚簇索引"><a href="#非聚簇索引" class="headerlink" title="非聚簇索引"></a>非聚簇索引</h5><p>以主键之外的列值作为键值构建的B+树索引称之为非聚簇索引，也叫辅助索引（二级索引）</p>
-<p>和聚簇索引的区别在于非聚簇索引的叶子节点不存储表中的数据，而是该列对应的主键，数据表和索引表是分开存储的。查询时先找到主键，再用主键到聚簇索引中进行查找数据，这个过程称为 <strong>回表</strong>。</p>
-<p>当执行sql语句执行 select * from user where name &#x3D; ‘jim’，查找流程如下</p>
-<ol>
-<li><p>从内存读取根节点页1，根据指针p1定位到页2</p>
-</li>
-<li><p>根据页2中的指针p2定位到页6</p>
-</li>
-<li><p>找到索引对应的值jim，获取主键20</p>
-</li>
-<li><p>到主键索引中根据主键20 获取对应的数据</p>
-</li>
-</ol>
-<p><img src="/posts/df9a61f7/%E9%9D%9E%E8%81%9A%E9%9B%86%E7%B4%A2%E5%BC%95.png" alt="非聚集索引"></p>
-<p>如果使用了覆盖索引，则不需要回表，直接通过辅助索引就可以查到需要的数据，覆盖索引的前提是查询列要被所建的索引覆盖</p>
-<p>例如对于数据表 <code>employees</code>，包含 <code>id</code>、<code>name</code> 和 <code>age</code> 三列：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> employees (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">100</span>),</span><br><span class="line">    age <span class="type">INT</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-
-<p>可以为name 和age 创建一个复合索引</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> INDEX idx_name_age <span class="keyword">ON</span> employees (name, age);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>当执行查询  SELECT name, age FROM employees WHERE name &#x3D; ‘Alice’;</p>
-<p><code>idx_name_age</code> 索引中已经包含了 <code>name</code> 和 <code>age</code> 两个列，因此这个查询可以完全通过索引来获取结果，不需要访问实际的数据库</p>
-<h4 id="相关名词"><a href="#相关名词" class="headerlink" title="相关名词"></a>相关名词</h4><h5 id="最左匹配原则"><a href="#最左匹配原则" class="headerlink" title="最左匹配原则"></a>最左匹配原则</h5><p>在创建一个复合索引时，查询条件必须从复合索引的最左列开始，且不能跳过中间的任何列，才能有效使用索引</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> employees (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">100</span>),</span><br><span class="line">    age <span class="type">INT</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> INDEX idx_name_age <span class="keyword">ON</span> employees (name, age);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>索引 <code>idx_name_age</code> 是由 <code>name</code> 列和 <code>age</code> 列构成的复合索引，索引顺序是 **<code>name</code> -&gt; <code>age</code>**。</p>
-<ol>
-<li>完全匹配索引顺序</li>
-</ol>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> name <span class="operator">=</span> <span class="string">&#x27;Alice&#x27;</span> <span class="keyword">AND</span> age <span class="operator">=</span> <span class="number">30</span>;</span><br></pre></td></tr></table></figure>
-
-<p>查询首先按索引中的最左边的列 <code>name</code> 进行匹配，接着按 <code>age</code> 列进行匹配，符合复合索引的列顺序。</p>
-<ol start="2">
-<li><p>部分匹配索引</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> name <span class="operator">=</span> <span class="string">&#x27;Alice&#x27;</span>;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>跳过中间列的查询</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> age <span class="operator">=</span> <span class="number">30</span> <span class="keyword">AND</span> name <span class="operator">=</span> <span class="string">&#x27;Alice&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-<p>不符合最左匹配索引原则：在复合索引idx_name_age中，name列排在age列前面，查询条件没有从最左的列name开始匹配，而是从age开始</p>
-</li>
-</ol>
-<h5 id="索引下推"><a href="#索引下推" class="headerlink" title="索引下推"></a>索引下推</h5><p>过滤条件直接在索引层面进行应用，只有符合条件的数据会被返回，减少了不必要的回表操作</p>
-<p>假设employess表</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> employees (</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">100</span>),</span><br><span class="line">    age <span class="type">INT</span>,</span><br><span class="line">    salary <span class="type">DECIMAL</span>(<span class="number">10</span>, <span class="number">2</span>),</span><br><span class="line">    hire_date <span class="type">DATE</span></span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>为age和salary创建了复合索引</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> INDEX idx_age_salary <span class="keyword">ON</span> employees(age, salary);</span><br></pre></td></tr></table></figure>
-
-<p>当执行查询 </p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees <span class="keyword">WHERE</span> age <span class="operator">&gt;</span> <span class="number">30</span> <span class="keyword">AND</span> salary <span class="operator">&gt;</span> <span class="number">5000</span>;</span><br></pre></td></tr></table></figure>
-
-<p>如果没有索引下推，mysql会扫描索引idx_age_salary 找到所有符合age&gt;30的记录，然后回表到employees表中查找salary&gt;5000的记录</p>
-<p>最终返回符合age&gt;30 和salary&gt;5000的记录</p>
-<p>当有索引下推，在扫描索引时不仅刷选age&gt;30的记录，还会同时应用salary&gt;5000的条件，这样只有同时符合这两个条件的数据才会被返回</p>
-<h4 id="索引的使用原则"><a href="#索引的使用原则" class="headerlink" title="索引的使用原则"></a>索引的使用原则</h4><h5 id="不适合建索引的情况"><a href="#不适合建索引的情况" class="headerlink" title="不适合建索引的情况"></a>不适合建索引的情况</h5><ol>
-<li>表记录太少</li>
-<li>区分度不高的字段例如性别不适合建索引</li>
-<li>where条件中用不到的字段不适合建立索引</li>
-<li>经常插入、删除、修改的表要减少索引</li>
-<li>text、image等类型不适合建立索引</li>
-<li>mysql能估计出全表扫描比使用索引更快的时候，不使用索引</li>
-<li>参与计算的列不适合建立索引</li>
-</ol>
-<h5 id="索引失效场景"><a href="#索引失效场景" class="headerlink" title="索引失效场景"></a>索引失效场景</h5><ol>
-<li><p>使用LIKE模糊匹配 左边有通配符</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> name <span class="keyword">LIKE</span> <span class="string">&#x27;%abc&#x27;</span>; <span class="comment">-- 索引失效</span></span><br></pre></td></tr></table></figure>
-
-<p>%在前，MYSQL无法通过索引定位前缀，只能全表扫描</p>
-<p>优化：改成右匹配</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> name <span class="keyword">LIKE</span> <span class="string">&#x27;abc%&#x27;</span>; <span class="comment">-- 可使用索引</span></span><br></pre></td></tr></table></figure>
-
-
-</li>
-<li><p>在索引列上使用函数或表达式</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> <span class="keyword">YEAR</span>(birthdate) <span class="operator">=</span> <span class="number">1990</span>; <span class="comment">-- 索引失效</span></span><br></pre></td></tr></table></figure>
-
-<p>对索引列使用了函数 <code>YEAR()</code>，使得不能使用索引。</p>
-<p>优化：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> birthdate <span class="operator">&gt;=</span> <span class="string">&#x27;1990-01-01&#x27;</span> <span class="keyword">AND</span> birthdate <span class="operator">&lt;</span> <span class="string">&#x27;1991-01-01&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-
-</li>
-<li><p>隐式类型转换</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> phone <span class="operator">=</span> <span class="number">1234567890</span>; <span class="comment">-- 索引失效</span></span><br></pre></td></tr></table></figure>
-
-<p><code>phone</code> 是字符串类型，但用数字进行比较，发生隐式类型转换。</p>
-<p>优化：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> phone <span class="operator">=</span> <span class="string">&#x27;1234567890&#x27;</span>;</span><br></pre></td></tr></table></figure></li>
-</ol>
-<p>​	</p>
-<ol start="4">
-<li><p>OR查询没有全部字段都使用索引</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;tom&#x27;</span> <span class="keyword">OR</span> age <span class="operator">=</span> <span class="number">18</span>; <span class="comment">-- 索引失效</span></span><br></pre></td></tr></table></figure>
-
-<p><code>username</code> 有索引，但 <code>age</code> 没有，MySQL 无法对整体使用索引。</p>
-<p>优化：确保所有OR条件字段都有索引，或者用UNION 拆开</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;tom&#x27;</span></span><br><span class="line"><span class="keyword">UNION</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> age <span class="operator">=</span> <span class="number">18</span>;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>组合索引不满足最左匹配原则</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 组合索引：(username, age)</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> age <span class="operator">=</span> <span class="number">18</span>; <span class="comment">-- 索引失效</span></span><br></pre></td></tr></table></figure>
-
-<p>没有从最左列username开始匹配</p>
-<p>优化：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;tom&#x27;</span> <span class="keyword">AND</span> age <span class="operator">=</span> <span class="number">18</span>; <span class="comment">-- 使用索引</span></span><br></pre></td></tr></table></figure>
-
-
-</li>
-<li><p>使用 <code>!=</code>、<code>&lt;&gt;</code>、<code>NOT IN</code>、<code>NOT LIKE</code></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> age <span class="operator">!=</span> <span class="number">18</span>; <span class="comment">-- 索引失效</span></span><br></pre></td></tr></table></figure>
-
-<p>这些操作无法快速过滤，只能回表或全表扫描</p>
-<p>优化：可以考虑业务侧改写逻辑</p>
-</li>
-<li><p>使用 <code>IS NULL</code> 和 <code>IS NOT NULL</code>（部分情况）</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> deleted_at <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>; <span class="comment">-- 可能失效</span></span><br></pre></td></tr></table></figure>
-
-<p><code>IS NOT NULL</code> 一般不能使用索引，<code>IS NULL</code> 可部分使用索引。</p>
-<p>优化：尽量避免此类查询影响性能</p>
-</li>
-<li><p>使用范围查询后再使用排序</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> age <span class="operator">&gt;</span> <span class="number">18</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> username; <span class="comment">-- 可能失效</span></span><br></pre></td></tr></table></figure>
-
-<p>范围条件 <code>age &gt; 18</code> 会让后面的索引 <code>username</code> 排序失效。</p>
-<p>优化：排序字段应在范围字段之前，或使用覆盖索引等方式优化。</p>
-</li>
-<li><p>索引重复率太高</p>
-<p>即使有索引，如果字段的<strong>区分度低</strong>（如性别字段只有 “男&#x2F;女”），优化器可能认为全表扫描更快。</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> gender <span class="operator">=</span> <span class="string">&#x27;男&#x27;</span>; <span class="comment">-- 索引可能不被使用</span></span><br></pre></td></tr></table></figure>
-
-<p>优化：如果表大并且经常查这个字段，可考虑使用 <strong>联合索引</strong> 或 <strong>添加统计列优化逻辑</strong>。</p>
-</li>
-<li><p>覆盖索引被打破</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 如果索引是 (username, age)，但查询了其他字段</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;tom&#x27;</span> <span class="keyword">AND</span> age <span class="operator">=</span> <span class="number">18</span>; <span class="comment">-- 不能使用覆盖索引</span></span><br></pre></td></tr></table></figure>
-
-<p>使用精确字段</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> username, age <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;tom&#x27;</span> <span class="keyword">AND</span> age <span class="operator">=</span> <span class="number">18</span>;</span><br></pre></td></tr></table></figure></li>
-</ol>
-<p>链接 <a href="http://ulemony.github.io/posts/df9a61f7.html">http://ulemony.github.io/posts/df9a61f7.html</a> </p>
-]]></content>
-      <categories>
-        <category>Database</category>
-      </categories>
-      <tags>
-        <tag>索引</tag>
       </tags>
   </entry>
   <entry>

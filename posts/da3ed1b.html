@@ -26,17 +26,17 @@
 <meta property="og:site_name" content="阿木的博客">
 <meta property="og:description" content="如何根据需求设计数据库表1.流程理解清楚需求 –&gt; 根据需求分析需要几张表 –&gt;分析每张表需要哪些字段 –&gt; 每个表之间的关系，需要怎么关联 –&gt; 建表 对象和对象之间的关系是什么，如果是一对多，需要两张表；多对多，需要三张表，其中一个关系表维护这两个对象之间的关系">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E5%88%86%E5%BA%93%E5%8E%9F%E5%88%99.png">
-<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E5%88%86%E8%A1%A81.png">
-<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E5%88%86%E8%A1%A82.png">
-<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E5%88%86%E8%A1%A83.png">
-<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E5%86%97%E4%BD%99%E5%AD%97%E6%AE%B5.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/da3ed1b/%E5%88%86%E5%BA%93%E5%8E%9F%E5%88%99.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/da3ed1b/%E5%88%86%E8%A1%A81.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/da3ed1b/%E5%88%86%E8%A1%A82.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/da3ed1b/%E5%88%86%E8%A1%A83.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/da3ed1b/%E5%86%97%E4%BD%99%E5%AD%97%E6%AE%B5.png">
 <meta property="article:published_time" content="2025-07-23T15:41:11.000Z">
-<meta property="article:modified_time" content="2025-07-24T09:14:28.371Z">
+<meta property="article:modified_time" content="2025-07-24T09:30:24.277Z">
 <meta property="article:author" content="Jason Lee">
 <meta property="article:tag" content="databas design">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://ulemony.github.io/posts/undefined/%E5%88%86%E5%BA%93%E5%8E%9F%E5%88%99.png">
+<meta name="twitter:image" content="http://ulemony.github.io/posts/da3ed1b/%E5%88%86%E5%BA%93%E5%8E%9F%E5%88%99.png">
 
 
 <link rel="canonical" href="http://ulemony.github.io/posts/da3ed1b.html">
@@ -234,7 +234,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-24 17:14:28" itemprop="dateModified" datetime="2025-07-24T17:14:28+08:00">2025-07-24</time>
+      <time title="修改时间：2025-07-24 17:30:24" itemprop="dateModified" datetime="2025-07-24T17:30:24+08:00">2025-07-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -253,7 +253,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>766</span>
+      <span>764</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -285,20 +285,20 @@
 </li>
 </ol>
 <h2 id="3-一些经验"><a href="#3-一些经验" class="headerlink" title="3.一些经验"></a>3.一些经验</h2><h3 id="3-1-分库"><a href="#3-1-分库" class="headerlink" title="3.1 分库"></a>3.1 分库</h3><p>分库原则：每个子系统对应一个数据库</p>
-<p><img src="/posts/undefined/%E5%88%86%E5%BA%93%E5%8E%9F%E5%88%99.png" alt="分库原则"></p>
+<p><img src="/posts/da3ed1b/%E5%88%86%E5%BA%93%E5%8E%9F%E5%88%99.png" alt="分库原则"></p>
 <p>注意：在数据强一致的场景则涉及到数据库分布式事务</p>
 <h3 id="3-2分表"><a href="#3-2分表" class="headerlink" title="3.2分表"></a>3.2分表</h3><ol>
 <li><p>从主功能逻辑抽离主要几张表</p>
-<p><img src="/posts/undefined/%E5%88%86%E8%A1%A81.png" alt="分表1"></p>
+<p><img src="/posts/da3ed1b/%E5%88%86%E8%A1%A81.png" alt="分表1"></p>
 </li>
 <li><p>根据功能补充表</p>
-<p><img src="/posts/undefined/%E5%88%86%E8%A1%A82.png" alt="分表2"></p>
+<p><img src="/posts/da3ed1b/%E5%88%86%E8%A1%A82.png" alt="分表2"></p>
 </li>
 <li><p>检查多对多关系</p>
-<p><img src="/posts/undefined/%E5%88%86%E8%A1%A83.png" alt="分表3"></p>
+<p><img src="/posts/da3ed1b/%E5%88%86%E8%A1%A83.png" alt="分表3"></p>
 </li>
 </ol>
-<h3 id="3-3-冗余字段"><a href="#3-3-冗余字段" class="headerlink" title="3.3 冗余字段"></a>3.3 冗余字段</h3><p><img src="/posts/undefined/%E5%86%97%E4%BD%99%E5%AD%97%E6%AE%B5.png" alt="冗余字段"></p>
+<h3 id="3-3-冗余字段"><a href="#3-3-冗余字段" class="headerlink" title="3.3 冗余字段"></a>3.3 冗余字段</h3><p><img src="/posts/da3ed1b/%E5%86%97%E4%BD%99%E5%AD%97%E6%AE%B5.png" alt="冗余字段"></p>
 <h3 id="3-4-视图"><a href="#3-4-视图" class="headerlink" title="3.4 视图"></a>3.4 视图</h3><p>视图能简化后端程序的SQL语句，如用户前台、管理员后台都需要显示热门博客，如果使用视图，就无需在多个接口维护多个复杂的SQL语句</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--根据简单SQL查询热门博客列表</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> v_hot</span><br></pre></td></tr></table></figure>
 
@@ -311,7 +311,7 @@
 <li>字段名： 表名开头，如blog_id、label_id</li>
 <li>外键：与原来名字相同，如所有的博客id都为blog_id，如果引用多个相同外键，则用$标记 如resource_id$1、resource_id$2</li>
 </ol>
-<p>链接 <a href="http://ulemony.github.io/posts/undefined.html">http://ulemony.github.io/posts/undefined.html</a> </p>
+<p>链接 <a href="http://ulemony.github.io/posts/da3ed1b.html">http://ulemony.github.io/posts/da3ed1b.html</a> </p>
 
     </div>
 

@@ -26,22 +26,22 @@
 <meta property="og:site_name" content="阿木的博客">
 <meta property="og:description" content="mysql1. 存储引擎对比   对比项 InnoDB MyISAM    事务支持 ✅ 支持（ACID），支持事务的四种隔离级别 ❌ 不支持事务   锁机制 行级锁 + 多种锁（意向锁、间隙锁等） 表级锁   并发能力 高并发性能好 并发性能差，写时锁表   外键支持 ✅ 支持外键 ❌ 不支持外键   崩溃恢复能力 ✅ 强（支持崩溃恢复、Redo&#x2F;Undo Log） ❌ 弱，崩溃后易数">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5.png">
-<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E4%BC%98%E5%8C%96%E5%89%8D%E7%BB%9F%E8%AE%A1.png">
-<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E8%A1%A8%E7%BB%93%E6%9E%84.png">
-<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E4%BC%98%E5%8C%96%E5%89%8D%E7%BB%9F%E8%AE%A1.png">
-<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E4%BC%98%E5%8C%96%E5%90%8E%E7%BB%9F%E8%AE%A1.png">
-<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E6%85%A2%E6%9F%A5%E8%AF%A2.png">
-<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%922.png">
-<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E8%A1%A8%E7%BB%93%E6%9E%842.png">
-<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E4%BC%98%E5%8C%96%E5%90%8E%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92.png">
-<meta property="og:image" content="http://ulemony.github.io/posts/undefined/%E4%BC%98%E5%8C%96%E5%90%8E%E7%BB%9F%E8%AE%A12.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/bce68613/%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/bce68613/%E4%BC%98%E5%8C%96%E5%89%8D%E7%BB%9F%E8%AE%A1.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/bce68613/%E8%A1%A8%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/bce68613/%E4%BC%98%E5%8C%96%E5%89%8D%E7%BB%9F%E8%AE%A1.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/bce68613/%E4%BC%98%E5%8C%96%E5%90%8E%E7%BB%9F%E8%AE%A1.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/bce68613/%E6%85%A2%E6%9F%A5%E8%AF%A2.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/bce68613/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%922.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/bce68613/%E8%A1%A8%E7%BB%93%E6%9E%842.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/bce68613/%E4%BC%98%E5%8C%96%E5%90%8E%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92.png">
+<meta property="og:image" content="http://ulemony.github.io/posts/bce68613/%E4%BC%98%E5%8C%96%E5%90%8E%E7%BB%9F%E8%AE%A12.png">
 <meta property="article:published_time" content="2025-06-06T11:16:36.000Z">
-<meta property="article:modified_time" content="2025-07-24T09:13:34.501Z">
+<meta property="article:modified_time" content="2025-07-24T09:30:09.245Z">
 <meta property="article:author" content="Jason Lee">
 <meta property="article:tag" content="MySQL">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://ulemony.github.io/posts/undefined/%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5.png">
+<meta name="twitter:image" content="http://ulemony.github.io/posts/bce68613/%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5.png">
 
 
 <link rel="canonical" href="http://ulemony.github.io/posts/bce68613.html">
@@ -239,7 +239,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-07-24 17:13:34" itemprop="dateModified" datetime="2025-07-24T17:13:34+08:00">2025-07-24</time>
+      <time title="修改时间：2025-07-24 17:30:09" itemprop="dateModified" datetime="2025-07-24T17:30:09+08:00">2025-07-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -490,7 +490,7 @@
 <ul>
 <li>从库的 <strong>SQL 线程</strong> 读取 <code>relay log</code> 的内容，并在本地重放（执行相同 SQL），以达到主从一致。</li>
 </ul>
-<p><img src="/posts/undefined/%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5.png" alt="主从同步"></p>
+<p><img src="/posts/bce68613/%E4%B8%BB%E4%BB%8E%E5%90%8C%E6%AD%A5.png" alt="主从同步"></p>
 <h2 id="3-2-同步策略"><a href="#3-2-同步策略" class="headerlink" title="3.2 同步策略"></a>3.2 同步策略</h2><ul>
 <li><p>异步复制，master不管slave，只管自己写binlog，slave异步去同步，这种新能最好，但是一致性最差。</p>
 </li>
@@ -500,15 +500,15 @@
 </li>
 </ul>
 <h1 id="4-为什么使用了索引，还是慢查询"><a href="#4-为什么使用了索引，还是慢查询" class="headerlink" title="4.为什么使用了索引，还是慢查询"></a>4.为什么使用了索引，还是慢查询</h1><h2 id="场景1-慢SQL的原因是没命中索引"><a href="#场景1-慢SQL的原因是没命中索引" class="headerlink" title="场景1: 慢SQL的原因是没命中索引"></a>场景1: 慢SQL的原因是没命中索引</h2><p>实时分析：</p>
-<p><img src="/posts/undefined/%E4%BC%98%E5%8C%96%E5%89%8D%E7%BB%9F%E8%AE%A1.png" alt="优化前统计"></p>
+<p><img src="/posts/bce68613/%E4%BC%98%E5%8C%96%E5%89%8D%E7%BB%9F%E8%AE%A1.png" alt="优化前统计"></p>
 <p>慢SQL</p>
 <p>在慢查询中，最多的一条语句是</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> `white_user` <span class="keyword">WHERE</span> `user_id`<span class="operator">=</span>? <span class="keyword">AND</span> `status`<span class="operator">=</span>? <span class="keyword">AND</span> `level`<span class="operator">=</span>? <span class="keyword">AND</span> `type`<span class="operator">=</span>? LIMIT ?,?;</span><br></pre></td></tr></table></figure>
 
 <p>表结构</p>
-<p><img src="/posts/undefined/%E8%A1%A8%E7%BB%93%E6%9E%84.png" alt="表结构"></p>
+<p><img src="/posts/bce68613/%E8%A1%A8%E7%BB%93%E6%9E%84.png" alt="表结构"></p>
 <p>执行计划</p>
-<p><img src="/posts/undefined/%E4%BC%98%E5%8C%96%E5%89%8D%E7%BB%9F%E8%AE%A1.png" alt="优化前统计"></p>
+<p><img src="/posts/bce68613/%E4%BC%98%E5%8C%96%E5%89%8D%E7%BB%9F%E8%AE%A1.png" alt="优化前统计"></p>
 <p>由执行计划的key看到没有用到索引</p>
 <p>解决办法：创建索引</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> `white_user` <span class="keyword">add</span> `idx_user_id_status_level_type`(`user_id`,`status`,`level`,`type`);</span><br></pre></td></tr></table></figure>
@@ -516,24 +516,24 @@
 
 
 <p>优化后统计：</p>
-<p><img src="/posts/undefined/%E4%BC%98%E5%8C%96%E5%90%8E%E7%BB%9F%E8%AE%A1.png" alt="优化后统计"></p>
+<p><img src="/posts/bce68613/%E4%BC%98%E5%8C%96%E5%90%8E%E7%BB%9F%E8%AE%A1.png" alt="优化后统计"></p>
 <h2 id="场景2-慢SQL的原因是命中了，但是Using-filesort"><a href="#场景2-慢SQL的原因是命中了，但是Using-filesort" class="headerlink" title="场景2:慢SQL的原因是命中了，但是Using filesort"></a>场景2:慢SQL的原因是命中了，但是Using filesort</h2><p>查询商家的退款订单列表且按倒叙排序</p>
-<p><img src="/posts/undefined/%E6%85%A2%E6%9F%A5%E8%AF%A2.png" alt="慢查询"></p>
+<p><img src="/posts/bce68613/%E6%85%A2%E6%9F%A5%E8%AF%A2.png" alt="慢查询"></p>
 <p>执行计划</p>
-<p><img src="/posts/undefined/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%922.png" alt="执行计划2"></p>
+<p><img src="/posts/bce68613/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%922.png" alt="执行计划2"></p>
 <p>Using filesort 文件排序比较慢，一般在order by的时候出现</p>
 <p>部分表结构</p>
-<p><img src="/posts/undefined/%E8%A1%A8%E7%BB%93%E6%9E%842.png" alt="表结构2"></p>
+<p><img src="/posts/bce68613/%E8%A1%A8%E7%BB%93%E6%9E%842.png" alt="表结构2"></p>
 <p>解决办法：用到索引的同时，也不要进行文件排序，而是进行create_time的排序</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> `refund_cuser` <span class="keyword">add</span> index `idx_buser_id_createtime`(`buser_id`,`create_time`);</span><br></pre></td></tr></table></figure>
 
 
 
 <p>通过执行计划发现已经没有了using filesort</p>
-<p><img src="/posts/undefined/%E4%BC%98%E5%8C%96%E5%90%8E%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92.png" alt="优化后执行计划"></p>
+<p><img src="/posts/bce68613/%E4%BC%98%E5%8C%96%E5%90%8E%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92.png" alt="优化后执行计划"></p>
 <p>优化后统计</p>
-<p><img src="/posts/undefined/%E4%BC%98%E5%8C%96%E5%90%8E%E7%BB%9F%E8%AE%A12.png" alt="优化后统计2"></p>
-<p>链接 <a href="http://ulemony.github.io/posts/undefined.html">http://ulemony.github.io/posts/undefined.html</a> </p>
+<p><img src="/posts/bce68613/%E4%BC%98%E5%8C%96%E5%90%8E%E7%BB%9F%E8%AE%A12.png" alt="优化后统计2"></p>
+<p>链接 <a href="http://ulemony.github.io/posts/bce68613.html">http://ulemony.github.io/posts/bce68613.html</a> </p>
 
     </div>
 
