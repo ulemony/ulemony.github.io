@@ -19,15 +19,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"ulemony.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"default"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="Linux常用命令文件管理使用scp将一个Linux系统中的文件或文件夹复制到另一台Linux服务器上 复制文件1.将本地文件拷贝到远程主机">
+    <meta name="description" content="Linux常用命令1.Linux 服务信息12345678910111213141516&#x2F;&#x2F;ip地址ifconfig&#x2F;&#x2F;运行的进程和系统性能信息top&#x2F;&#x2F;磁盘信息df -h&#x2F;&#x2F;防火墙systemctl status firewalldsystemctl start firewalldsystemctl stop firewalldfirewalld-cmd --permanent --zone&#x3D;p">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux常用命令">
 <meta property="og:url" content="http://ulemony.github.io/posts/d0edc1ed.html">
 <meta property="og:site_name" content="阿木的博客">
-<meta property="og:description" content="Linux常用命令文件管理使用scp将一个Linux系统中的文件或文件夹复制到另一台Linux服务器上 复制文件1.将本地文件拷贝到远程主机">
+<meta property="og:description" content="Linux常用命令1.Linux 服务信息12345678910111213141516&#x2F;&#x2F;ip地址ifconfig&#x2F;&#x2F;运行的进程和系统性能信息top&#x2F;&#x2F;磁盘信息df -h&#x2F;&#x2F;防火墙systemctl status firewalldsystemctl start firewalldsystemctl stop firewalldfirewalld-cmd --permanent --zone&#x3D;p">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-02-09T02:16:12.000Z">
-<meta property="article:modified_time" content="2023-02-09T07:14:10.000Z">
+<meta property="article:modified_time" content="2025-07-27T08:00:01.813Z">
 <meta property="article:author" content="Jason Lee">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="文件操作">
@@ -140,7 +140,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-text">Linux常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86"><span class="nav-text">文件管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6"><span class="nav-text">复制文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E7%9B%AE%E5%BD%95"><span class="nav-text">复制目录</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-text">Linux常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Linux-%E6%9C%8D%E5%8A%A1%E4%BF%A1%E6%81%AF"><span class="nav-text">1.Linux 服务信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86"><span class="nav-text">2.文件管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1%E6%96%87%E4%BB%B6%E7%BC%96%E8%BE%91"><span class="nav-text">2.1文件编辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6"><span class="nav-text">2.2复制文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><span class="nav-text">2.3查看文件内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4%E6%9F%A5%E6%89%BE%E6%96%87%E4%BB%B6"><span class="nav-text">2.4查找文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6"><span class="nav-text">2.5删除文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-%E5%8E%8B%E7%BC%A9%E5%92%8C%E8%A7%A3%E5%8E%8B"><span class="nav-text">2.6 压缩和解压</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%9B%AE%E5%BD%95"><span class="nav-text">3.目录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1%E5%A4%8D%E5%88%B6%E7%9B%AE%E5%BD%95"><span class="nav-text">3.1复制目录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-text"></span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E7%94%A8%E6%88%B7%E7%9B%B8%E5%85%B3"><span class="nav-text">4.用户相关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%9D%83%E9%99%90"><span class="nav-text">5.权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="nav-text">6.进程管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%9A%84%E5%AE%89%E8%A3%85"><span class="nav-text">7.软件包的安装</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -221,9 +221,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2023-02-09 10:16:12 / 修改时间：15:14:10" itemprop="dateCreated datePublished" datetime="2023-02-09T10:16:12+08:00">2023-02-09</time>
+      <time title="创建时间：2023-02-09 10:16:12" itemprop="dateCreated datePublished" datetime="2023-02-09T10:16:12+08:00">2023-02-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-07-27 16:00:01" itemprop="dateModified" datetime="2025-07-27T16:00:01+08:00">2025-07-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -242,14 +248,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>643</span>
+      <span>2.8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -260,18 +266,50 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="Linux常用命令"><a href="#Linux常用命令" class="headerlink" title="Linux常用命令"></a>Linux常用命令</h1><h2 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h2><p>使用scp将一个Linux系统中的文件或文件夹复制到另一台Linux服务器上</p>
-<h3 id="复制文件"><a href="#复制文件" class="headerlink" title="复制文件"></a>复制文件</h3><p>1.将本地文件拷贝到远程主机</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//scp 文件名 用户名@计算机IP或者计算机名称:远程路径</span></span><br><span class="line"><span class="comment">//192.168.1.12为远程服务器</span></span><br><span class="line">scp /root/install.* root@<span class="number">192.168</span><span class="number">.1</span><span class="number">.12</span>:/usr/local/src</span><br></pre></td></tr></table></figure>
+        <h1 id="Linux常用命令"><a href="#Linux常用命令" class="headerlink" title="Linux常用命令"></a>Linux常用命令</h1><h2 id="1-Linux-服务信息"><a href="#1-Linux-服务信息" class="headerlink" title="1.Linux 服务信息"></a>1.Linux 服务信息</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">//ip地址</span><br><span class="line">ifconfig</span><br><span class="line"></span><br><span class="line">//运行的进程和系统性能信息</span><br><span class="line">top</span><br><span class="line"></span><br><span class="line">//磁盘信息</span><br><span class="line"><span class="built_in">df</span> -h</span><br><span class="line"></span><br><span class="line">//防火墙</span><br><span class="line">systemctl status firewalld</span><br><span class="line">systemctl start firewalld</span><br><span class="line">systemctl stop firewalld</span><br><span class="line">firewalld-cmd --permanent --zone=public --add-port=3306/tcp  //添加3306端口 传输协议为tcp</span><br><span class="line">firewalld-cmd --reload //重新加载防火墙配置，使新规则生效</span><br><span class="line">firewalld-cmd --zone=public --list-all //公共区域的防火墙规则和设置的命令</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-文件管理"><a href="#2-文件管理" class="headerlink" title="2.文件管理"></a>2.文件管理</h2><h3 id="2-1文件编辑"><a href="#2-1文件编辑" class="headerlink" title="2.1文件编辑"></a>2.1文件编辑</h3><p>vi和vim用来编辑文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">在一般模式下通过i或者a键进入编辑模式，按Esc键回到一般模式</span><br><span class="line">在一般模式下，<span class="built_in">shift</span>+ : 进行命令模式</span><br><span class="line">输入：</span><br><span class="line">q!    //不保存强制退出编辑器、</span><br><span class="line">wq    //保存并退出编辑器</span><br><span class="line">q     // 退出编辑器</span><br><span class="line">/[搜索的目标] //搜索，小写n向下搜索，大写N向上搜索</span><br></pre></td></tr></table></figure>
+
+<p>使用scp将一个Linux系统中的文件或文件夹复制到另一台Linux服务器上</p>
+<h3 id="2-2复制文件"><a href="#2-2复制文件" class="headerlink" title="2.2复制文件"></a>2.2复制文件</h3><p>1.将本地文件拷贝到远程主机</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//将本地文件 example.txt 拷贝到远程主机指定目录</span><br><span class="line">//192.168.1.100为远程服务器</span><br><span class="line">scp example.txt user@192.168.1.100:/home/user/documents/</span><br></pre></td></tr></table></figure>
 
 <p>2.从远程将文件拷回本地</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//scp 用户名@计算机IP或者计算机名称:文件名 本地路径</span></span><br><span class="line"><span class="comment">//本地192.168.1.8客户端取远程服务器12、11上的文件</span></span><br><span class="line">scp root@<span class="number">192.168</span><span class="number">.1</span><span class="number">.12</span>:/usr/local/src<span class="comment">/*.log /root/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//把远程主机上的 example.txt 拷贝到本地指定目录：</span><br><span class="line"></span><br><span class="line">scp user@192.168.1.100:/home/user/example.txt ~/Downloads/</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h3 id="复制目录"><a href="#复制目录" class="headerlink" title="复制目录"></a>复制目录</h3><p>1.将本地文件夹拷贝到远程</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//scp -r 目录名 用户名@计算机IP或者计算机名称:远程路径</span></span><br><span class="line"><span class="comment">//test1为源目录，test2为目标目录，zhidao@192.168.0.1为远程服务器的用户名和ip地址。</span></span><br><span class="line">scp -r /home/test1 zhidao@<span class="number">192.168</span><span class="number">.0</span><span class="number">.1</span>:/home/test2 </span><br></pre></td></tr></table></figure>
+<p>3.复制文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp test.txt test2.txt  //把文件test.txt复制为test2.txt作为备份</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3查看文件内容"><a href="#2-3查看文件内容" class="headerlink" title="2.3查看文件内容"></a>2.3查看文件内容</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> my.yaml  //查看my.yaml内容</span><br><span class="line"><span class="built_in">tail</span> -f my.yaml //实时查看my.yaml的末尾内容</span><br><span class="line">grep <span class="string">&quot;app&quot;</span> my.yaml  //查看my.yaml包含app的内容</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4查找文件"><a href="#2-4查找文件" class="headerlink" title="2.4查找文件"></a>2.4查找文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find / -name test.txt    //从根目录查找名称为test.txt的文件</span><br><span class="line">find /opt *.java   //查找opt目录下.java文件 </span><br><span class="line">find /opt *.java|grep user    //搜索opt目录下，所有名称包含user的.java文件</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-5删除文件"><a href="#2-5删除文件" class="headerlink" title="2.5删除文件"></a>2.5删除文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">rm</span> zhuoye.txt   //提示删除zhuoye.txt文件</span><br><span class="line"><span class="built_in">rm</span> -f zhuoye.txt   //强制删除zhuoye.txt文件</span><br><span class="line"><span class="built_in">rm</span> -r data  //提示递归删除data目录</span><br><span class="line"><span class="built_in">rm</span> -rf data  //强制递归删除data目录</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-6-压缩和解压"><a href="#2-6-压缩和解压" class="headerlink" title="2.6 压缩和解压"></a>2.6 压缩和解压</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//压缩或解压单个文件</span><br><span class="line">gzip test.txt  //压缩单个文件，生成一个.gz的压缩包，并且会把原文件删除</span><br><span class="line">gunzip test.txt.gz  //解压.gz压缩包，并且会把原了的压缩包删除</span><br><span class="line"></span><br><span class="line">//压缩或解压多个文件和目录</span><br><span class="line"></span><br><span class="line">zip test.zip test.txt test1.txt test2.txt //把这三个文件压缩为test.zip</span><br><span class="line">unzip test.zip -d data   // 解压到data目录下</span><br><span class="line">tar -zcvf test.tar.gz test.txt test1.txt test2.txt //把这三个文件压缩test.tar.gz</span><br><span class="line">tar -zxvf test.tar.gz -C /opt/data  //解压到指定目录下</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-目录"><a href="#3-目录" class="headerlink" title="3.目录"></a>3.目录</h2><h3 id="3-1复制目录"><a href="#3-1复制目录" class="headerlink" title="3.1复制目录"></a>3.1复制目录</h3><p>1.将本地文件夹拷贝到远程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//scp -r 目录名 用户名@计算机IP或者计算机名称:远程路径</span><br><span class="line">//test1为源目录，test2为目标目录，zhidao@192.168.0.1为远程服务器的用户名和ip地址。</span><br><span class="line">scp -r /home/test1 zhidao@192.168.0.1:/home/test2 </span><br></pre></td></tr></table></figure>
 
 <p>2.从远程拷贝目录回本地</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//scp -r 用户名@计算机IP或者计算机名称:目录名 本地路径</span></span><br><span class="line"><span class="comment">//zhidao@192.168.0.1为远程服务器的用户名和ip地址，test1为源目录，test2为目标目录</span></span><br><span class="line">scp  -r zhidao@<span class="number">192.168</span><span class="number">.0</span><span class="number">.1</span>:/home/test2 /home/test1</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//scp -r 用户名@计算机IP或者计算机名称:目录名 本地路径</span><br><span class="line">//zhidao@192.168.0.1为远程服务器的用户名和ip地址，test1为源目录，test2为目标目录</span><br><span class="line">scp  -r zhidao@192.168.0.1:/home/test2 /home/test1</span><br></pre></td></tr></table></figure>
+
+<h4 id><a href="#" class="headerlink" title></a></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//切换上级目录</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line"></span><br><span class="line">//创建目录</span><br><span class="line">mkdir-p data/mysql   //在当前目录下创建目录data，并在<span class="built_in">test</span>下创建目录mysql</span><br><span class="line"><span class="built_in">mkdir</span> data/mysql  //在data目录下创建mysql</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-用户相关"><a href="#4-用户相关" class="headerlink" title="4.用户相关"></a>4.用户相关</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//当前用户是谁</span><br><span class="line"><span class="built_in">who</span>   </span><br><span class="line"></span><br><span class="line">//添加用户</span><br><span class="line">useradd jason  //添加用户jason，会在/home目录下创建用户的根目录，目录名称默认与用户名相同</span><br><span class="line">useradd -d /home/jasonlee jason //创建用户的同时，指定用户的根目录</span><br><span class="line"></span><br><span class="line">//给用户设置密码</span><br><span class="line">passwd jason  //给用户jason设置密码</span><br><span class="line"></span><br><span class="line">//删除用户</span><br><span class="line">userdel jason   //删除用户jason</span><br><span class="line"></span><br><span class="line">//查看用户信息</span><br><span class="line"><span class="built_in">id</span> jason  //查看用户jason信息</span><br><span class="line"></span><br><span class="line">//切换用户</span><br><span class="line">sudo jason  //切换为用户jason</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="5-权限"><a href="#5-权限" class="headerlink" title="5.权限"></a>5.权限</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//修改文件或目录的所有者</span><br><span class="line"><span class="built_in">chown</span> jason test.txt  //修改test.txt 文件的所有者为jason</span><br><span class="line"><span class="built_in">chown</span> -R jason data   //修改过data目录下的所有文件包含data目录所有者为jason用户</span><br><span class="line"></span><br><span class="line">//文件或者目录的权限控制</span><br><span class="line"><span class="built_in">chmod</span> 777 test.txt  //将test.txt的权限设置为777</span><br><span class="line">注：任何一个文件或目录都有三部分权限：所有者权限、同组用户权限、其他组用户权限</span><br><span class="line">每一部分权限都可以用数据之和表示：r(读)、w（写）、x（执行）对应4、2、1</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-进程管理"><a href="#6-进程管理" class="headerlink" title="6.进程管理"></a>6.进程管理</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//查找服务相关进程，例如mysql</span><br><span class="line">ps -ef|grep mysql</span><br><span class="line"></span><br><span class="line">//查看短裤进程例如3306</span><br><span class="line">lsof -i:3306</span><br><span class="line"></span><br><span class="line">//关闭进程</span><br><span class="line"><span class="built_in">kill</span> -9 PID</span><br><span class="line"></span><br><span class="line">//查看当前的java进程</span><br><span class="line">jps</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-软件包的安装"><a href="#7-软件包的安装" class="headerlink" title="7.软件包的安装"></a>7.软件包的安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">//RPM包安装</span><br><span class="line">rpm -ivh test.rpm  // i:安装  v:提示  h:进度条</span><br><span class="line">rmp -ivh --force test.rpm  //强制安装</span><br><span class="line"></span><br><span class="line">//卸载rpm软件包</span><br><span class="line">rpm -e test.rpm</span><br><span class="line"></span><br><span class="line">//yum安装</span><br><span class="line">yum install firefox</span><br><span class="line"></span><br><span class="line">//当前系统使用yum已经安装的软件包</span><br><span class="line">yum list installed|grep firefox</span><br><span class="line"></span><br><span class="line">//卸载</span><br><span class="line">yum remove firefox</span><br></pre></td></tr></table></figure>
 
 
 
@@ -329,13 +367,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">112k</span>
+    <span title="站点总字数">114k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:42</span>
+    <span title="站点阅读时长">1:44</span>
   </span>
 </div>
 
